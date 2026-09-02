@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Design"
+  short_description: "Shape deep modules and clean boundaries"
+  default_prompt: "Use $monomind-design to improve the module boundaries and test seams for this change."

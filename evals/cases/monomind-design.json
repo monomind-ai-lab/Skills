@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-design",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Our workflows duplicate provider mechanics; design a shared capability without moving domain policy into it.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Deepen this module by simplifying its public interface and choosing a stable test seam.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Refactor these shallow service boundaries and correct the dependency direction.",
+        "top_k": 2
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Implement the approved feature as a thin vertical slice and run repository-native tests.",
+        "owner": "monomind-build"
+      },
+      {
+        "prompt": "Diagnose the intermittent failure by building a reproducible red loop.",
+        "owner": "monomind-debug"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Two account flows duplicate payment-provider setup and error handling. Propose a design that improves reuse without letting the shared service own domain state.",
+      "expected_output": "A deep public capability boundary with explicit inputs, structured failures, policy/mechanics ownership, public tests, and an incremental migration path.",
+      "expectations": [
+        "The proposal identifies callers, invariants, owned state, dependency direction, and a public seam before naming files.",
+        "Domain policy, authorization, state transitions, and user-facing recovery remain with orchestration.",
+        "Provider mechanics use explicit inputs and structured outputs without hidden database access.",
+        "Tests observe behavior through the public seam rather than shared-service internals.",
+        "Migration moves one caller at a time and verifies behavior before removing the old path."
+      ]
+    }
+  ]
+}

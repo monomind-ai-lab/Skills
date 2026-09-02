@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Handoff"
+  short_description: "Package durable state for the next agent"
+  default_prompt: "Use $monomind-handoff to create a concise continuation handoff for this work."

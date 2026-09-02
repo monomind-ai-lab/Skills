@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Release"
+  short_description: "Prepare observable, reversible releases"
+  default_prompt: "Use $monomind-release to assess and execute a safe, observable rollout."

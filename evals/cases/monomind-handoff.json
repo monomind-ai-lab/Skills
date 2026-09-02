@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-handoff",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Create a concise handoff for the next agent with exact current state and one next executable step.",
+        "top_k": 1
+      },
+      {
+        "prompt": "The context window will reset soon; package decisions, verification, blockers, and pointers.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Write a continuation brief so another session can resume this unfinished task without the transcript.",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Break the approved spec into dependency-aware tasks for several agent sessions.",
+        "owner": "monomind-plan"
+      },
+      {
+        "prompt": "Review the current diff against the originating spec and repository standards.",
+        "owner": "monomind-review"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "dialogue",
+      "prompt": "Hand this unfinished implementation to a fresh session. Important specs and test logs already exist in the repository.",
+      "expected_output": "A compact continuation brief grounded in verified repository state, using pointers instead of duplicated artifacts and naming the first executable next step.",
+      "expectations": [
+        "The agent inspects repository, branch, working-tree, task, and verification state rather than relying only on conversation memory.",
+        "The handoff distinguishes complete, in-progress, not-started, blocked, and unverified work.",
+        "Existing specs, logs, decisions, diffs, and artifacts are referenced rather than copied into a second source of truth.",
+        "One immediately executable next step has a clear completion condition.",
+        "Secrets, personal data, private endpoints, and irrelevant host-specific paths are absent."
+      ]
+    }
+  ]
+}

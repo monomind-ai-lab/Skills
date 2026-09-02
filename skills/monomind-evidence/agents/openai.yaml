@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Evidence"
+  short_description: "Capture revision-bound proof of behavior"
+  default_prompt: "Use $monomind-evidence to produce safe, revision-bound proof for this change."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Plan"
+  short_description: "Slice a spec into dependency-aware work"
+  default_prompt: "Use $monomind-plan to break this spec into tracer-bullet tasks with dependencies."

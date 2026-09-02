@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Intake"
+  short_description: "Clarify ambiguous work into confirmed intent"
+  default_prompt: "Use $monomind-intake to clarify this request into a confirmed intent brief."

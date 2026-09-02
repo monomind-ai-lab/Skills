@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-debug",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "This intermittent test regression needs a reproducible red loop and a verified root cause.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Diagnose why the production API became slow; minimize and instrument before changing code.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Find the cause of this build failure. Diagnosis only—do not apply a fix yet.",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Implement the approved behavior change in a thin verified vertical slice.",
+        "owner": "monomind-build"
+      },
+      {
+        "prompt": "Capture revision-bound before and after evidence for the visual bug fix.",
+        "owner": "monomind-evidence"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "A pagination test fails only for an empty final page. Diagnose and fix it, preserving evidence of the original failure.",
+      "expected_output": "A tight reproduction, minimized input, falsifiable cause, minimal authorized fix, regression proof, and cleaned-up diagnostics.",
+      "expectations": [
+        "The original failure, environment, and revision are preserved before production behavior changes.",
+        "A focused loop goes red for the reported defect rather than an incidental setup error.",
+        "The causal chain names trigger, broken invariant, divergence boundary, and visible symptom.",
+        "Alternative hypotheses are falsified through one-variable observations rather than broad speculative edits.",
+        "The minimal fix turns the focused loop green, relevant regressions pass, and temporary instrumentation is removed."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Spec"
+  short_description: "Turn clear intent into an executable spec"
+  default_prompt: "Use $monomind-spec to turn this feature intent into an executable specification."

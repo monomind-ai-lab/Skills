@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-plan",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Break this approved spec into tracer-bullet tasks with blocking dependencies and verification.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Create an ordered vertical-slice implementation plan from this proposal.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Map the ready frontier and dependency graph for work that spans several agent sessions.",
+        "top_k": 2
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Write a living feature specification with observable acceptance criteria and test seams.",
+        "owner": "monomind-spec"
+      },
+      {
+        "prompt": "Review this branch diff for correctness and compliance with the spec.",
+        "owner": "monomind-review"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Plan the approved notification-preferences spec without implementing it or changing an external tracker.",
+      "expected_output": "One canonical local plan of small vertical tasks with acceptance criteria, verification, scope boundaries, and an acyclic dependency graph.",
+      "expectations": [
+        "Normal feature tasks are complete vertical behavior slices rather than database/API/UI layer batches.",
+        "Every task states outcome, pass/fail acceptance criteria, verification, blockers, and scope boundary.",
+        "The dependency graph is acyclic and its ready frontier is identifiable.",
+        "Any wide mechanical refactor is explicitly justified and shaped as expand–migrate–contract.",
+        "No implementation or unauthorized external tracker mutation occurs."
+      ]
+    }
+  ]
+}

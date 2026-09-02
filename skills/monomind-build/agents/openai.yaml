@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Build"
+  short_description: "Implement thin, verified vertical slices"
+  default_prompt: "Use $monomind-build to implement the next approved slice and verify it."

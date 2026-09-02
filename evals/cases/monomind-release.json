@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-release",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Assess launch readiness with project gates, observability, and an executable rollback plan.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Prepare a staged production rollout for this migration using baselines and hold or rollback signals.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Release this approved revision safely and record the live deployment evidence.",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Capture local revision-bound runtime proof without posting it externally.",
+        "owner": "monomind-evidence"
+      },
+      {
+        "prompt": "Perform a read-only code review of this branch before merge.",
+        "owner": "monomind-review"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Prepare a release-readiness report for a schema migration. The user has not authorized production execution.",
+      "expected_output": "A target-specific readiness contract with evidence-based gates, operator questions and signals, expand–migrate–contract compatibility, and rehearsable rollback, without live mutation.",
+      "expectations": [
+        "The report distinguishes readiness assessment from live execution and does not deploy or migrate production.",
+        "The exact artifact, environment, data boundary, owner, and dominant risks are stated.",
+        "Advance, hold, and rollback thresholds come from repository evidence, baselines, SLOs, or explicit open decisions rather than generic numbers.",
+        "The data change preserves compatibility through expand–migrate–contract and includes an executable rollback treatment.",
+        "Observability maps operator questions to metrics, traces, logs, and an observation window."
+      ]
+    }
+  ]
+}

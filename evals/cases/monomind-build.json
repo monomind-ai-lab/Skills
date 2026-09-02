@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-build",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Implement the next approved task as a thin vertical slice and run the repository's native checks.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Build this behavior change test-first through the existing public seam while keeping the diff scoped.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Implement this multi-file feature incrementally, verify each slice, and avoid unrelated cleanup.",
+        "top_k": 2
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Perform a read-only review of this pull request against its spec and repository standards.",
+        "owner": "monomind-review"
+      },
+      {
+        "prompt": "Turn the approved proposal into dependency-aware tasks with blocking edges.",
+        "owner": "monomind-plan"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Implement the approved pagination task in the fixture repository. Do not commit or add dependencies.",
+      "expected_output": "A minimal vertical behavior slice developed through a failing public-seam test, verified with repository-native commands, and handed off with a scoped diff.",
+      "expectations": [
+        "The agent discovers repository-native commands and current worktree state before editing.",
+        "A focused behavior test is shown failing for the intended reason before implementation turns it green.",
+        "The implementation is the smallest complete slice and contains no adjacent cleanup or speculative abstraction.",
+        "Focused and relevant regression checks run after the final code edit.",
+        "The final diff is inspected and no commit, dependency installation, or external mutation occurs."
+      ]
+    }
+  ]
+}

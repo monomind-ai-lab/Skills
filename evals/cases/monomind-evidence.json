@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-evidence",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Capture revision-bound before and after proof for this user-visible UI change.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Produce reproducible runtime evidence for this bug fix because automated tests cannot show the visual behavior.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Record a benchmark and environment that prove the API performance claim.",
+        "top_k": 2
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Review this pull request for spec fidelity and engineering quality.",
+        "owner": "monomind-review"
+      },
+      {
+        "prompt": "Assess production launch readiness with observability gates and rollback.",
+        "owner": "monomind-release"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Create local evidence for a responsive navigation fix at desktop and mobile sizes. Do not upload or post anything.",
+      "expected_output": "Matched, locally stored before/after artifacts tied to the tested revision and environment, plus a claim-by-claim result table and caveats.",
+      "expectations": [
+        "The agent states each acceptance claim and chooses an evidence medium before capturing.",
+        "Before and after captures control for data, account state, viewport, and capture boundary.",
+        "The exact revision, environment, and reproduction sequence are recorded.",
+        "Every artifact is opened or replayed and checked against its stated assertion.",
+        "No secret, private data, upload, pull-request edit, or public host is used."
+      ]
+    }
+  ]
+}

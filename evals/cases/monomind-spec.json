@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-spec",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Turn this confirmed feature intent into a living specification with observable acceptance criteria.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Write the spec for this multi-interface data migration, including public test seams and rollback requirements.",
+        "top_k": 1
+      },
+      {
+        "prompt": "We have a clear outcome; define the behavior, failure scenarios, non-goals, and proof of success before coding.",
+        "top_k": 2
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Break the approved spec into vertical tracer-bullet tasks with blocking edges.",
+        "owner": "monomind-plan"
+      },
+      {
+        "prompt": "Implement the next approved task in a thin verified slice.",
+        "owner": "monomind-build"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "The conversation contains confirmed intent for a new idempotent billing webhook. Inspect the fixture repository and write the implementation specification only.",
+      "expected_output": "A living spec grounded in existing repository behavior, with observable requirements, public seams, compatibility, operations, and explicit non-goals.",
+      "expectations": [
+        "The spec separates current repository evidence from desired behavior and material assumptions.",
+        "Every requirement has an observable acceptance signal through a public seam.",
+        "Normal, duplicate, malformed, retry, and recovery scenarios are represented.",
+        "Compatibility, data ownership, observability, rollback, and non-goals are explicit.",
+        "No implementation code or speculative task plan is produced."
+      ]
+    }
+  ]
+}

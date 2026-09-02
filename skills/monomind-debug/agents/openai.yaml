@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Debug"
+  short_description: "Find root causes with a tight red loop"
+  default_prompt: "Use $monomind-debug to reproduce, isolate, and explain this failure before fixing it."

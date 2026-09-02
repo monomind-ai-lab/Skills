@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-review",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Review this pull request against its originating spec and the repository engineering standards.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Inspect the branch diff for correctness, security, architecture, performance, and regression risk.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Do a read-only code review before merge with findings first and clear severity.",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Implement the next approved task and verify the thin vertical slice.",
+        "owner": "monomind-build"
+      },
+      {
+        "prompt": "Diagnose why this runtime flow fails intermittently and identify the root cause.",
+        "owner": "monomind-debug"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Review the fixture branch against its issue and repository instructions. Do not edit files.",
+      "expected_output": "A findings-first review with a pinned comparison point, separate spec and standards analysis, verified claims, prioritized defects, and residual risks.",
+      "expectations": [
+        "The review pins the comparison point and names the spec and standards sources.",
+        "Spec fidelity is assessed independently from engineering quality.",
+        "Each actionable finding includes location, evidence, impact, priority, and a credible remedy.",
+        "Change-introduced defects are separated from pre-existing issues and unverified assumptions.",
+        "The reviewer does not modify files and states what verification could and could not be performed."
+      ]
+    }
+  ]
+}

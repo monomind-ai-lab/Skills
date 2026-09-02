@@ -1,0 +1,44 @@
+{
+  "skill_name": "monomind-intake",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "This idea is vague—stress-test what I actually want, who it is for, and how success should be measured.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Before we build anything, clarify the outcome, binding constraints, and non-goals with me.",
+        "top_k": 1
+      },
+      {
+        "prompt": "I said to build a dashboard, but help me determine whether that is really the right solution.",
+        "top_k": 2
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "The intent is approved; write a living spec with acceptance criteria and public test seams.",
+        "owner": "monomind-spec"
+      },
+      {
+        "prompt": "Review this pull request against the requirements and repository standards.",
+        "owner": "monomind-review"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "dialogue",
+      "prompt": "Build me a dashboard for our metrics. Use the intake workflow before proposing implementation.",
+      "expected_output": "A dependency-aware clarification that discovers the real outcome and ends in a confirmed intent brief rather than a premature dashboard specification.",
+      "expectations": [
+        "The agent states an outcome hypothesis, confidence, and the material information still missing.",
+        "Questions distinguish project facts from user-owned decisions and carry a recommended answer or concrete tradeoff.",
+        "Dependent questions are not asked before their prerequisite decision is settled.",
+        "The final restatement includes user, problem, outcome, success evidence, constraints, non-goals, and open decisions.",
+        "The agent does not create a specification, plan, or implementation before material intent is confirmed."
+      ]
+    }
+  ]
+}

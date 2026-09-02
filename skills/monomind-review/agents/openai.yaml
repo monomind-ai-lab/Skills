@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Review"
+  short_description: "Review spec fidelity and engineering quality"
+  default_prompt: "Use $monomind-review to review this change against its spec and repository standards."
