@@ -87,6 +87,7 @@ owner-approved decision plus approval date/reference, or
 
 ## Context management and continuity
 
+- Context pipeline: [project-context](https://github.com/monomind-ai-lab/project-context) (repo-level) and [project-hub](https://github.com/monomind-ai-lab/project-hub) (org-level)
 - Authoritative project context and decision records: UNRESOLVED
 - Task and handoff location and required contents: UNRESOLVED
 - Context update triggers: before compaction, session transfer, long pause, or handoff, and after a material decision or verification result

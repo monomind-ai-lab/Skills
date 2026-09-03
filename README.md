@@ -150,7 +150,9 @@ python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate release -
 
 Every `UNRESOLVED` value must be defined separately for this repository. Agents
 may fill mechanically verified facts with an evidence pointer. Integration
-strategy, authority, required gates, release controls, continuity ownership, and
+strategy, authority, required gates, release controls, continuity ownership
+(see [project-context](https://github.com/monomind-ai-lab/project-context) and
+[project-hub](https://github.com/monomind-ai-lab/project-hub)), and
 other policy choices must be approved by the repository owner, project lead, or
 an explicitly named delegate. If a field truly does not apply, record
 `NOT_APPLICABLE — <specific approved or evidenced reason>`; a bare `N/A` does
@@ -159,7 +161,9 @@ not pass either readiness gate.
 The interview follows a reviewable loop:
 
 1. Inspect instructions, remotes, manifests, CI/CD, ownership, releases,
-   resources, and context/handoff sources.
+   resources, and context/handoff sources (see
+   [project-context](https://github.com/monomind-ai-lab/project-context) and
+   [project-hub](https://github.com/monomind-ai-lab/project-hub)).
 2. Show the owner or lead the verified facts and their evidence.
 3. Ask grouped questions only for policy that evidence cannot establish.
 4. Write each confirmed value with an evidence or approval reference and date.
@@ -285,7 +289,7 @@ adoption makes those principles persistent across repository tasks.
 | Testing | Use exact repository-native commands, prove behavior through public seams, retain failing-before evidence when feasible, and never weaken gates to reach green |
 | CI/CD | Declare required gates, triggers, reviewers, blocking findings, and override authority; enforce server-side invariants in reviewed configuration |
 | Release | Separate assessment from live execution; name artifact, environment, owner, approval, signals, observation, migration, rollback, and cleanup |
-| Context and continuity | Keep durable truth in repository-owned specs, decisions, task/context records, and evidence; update before transfer/compaction and verify freshness on resume |
+| Context and continuity | Keep durable truth in repository-owned specs, decisions, task/context records, and evidence; update before transfer/compaction and verify freshness on resume. Monomind's context pipeline is [project-context](https://github.com/monomind-ai-lab/project-context) (repo-level) with the org-level hub in [project-hub](https://github.com/monomind-ai-lab/project-hub) |
 
 The full interview guidance and rationale live in
 [`policy-principles.md`](skills/monomind-onboarding/references/policy-principles.md).

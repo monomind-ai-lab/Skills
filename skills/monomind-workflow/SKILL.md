@@ -66,7 +66,7 @@ Use this procedure only in Adopt mode:
    ```
 
    The script preserves all text outside its managed markers. It updates a non-empty root `AGENTS.override.md` when that file shadows `AGENTS.md`; otherwise it updates or creates root `AGENTS.md`. It never replaces an existing workflow profile.
-4. Inspect repository instructions, manifests, CI, tests, runtime configuration, ownership, release topology, and continuity sources. Agents may fill mechanically verified facts with an evidence pointer. Every policy choice and every use of `NOT_APPLICABLE` requires approval from the repository owner, project lead, or explicitly named delegate.
+4. Inspect repository instructions, manifests, CI, tests, runtime configuration, ownership, release topology, and continuity sources (see [project-context](https://github.com/monomind-ai-lab/project-context) and [project-hub](https://github.com/monomind-ai-lab/project-hub)). Agents may fill mechanically verified facts with an evidence pointer. Every policy choice and every use of `NOT_APPLICABLE` requires approval from the repository owner, project lead, or explicitly named delegate.
 5. Use `monomind-onboarding` when installed to ask only the remaining grouped policy questions and update `.monomind/workflow.md`. Without an authorized approver, retain `UNRESOLVED` and name the required decision owner; adoption is then structurally present but not Build-ready or Release-ready.
 6. Run `python3 <skill-dir>/scripts/adopt.py check --repo <repository>`, followed by `check --gate build` and, when release work is intended, `check --gate release`. Inspect the complete diff. Do not commit or publish unless separately authorized.
 

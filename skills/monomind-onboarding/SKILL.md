@@ -45,7 +45,9 @@ Inspect the smallest relevant checked-in evidence first:
   migration and rollback material, and branch-protection documentation;
 - evidence directories, data/privacy rules, visual targets, shared ports,
   databases, queues, caches, emulators, and test-account conventions; and
-- continuity sources: specifications, ADRs, project context, task records,
+- continuity sources: specifications, ADRs, project context (see
+  [project-context](https://github.com/monomind-ai-lab/project-context) and
+  [project-hub](https://github.com/monomind-ai-lab/project-hub)), task records,
   handoff locations, and their expected update triggers.
 
 Classify each profile field before the interview:
@@ -82,7 +84,9 @@ answers after each round so the interview is resumable:
    window, and who may release under which explicit instruction.
 5. **Evidence, safety, and continuity:** artifact and publication locations,
    test-data and capture restrictions, authoritative context and decision
-   records, handoff format, update triggers, and freshness ownership.
+   records (via [project-context](https://github.com/monomind-ai-lab/project-context)
+   and [project-hub](https://github.com/monomind-ai-lab/project-hub)), handoff
+   format, update triggers, and freshness ownership.
 
 When offering options, state the operational tradeoff and label the answer as a
 proposal until the approver explicitly accepts it. Do not pressure the approver

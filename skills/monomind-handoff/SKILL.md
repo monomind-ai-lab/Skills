@@ -9,7 +9,7 @@ Transfer durable state, not a transcript. Reference authoritative artifacts inst
 
 ## Reconstruct current state
 
-Inspect the repository and available task state before writing. Do not rely only on conversational memory. Verify the working tree, current branch or revision, changed files, tests actually run, active task/spec, and unresolved external state. When `.monomind/workflow.md` exists, follow its authoritative context, decision-record, task, handoff, update-trigger, and freshness-owner fields; surface any unresolved continuity policy instead of inventing a destination.
+Inspect the repository and available task state before writing. Do not rely only on conversational memory. Verify the working tree, current branch or revision, changed files, tests actually run, active task/spec, and unresolved external state. When `.monomind/workflow.md` exists, follow its authoritative context, decision-record, task, handoff, update-trigger, and freshness-owner fields; surface any unresolved continuity policy instead of inventing a destination. Repository context records live in [project-context](https://github.com/monomind-ai-lab/project-context) with the org-level hub in [project-hub](https://github.com/monomind-ai-lab/project-hub).
 
 ## Write the continuation brief
 
@@ -42,7 +42,7 @@ Specs, tasks, ADRs, diffs, files, issues, and artifacts needed to continue.
 
 Do not duplicate specs, task bodies, decisions, or long command output that already has a stable path or URL. Name the relevant section and point to it. Include transient local details only when they are necessary to resume safely.
 
-Update the repository's authoritative task or context record before compaction,
+Update the repository's authoritative task or context record (see [project-context](https://github.com/monomind-ai-lab/project-context) and [project-hub](https://github.com/monomind-ai-lab/project-hub)) before compaction,
 session transfer, a long pause, or handoff when project policy requires it. A
 resuming owner must recheck repository and external state; a handoff is a
 revision-bound starting point, not proof that the world has remained unchanged.

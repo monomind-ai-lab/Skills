@@ -77,6 +77,10 @@ people, commands, locations, gates, and exceptions needed to apply it.
 
 ## Context management and continuity
 
+Monomind's context pipeline is [project-context](https://github.com/monomind-ai-lab/project-context)
+(repo-level records) with the org-level hub in
+[project-hub](https://github.com/monomind-ai-lab/project-hub).
+
 - Keep durable truth in repository-owned specifications, decisions, current
   project context, task records, and evidence—not only in chat transcripts or
   one agent's memory.
