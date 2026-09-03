@@ -70,6 +70,6 @@ SOFTWARE.
 - Revision inspected: `5d403ea66775c04df222a1e9b302ef64ae45c712`
 - Repository-wide license: none found at the inspected revision
 
-This repository was consulted only for design ideas: revision-bound evidence, action/service separation, and isolated task work. No source file, recorder, fixture, or upstream wording from its unlicensed root material is included here.
+This repository was consulted only for design ideas: its `AGENTS.md` four-beat task workflow, multi-agent isolation, revision-bound evidence, action/service separation, and PR completion discipline. No source file, recorder, fixture, or upstream wording from its unlicensed root material is included here.
 
-Its `before-and-after` subtree was marked PolyForm Shield 1.0.0 and is not included or adapted. Its Greptile subtrees were MIT licensed but were intentionally excluded as vendor-specific.
+Its `before-and-after` subtree is not copied or redistributed. The original `monomind-before-after` instructions optionally invoke the external [`@vercel/before-and-after`](https://www.npmjs.com/package/@vercel/before-and-after) package, which remains copyright (c) 2026 James Clements and licensed under [PolyForm Shield 1.0.0](https://polyformproject.org/licenses/shield/1.0.0). Users are responsible for complying with that external license. Its Greptile subtrees were MIT licensed but were intentionally excluded as vendor-specific.

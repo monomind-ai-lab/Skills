@@ -23,6 +23,8 @@ List the claims a reviewer must be able to verify. Choose the cheapest trustwort
 
 For a bug fix, capture the old failure before changing the code whenever feasible. A single "after" image does not prove that the reported failure existed or that the tested path changed.
 
+For a PR-ready visible comparison, use `monomind-before-after` when it is installed. It adds matched-source capture and Markdown packaging through the external `@vercel/before-and-after` CLI; this skill remains the authority for the claim/evidence plan and privacy boundary.
+
 ## Bind and capture
 
 1. Record the exact revision or deployment identifier, branch when useful, environment, test data class, and executable command or interaction sequence.

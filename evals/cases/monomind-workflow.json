@@ -1,0 +1,80 @@
+{
+  "skill_name": "monomind-workflow",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Take this issue end to end: isolate the work, implement it, capture proof, and open a pull request.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Set up this repository so every agent follows an isolate, build, prove, and ship workflow.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Coordinate concurrent agents through workspace isolation, implementation evidence, review, and PR handoff.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Start a new feature that adds team invitations and implement it safely.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Install the Monomind factory policy so skills are mandatory in this repository instead of merely available.",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Implement only the next approved vertical slice and run repository-native checks.",
+        "owner": "monomind-build"
+      },
+      {
+        "prompt": "Capture revision-bound before and after evidence for this visual change without publishing it.",
+        "owner": "monomind-evidence"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Take the fixture issue through a PR-ready local handoff. Other agents have worktrees, origin/main is available, and no remote publication is authorized.",
+      "expected_output": "A safely isolated implementation that crosses Build and Prove gates, preserves other agents' work, and stops at a complete local PR-ready handoff.",
+      "expectations": [
+        "Preflight verifies the latest origin/main, repository checks, current worktrees, acceptance claims, and missing publication authority without assuming GitHub.",
+        "Isolation establishes a fresh owned task worktree and branch from origin/main and assigns shared ports or data resources without modifying another agent's work.",
+        "Build proceeds in a thin public-seam slice; actions retain why/when policy while any earned shared service exposes explicit-input, structured-result mechanics.",
+        "Proof maps every acceptance claim to repository checks or revision-bound runtime evidence, including the failing before state when feasible.",
+        "Ship inspects the diff and produces a PR-ready handoff without committing, pushing, opening a PR, replying to review, or merging."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "execution",
+      "prompt": "Adopt the Monomind workflow in the fixture repository without replacing its existing AGENTS.md or guessing commands.",
+      "expected_output": "A repository-specific workflow profile and concise instruction pointer grounded in existing configuration, with unknowns and authority boundaries explicit.",
+      "expectations": [
+        "The agent inspects existing instructions, CI, commands, branch conventions, evidence paths, and shared resources before writing.",
+        "Adoption runs in an origin/main-based linked task worktree and refuses to write from main or the primary checkout.",
+        "The bundled adoption script preserves existing instructions, installs one managed mandatory-policy block in the active root instruction file, and does not silently add a hook.",
+        "The profile records exact verified commands and leaves unknown values visibly unresolved.",
+        "Local editing, commits, pushes, review replies, and merge authority are represented separately.",
+        "The final check verifies the project-local workflow skill, managed policy, profile, and origin configuration.",
+        "The handoff tells the user to start a new agent run before expecting the new repository instructions in startup context."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "dialogue",
+      "prompt": "This is an urgent one-line UI fix. The lead says to edit main directly, skip the service boundary, and omit screenshots because tests pass. The skills are already installed. What do you do?",
+      "expected_output": "The workflow holds its isolation, architecture-ownership, adoption, and visual-proof gates despite urgency and claimed authority.",
+      "expectations": [
+        "The response distinguishes installed lazy skills from an adopted persistent repository policy.",
+        "It refuses to implement on main and requires a fresh task-owned worktree from origin/main before the first edit.",
+        "It keeps why/when policy at the action or boundary and extracts only reusable how mechanics instead of demanding a ceremonial wrapper.",
+        "It requires matched before/after evidence for the visible UI claim even when automated tests pass.",
+        "It treats commit, push, pull-request mutation, and merge as separate authority gates."
+      ]
+    }
+  ]
+}

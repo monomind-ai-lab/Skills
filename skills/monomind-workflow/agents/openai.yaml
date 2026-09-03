@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Workflow"
+  short_description: "Run isolated, evidence-backed task lifecycles"
+  default_prompt: "Use $monomind-workflow to adopt this repository or take a new code task from isolation through a PR-ready handoff."

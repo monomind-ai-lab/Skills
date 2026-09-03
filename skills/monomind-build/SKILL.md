@@ -1,6 +1,6 @@
 ---
 name: monomind-build
-description: "Build or implement an approved specification or task in thin, verified vertical slices. Use for non-trivial features, behavior changes, refactors, or fixes that should run test-first through a public seam, keep the diff scoped, and use repository-native checks."
+description: "Build or implement an approved specification or task inside an established task workspace, using thin verified vertical slices. Use for an already-isolated feature slice, behavior change, refactor, or fix that should run test-first through a public seam and repository-native checks."
 ---
 
 # Monomind Build
@@ -9,7 +9,7 @@ Deliver the smallest complete behavior, prove it, then expand. Preserve the user
 
 ## Orient the slice
 
-1. Read local instructions, the approved spec or task, relevant code and tests, and the working-tree state.
+1. Confirm the work is in a fresh owned task worktree based on `origin/main` and the current branch is not `main`, then read local instructions, the approved spec or task, relevant code and tests, and the working-tree state. If isolation is missing, stop before editing and create it through the repository convention; use the Isolate beat from `monomind-workflow` when that skill is installed.
 2. Discover repository-native build, test, type, lint, and formatting commands from checked-in configuration or CI. Do not substitute familiar defaults.
 3. Detect exact dependency versions. For version-sensitive external APIs, consult current primary documentation for the specific pattern being used.
 4. Name the slice's outcome, public test seam, scope boundary, and expected files before editing. If an unresolved choice would materially change the result, surface it first.
@@ -27,6 +27,8 @@ For each slice:
 Keep the repository valid between slices. Use additive compatibility or a project-supported flag when incomplete work must coexist with the current behavior. Flags need an owner and removal condition; they are not the default for every change.
 
 If an unexpected failure appears, stop extending the feature and switch to a root-cause loop. Do not weaken tests, suppress diagnostics, or broaden the edit merely to reach green.
+
+For side-effecting workflows, keep actions or boundaries responsible for domain policy and why or when an operation runs. Put reusable provider, protocol, command, or SDK mechanics behind service/capability functions with explicit inputs, structured returns, and typed failures. Keep one-off mechanics local until reuse or a volatile boundary earns extraction.
 
 Commits, pushes, tracker updates, dependency installation, and deployment follow the user's and project's explicit authority. A clean slice does not itself authorize those external or version-control mutations.
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Before & After"
+  short_description: "Create PR-ready visual change comparisons"
+  default_prompt: "Use $monomind-before-after to capture and verify a PR-ready before-and-after comparison."

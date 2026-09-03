@@ -1,0 +1,57 @@
+{
+  "skill_name": "monomind-before-after",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Capture before and after screenshots for this UI change and give me a PR-ready Markdown comparison table.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Compare the production and preview URLs at a mobile viewport using the card selector.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Turn these two PNG images into a visual diff table for the pull request description.",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Capture revision-bound measured proof that API p95 latency improved.",
+        "owner": "monomind-evidence"
+      },
+      {
+        "prompt": "Take this issue end to end through isolation, implementation, proof, review, and a PR-ready handoff.",
+        "owner": "monomind-workflow"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Capture a local before/after pair for two fixture URLs at mobile size. Package download, upload, and PR mutation are not authorized.",
+      "expected_output": "A matched, verified local visual pair with source revisions, viewport, command, and an explicit note that Markdown publication remains blocked on authority.",
+      "expectations": [
+        "The agent identifies both sources, the mobile viewport, capture boundary, revisions, and intended destination before capture.",
+        "It uses an already-available scoped CLI or stops before downloading or globally installing a package.",
+        "Before and after use matching data, authentication state, viewport, and selector or page boundary.",
+        "Both local images are inspected at full resolution for the claimed change, error pages, overlays, and sensitive data.",
+        "No public upload or PR mutation occurs, and the missing publication authority is explicit."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "execution",
+      "prompt": "Two approved public PNGs need a before/after table added to an existing pull request. The external CLI is installed and that PR update is authorized.",
+      "expected_output": "A verified PR-ready Markdown table generated from the approved images and appended without replacing existing pull-request content.",
+      "expectations": [
+        "The scoped @vercel/before-and-after integration is used rather than an unscoped package.",
+        "The images are classified safe for the approved publication destination before Markdown upload.",
+        "Existing pull-request content is preserved and one comparison section is added.",
+        "The updated pull request is reopened and both image URLs are confirmed to render.",
+        "The final report names sources, command, destination, result, and caveats."
+      ]
+    }
+  ]
+}

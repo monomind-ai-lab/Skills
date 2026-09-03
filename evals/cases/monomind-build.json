@@ -3,15 +3,15 @@
   "trigger": {
     "positive": [
       {
-        "prompt": "Implement the next approved task as a thin vertical slice and run the repository's native checks.",
+        "prompt": "In the existing isolated task worktree, implement the next approved task as a thin vertical slice and run the repository's native checks.",
         "top_k": 1
       },
       {
-        "prompt": "Build this behavior change test-first through the existing public seam while keeping the diff scoped.",
+        "prompt": "Inside this owned task worktree, build the behavior change test-first through the existing public seam while keeping the diff scoped.",
         "top_k": 1
       },
       {
-        "prompt": "Implement this multi-file feature incrementally, verify each slice, and avoid unrelated cleanup.",
+        "prompt": "Continue this already-isolated multi-file feature incrementally, verify each slice, and avoid unrelated cleanup.",
         "top_k": 2
       }
     ],
@@ -38,6 +38,19 @@
         "The implementation is the smallest complete slice and contains no adjacent cleanup or speculative abstraction.",
         "Focused and relevant regression checks run after the final code edit.",
         "The final diff is inspected and no commit, dependency installation, or external mutation occurs."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "execution",
+      "prompt": "In the existing task worktree, implement a second invitation flow that shares email-provider mechanics with signup while preserving each flow's different domain policy.",
+      "expected_output": "Two policy-owning actions using one explicit-input, structured-result email capability, implemented and tested through public behavior without a god service.",
+      "expectations": [
+        "Signup and invitation actions retain their own authorization, eligibility, state transitions, and user-facing error classification.",
+        "Reusable provider or transport mechanics move behind a service/capability boundary rather than being duplicated.",
+        "The shared capability accepts all required data explicitly and returns a structured success or typed failure without reaching into domain state.",
+        "The extraction is incremental and both flows remain covered through their public seams.",
+        "The resulting service is composable and does not become a method that owns the entire workflow."
       ]
     }
   ]
