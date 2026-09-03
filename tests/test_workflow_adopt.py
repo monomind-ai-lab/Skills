@@ -66,6 +66,17 @@ class WorkflowAdoptionTest(unittest.TestCase):
             check=False,
         )
 
+    def check_contract(self, *extra: str) -> subprocess.CompletedProcess[str]:
+        return run(
+            "python3",
+            str(self.installed_script),
+            "check",
+            "--repo",
+            str(self.task),
+            *extra,
+            check=False,
+        )
+
     def test_dry_run_prints_changes_without_writing(self) -> None:
         agents = self.task / "AGENTS.md"
         agents.write_text("# Existing instructions\n", encoding="utf-8")
@@ -146,6 +157,88 @@ class WorkflowAdoptionTest(unittest.TestCase):
         )
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("has drifted", result.stderr)
+
+    def test_structural_check_warns_but_build_gate_fails_on_unresolved_policy(self) -> None:
+        self.assertEqual(self.adopt(self.task).returncode, 0)
+
+        structural = self.check_contract()
+        self.assertEqual(structural.returncode, 0, structural.stderr)
+        self.assertIn("not Release-ready", structural.stdout)
+        self.assertIn("Repository owner or project lead", structural.stdout)
+
+        build = self.check_contract("--gate", "build")
+        self.assertNotEqual(build.returncode, 0)
+        self.assertIn("build-ready policy gate failed", build.stderr)
+        self.assertIn("Repository owner or project lead [UNRESOLVED]", build.stderr)
+        self.assertIn("monomind-onboarding", build.stderr)
+
+    def test_build_and_release_gates_have_different_required_fields(self) -> None:
+        self.assertEqual(self.adopt(self.task).returncode, 0)
+        profile = self.task / ".monomind" / "workflow.md"
+        resolved = profile.read_text(encoding="utf-8").replace(
+            "UNRESOLVED", "approved value — evidence: README.md"
+        )
+        resolved = resolved.replace(
+            "- Integration strategy: approved value — evidence: README.md",
+            "- Integration strategy: UNRESOLVED — decision required from project lead",
+        )
+        profile.write_text(resolved, encoding="utf-8")
+
+        build = self.check_contract("--gate", "build")
+        self.assertEqual(build.returncode, 0, build.stderr)
+        self.assertIn("build-ready policy gate passed", build.stdout)
+
+        release = self.check_contract("--gate", "release")
+        self.assertNotEqual(release.returncode, 0)
+        self.assertIn("release-ready policy gate failed", release.stderr)
+        self.assertIn("Integration strategy [UNRESOLVED]", release.stderr)
+
+    def test_release_gate_accepts_reasoned_not_applicable_but_rejects_bare_value(self) -> None:
+        self.assertEqual(self.adopt(self.task).returncode, 0)
+        profile = self.task / ".monomind" / "workflow.md"
+        resolved = profile.read_text(encoding="utf-8").replace(
+            "UNRESOLVED", "approved value — evidence: README.md"
+        )
+        profile.write_text(
+            resolved.replace(
+                "- Runtime or smoke check: approved value — evidence: README.md",
+                "- Runtime or smoke check: NOT_APPLICABLE",
+            ),
+            encoding="utf-8",
+        )
+
+        bare = self.check_contract("--gate", "release")
+        self.assertNotEqual(bare.returncode, 0)
+        self.assertIn("not applicable without a reason", bare.stderr)
+
+        profile.write_text(
+            profile.read_text(encoding="utf-8").replace(
+                "- Runtime or smoke check: NOT_APPLICABLE",
+                "- Runtime or smoke check: NOT_APPLICABLE — no runtime artifact is produced",
+            ),
+            encoding="utf-8",
+        )
+        reasoned = self.check_contract("--gate", "release")
+        self.assertEqual(reasoned.returncode, 0, reasoned.stderr)
+        self.assertIn("release-ready policy gate passed", reasoned.stdout)
+
+    def test_build_gate_requires_a_real_owner_and_approval_record(self) -> None:
+        self.assertEqual(self.adopt(self.task).returncode, 0)
+        profile = self.task / ".monomind" / "workflow.md"
+        resolved = profile.read_text(encoding="utf-8").replace(
+            "UNRESOLVED", "approved value — evidence: README.md"
+        )
+        profile.write_text(
+            resolved.replace(
+                "- Repository owner or project lead: approved value — evidence: README.md",
+                "- Repository owner or project lead: NOT_APPLICABLE — no owner assigned",
+            ),
+            encoding="utf-8",
+        )
+
+        build = self.check_contract("--gate", "build")
+        self.assertNotEqual(build.returncode, 0)
+        self.assertIn("owner/lead approval field cannot be NOT_APPLICABLE", build.stderr)
 
     def test_apply_reports_reversed_markers_without_a_traceback(self) -> None:
         agents = self.task / "AGENTS.md"

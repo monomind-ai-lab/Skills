@@ -33,6 +33,7 @@
       "prompt": "Implement the approved pagination task in the fixture repository. Do not commit or add dependencies.",
       "expected_output": "A minimal vertical behavior slice developed through a failing public-seam test, verified with repository-native commands, and handed off with a scoped diff.",
       "expectations": [
+        "If the fixture has adopted Monomind policy, the Build-ready gate passes before the first implementation edit; unresolved policy routes to onboarding instead of being guessed.",
         "The agent discovers repository-native commands and current worktree state before editing.",
         "A focused behavior test is shown failing for the intended reason before implementation turns it green.",
         "The implementation is the smallest complete slice and contains no adjacent cleanup or speculative abstraction.",

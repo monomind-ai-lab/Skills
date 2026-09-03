@@ -52,14 +52,14 @@
       "id": 2,
       "kind": "execution",
       "prompt": "Adopt the Monomind workflow in the fixture repository without replacing its existing AGENTS.md or guessing commands.",
-      "expected_output": "A repository-specific workflow profile and concise instruction pointer grounded in existing configuration, with unknowns and authority boundaries explicit.",
+      "expected_output": "A structurally adopted repository plus an onboarding handoff that separates verified facts from owner/lead policy decisions and reports Build/Release readiness without guessing.",
       "expectations": [
         "The agent inspects existing instructions, CI, commands, branch conventions, evidence paths, and shared resources before writing.",
         "Adoption runs in an origin/main-based linked task worktree and refuses to write from main or the primary checkout.",
         "The bundled adoption script preserves existing instructions, installs one managed mandatory-policy block in the active root instruction file, and does not silently add a hook.",
-        "The profile records exact verified commands and leaves unknown values visibly unresolved.",
+        "The profile records exact verified commands with evidence; policy values require repo-owner/project-lead approval, and unanswered values remain visibly unresolved with a decision owner.",
         "Local editing, commits, pushes, review replies, and merge authority are represented separately.",
-        "The final check verifies the project-local workflow skill, managed policy, profile, and origin configuration.",
+        "The structural check verifies the project-local workflow skill, managed policy, profile, and origin configuration, while Build/Release gates fail on relevant unresolved or invalid values.",
         "The handoff tells the user to start a new agent run before expecting the new repository instructions in startup context."
       ]
     },

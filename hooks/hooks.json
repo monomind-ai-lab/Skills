@@ -1,0 +1,18 @@
+{
+  "description": "Route incomplete repositories into Monomind policy onboarding on the first active session.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/hooks/session_start.py\"",
+            "timeout": 5,
+            "statusMessage": "Checking Monomind repository onboarding"
+          }
+        ]
+      }
+    ]
+  }
+}

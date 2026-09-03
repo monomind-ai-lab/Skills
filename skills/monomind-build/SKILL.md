@@ -9,10 +9,11 @@ Deliver the smallest complete behavior, prove it, then expand. Preserve the user
 
 ## Orient the slice
 
-1. Confirm the work is in a fresh owned task worktree based on `origin/main` and the current branch is not `main`, then read local instructions, the approved spec or task, relevant code and tests, and the working-tree state. If isolation is missing, stop before editing and create it through the repository convention; use the Isolate beat from `monomind-workflow` when that skill is installed.
-2. Discover repository-native build, test, type, lint, and formatting commands from checked-in configuration or CI. Do not substitute familiar defaults.
-3. Detect exact dependency versions. For version-sensitive external APIs, consult current primary documentation for the specific pattern being used.
-4. Name the slice's outcome, public test seam, scope boundary, and expected files before editing. If an unresolved choice would materially change the result, surface it first.
+1. If `.monomind/workflow.md` or a managed Monomind instruction block exists, require the installed workflow script's `check --gate build --repo <repository>` to pass before editing. A present profile is not enough: route a failed gate to `monomind-onboarding` when installed and obtain the repository owner/project lead decision. If the gate script is unavailable, inspect the profile directly and do not proceed with unresolved owner, task/workspace, naming, setup, focused/regression test, architecture, shared-resource, continuity, or mutation-authority fields.
+2. Confirm the work is in a fresh owned task worktree based on `origin/main` and the current branch is not `main`, then read local instructions, the approved spec or task, relevant code and tests, and the working-tree state. If isolation is missing, stop before editing and create it through the repository convention; use the Isolate beat from `monomind-workflow` when that skill is installed.
+3. Discover repository-native build, test, type, lint, and formatting commands from checked-in configuration or CI. Do not substitute familiar defaults.
+4. Detect exact dependency versions. For version-sensitive external APIs, consult current primary documentation for the specific pattern being used.
+5. Name the slice's outcome, public test seam, scope boundary, and expected files before editing. If an unresolved choice would materially change the result, surface it first.
 
 ## Run the slice loop
 

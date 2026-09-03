@@ -41,7 +41,7 @@ The extension points for exact commands, invariants, environment notes, fixtures
 
 | Benchmark behavior | Monomind treatment |
 | --- | --- |
-| Hardcode the complete workflow in every repository `AGENTS.md` | Put the detailed behavior in `monomind-workflow`; use its idempotent adoption script to preserve existing instructions while installing a short mandatory trigger block plus a verified repository profile. |
+| Hardcode the complete workflow in every repository `AGENTS.md` | Put the detailed behavior in `monomind-workflow`; use its idempotent adoption script to preserve existing instructions while installing a short mandatory trigger block, then use `monomind-onboarding` to combine verified facts with owner/lead-approved repository policy. |
 | Fresh worktree from `origin/main` and no work on `main` | Adopted as the factory default. Harness-managed isolation qualifies when it is task-exclusive and base-verified; repositories need an explicit recorded exception if `origin/main` cannot exist. |
 | Apply a service layer to builds | Adopt the why/when versus reusable-how ownership rule, with explicit inputs and structured results; avoid ceremonial one-call services. |
 | Use `@vercel/before-and-after` for PR visuals | Add `monomind-before-after` as an original integration skill. The external package is not vendored and remains under PolyForm Shield 1.0.0. |
@@ -55,6 +55,7 @@ The extension points for exact commands, invariants, environment notes, fixtures
 
 | Beat | Primary skill | Supporting skills |
 | --- | --- | --- |
+| Onboard | `monomind-onboarding` | Repository evidence, owner/lead decisions, Build/Release readiness gates |
 | Isolate | `monomind-workflow` | Repository workflow profile |
 | Build | `monomind-workflow` | `monomind-build`, `monomind-design`, `monomind-debug` |
 | Prove | `monomind-workflow` | `monomind-evidence`, `monomind-before-after` |
@@ -62,7 +63,7 @@ The extension points for exact commands, invariants, environment notes, fixtures
 
 `monomind-workflow` is self-contained enough to run alone. When the narrower collection skills are installed, it routes specialized work to them without making them always-on context.
 
-Installation and adoption are intentionally distinct. Installing the folder exposes only the skill's routing metadata until it is selected. Adoption adds the persistent repository instruction block that requires the workflow before implementation and creates `.monomind/workflow.md` for repository-native facts. No lifecycle hook is silently enabled; hooks, Git controls, CI, and branch protection remain explicit enforcement layers.
+Installation, adoption, and readiness are intentionally distinct. Installing a skill folder exposes only routing metadata until selected. Adoption adds the persistent repository instruction block and creates `.monomind/workflow.md`; onboarding fills mechanically verified facts and asks the repository owner/project lead to approve policy. A structural check may pass with unresolved fields, but Build/Release readiness gates do not. The optional Codex plugin bundles a `SessionStart` onboarding nudge, which remains disabled until its exact non-managed hook is reviewed and trusted; hooks, Git controls, CI, and branch protection remain separate enforcement layers.
 
 ## Benchmark acceptance checks
 
@@ -72,6 +73,8 @@ The adaptation counts as successful when:
 - adoption itself refuses `main`, detached HEAD, the primary checkout, and a task branch not based on the locally available `origin/main`;
 - existing repository instructions and an existing workflow profile survive repeated adoption unchanged outside one managed block;
 - a deterministic check detects a missing project skill, policy drift, missing profile, or missing `origin` configuration;
+- every unresolved policy value names a repository-owner/project-lead decision rather than inheriting an agent default;
+- the Build gate blocks implementation when its critical profile fields are unresolved, and the Release gate blocks integration or live delivery until the complete current profile is resolved;
 - the owned worktree is based on the latest verified `origin/main` or an explicit repository exception blocks/provides an alternative;
 - concurrent work and shared runtime resources are checked before editing;
 - side-effecting workflows preserve the why/when versus reusable-how ownership split;

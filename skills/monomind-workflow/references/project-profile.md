@@ -1,9 +1,10 @@
 # Project workflow adoption
 
 Read this reference only when adopting the Monomind workflow into a repository.
-The portable skill cannot know project commands, shared resources, or authority
-defaults, so adoption creates a small repository profile and a mandatory
-instruction pointer.
+The portable skill cannot know project commands, shared resources, ownership,
+integration, release, or authority defaults, so adoption creates a repository
+profile and a mandatory instruction pointer. The profile is not complete merely
+because the file exists.
 
 ## What installation does not do
 
@@ -16,7 +17,8 @@ Adoption adds the other two pieces:
 
 - a managed block in the active root `AGENTS.md` or `AGENTS.override.md`, which
   requires the workflow before new code-changing tasks; and
-- `.monomind/workflow.md`, which records verified project facts.
+- `.monomind/workflow.md`, which records verified project facts and approved
+  repository policy.
 
 The bundled `scripts/adopt.py` performs the deterministic merge and drift check.
 It copies `assets/workflow-profile.md` only when the target profile is absent.
@@ -39,7 +41,29 @@ Before filling the profile, inspect only sources relevant to these fields:
 
 Point to an existing authoritative source instead of copying a large instruction
 set into the profile. Never invent a familiar command or permission for an empty
-field. `UNRESOLVED` is an acceptable and visible result.
+field.
+
+## Who resolves `UNRESOLVED`
+
+Every `UNRESOLVED` value is a deliberate stop marker. Agents may discover
+mechanical facts, cite evidence, explain tradeoffs, and draft proposed values.
+The repository owner, project lead, or an explicitly named delegate must define
+or approve project policy, including any decision that a field is not
+applicable. No response or missing configuration is not approval.
+
+Use `monomind-onboarding` when installed. It should:
+
+1. inspect the evidence above and prefill only mechanically verified facts;
+2. present those facts and their sources to the owner or lead;
+3. ask grouped questions only for decisions evidence cannot establish;
+4. write confirmed values with an approval date/reference, or
+   `NOT_APPLICABLE — <specific reason>`;
+5. preserve every unanswered decision as `UNRESOLVED` and identify its owner;
+6. run the structural, Build-ready, and Release-ready checks and report each
+   status separately.
+
+The profile may be committed as an onboarding draft, but Build or Release must
+not proceed merely because the draft exists.
 
 ## Adoption checks
 
@@ -53,7 +77,11 @@ field. `UNRESOLVED` is an acceptable and visible result.
   help/dry-run path.
 - Local editing, commits, pushes, review replies, and merge authority are stated
   separately.
-- `scripts/adopt.py check --repo <repository>` passes; unresolved profile values
-  are reported rather than hidden.
+- `scripts/adopt.py check --repo <repository>` passes for structural adoption;
+  unresolved or missing current-template values are reported rather than
+  hidden.
+- `scripts/adopt.py check --gate build --repo <repository>` passes before Build.
+- `scripts/adopt.py check --gate release --repo <repository>` passes before
+  integration, merge, deployment, or release.
 - The handoff says that a new agent run is required before the newly written
   repository instructions become startup context.

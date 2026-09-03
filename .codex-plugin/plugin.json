@@ -1,0 +1,36 @@
+{
+  "name": "monomind-software-factory",
+  "version": "0.1.0",
+  "description": "Curated repository workflows for safe, evidence-backed software delivery.",
+  "author": {
+    "name": "Monomind AI Lab",
+    "url": "https://github.com/monomind-ai-lab"
+  },
+  "homepage": "https://github.com/monomind-ai-lab/Skills",
+  "repository": "https://github.com/monomind-ai-lab/Skills",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "software-factory",
+    "repository-policy",
+    "onboarding"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Monomind Software Factory",
+    "shortDescription": "Repository policy and delivery workflows",
+    "longDescription": "Onboard repository policy, isolate implementation, build in verified slices, capture evidence, review, and release through explicit gates.",
+    "developerName": "Monomind AI Lab",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/monomind-ai-lab/Skills",
+    "defaultPrompt": [
+      "Onboard this repository for the Monomind factory.",
+      "Take this code task through a PR-ready handoff."
+    ],
+    "brandColor": "#111827"
+  }
+}

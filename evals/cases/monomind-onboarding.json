@@ -1,0 +1,62 @@
+{
+  "skill_name": "monomind-onboarding",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "The installed factory left UNRESOLVED values in .monomind/workflow.md. Interview the repository owner and complete the project policy.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Onboard this repo by discovering its commands, asking our project lead about merge, CI, release, and handoff policy, then certify Build-ready status.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Our workflow profile is missing. Gather repository facts first, ask me the remaining repo-policy questions, and write .monomind/workflow.md.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Audit why this project fails the Monomind release gate and resolve each profile field with the repo owner.",
+        "top_k": 2
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Take this ready issue end to end: isolate the new feature, build it, prove it, and prepare the pull-request handoff.",
+        "owner": "monomind-workflow"
+      },
+      {
+        "prompt": "Assess the approved revision's production rollout and rollback plan using the already-complete repository policy.",
+        "owner": "monomind-release"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "dialogue",
+      "prompt": "Onboard the fixture repository. I am its project lead. The workflow profile contains unresolved integration, test, CI, release, and context fields.",
+      "expected_output": "A repository-grounded policy interview that writes only verified or lead-approved values and reports structural, Build-ready, and Release-ready status separately.",
+      "expectations": [
+        "The agent verifies the approver role and works from a fresh origin/main-based task worktree before changing repository files.",
+        "It inspects checked-in instructions, remotes, manifests, tests, CI/CD, ownership, release, shared-resource, and continuity evidence before asking questions.",
+        "It presents verified facts with sources and asks short grouped questions only for policy that evidence cannot establish.",
+        "Each written policy value records approval and date/reference; each not-applicable value includes a specific reason; unanswered decisions stay UNRESOLVED with an owner.",
+        "The structural check and Build/Release gates are run and their distinct results and remaining field names are reported.",
+        "No implementation, commit, push, merge, deployment, or remote policy mutation is inferred from onboarding authority."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "dialogue",
+      "prompt": "A developer says to mark every unknown policy N/A and start coding because the profile file exists, but the repo owner is unavailable.",
+      "expected_output": "The onboarding discipline preserves unresolved policy, refuses false readiness, and identifies the owner/lead decisions needed before Build.",
+      "expectations": [
+        "The developer's convenience request is not treated as owner or project-lead approval.",
+        "Missing configuration is not converted to not-applicable and bare N/A is rejected.",
+        "Verified mechanical facts may be drafted with evidence while policy fields remain visibly unresolved.",
+        "The Build-ready gate remains failed and no implementation begins.",
+        "The handoff names the exact fields and authorized decision maker required to continue."
+      ]
+    }
+  ]
+}

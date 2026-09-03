@@ -9,9 +9,10 @@ Make the release target exact, the health decision observable, and the path back
 
 ## Frame authority and risk
 
-1. Identify the exact revision, artifact, environment, audience, data boundary, and requested operation.
-2. Distinguish readiness assessment, preparation, and live execution. Deploy, migrate, change traffic, or notify others only when the user's authority covers that exact action and target.
-3. Classify the dominant risks: correctness, security/privacy, data compatibility, availability, performance, accessibility, and operator recovery.
+1. If `.monomind/workflow.md` or a managed Monomind instruction block exists, require the installed workflow script's `check --gate release --repo <repository>` to pass before integration, merge, deployment, migration, or release. A failed gate routes to `monomind-onboarding` and the repository owner/project lead; do not infer missing policy. A read-only readiness assessment may continue, but its result is not Release-ready.
+2. Identify the exact revision, artifact, environment, audience, data boundary, and requested operation.
+3. Distinguish readiness assessment, preparation, and live execution. Deploy, migrate, change traffic, or notify others only when the user's authority covers that exact action and target.
+4. Classify the dominant risks: correctness, security/privacy, data compatibility, availability, performance, accessibility, and operator recovery.
 
 ## Build the release contract
 

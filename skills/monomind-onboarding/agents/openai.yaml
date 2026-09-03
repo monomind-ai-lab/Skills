@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Repo Onboarding"
+  short_description: "Resolve repository policy before build or release"
+  default_prompt: "Use $monomind-onboarding to interview the repository owner and complete this project workflow profile."

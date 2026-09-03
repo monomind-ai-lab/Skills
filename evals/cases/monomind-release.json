@@ -34,6 +34,7 @@
       "expected_output": "A target-specific readiness contract with evidence-based gates, operator questions and signals, expand–migrate–contract compatibility, and rehearsable rollback, without live mutation.",
       "expectations": [
         "The report distinguishes readiness assessment from live execution and does not deploy or migrate production.",
+        "For an adopted repository, the Release-ready gate is checked; a failure is reported as an owner/lead onboarding gap rather than silently filled.",
         "The exact artifact, environment, data boundary, owner, and dominant risks are stated.",
         "Advance, hold, and rollback thresholds come from repository evidence, baselines, SLOs, or explicit open decisions rather than generic numbers.",
         "The data change preserves compatibility through expand–migrate–contract and includes an executable rollback treatment.",

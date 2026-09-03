@@ -34,6 +34,7 @@
       "expected_output": "A compact continuation brief grounded in verified repository state, using pointers instead of duplicated artifacts and naming the first executable next step.",
       "expectations": [
         "The agent inspects repository, branch, working-tree, task, and verification state rather than relying only on conversation memory.",
+        "When the repository profile defines continuity locations and update triggers, the authoritative task/context record is refreshed before transfer and any unresolved continuity policy is surfaced.",
         "The handoff distinguishes complete, in-progress, not-started, blocked, and unverified work.",
         "Existing specs, logs, decisions, diffs, and artifacts are referenced rather than copied into a second source of truth.",
         "One immediately executable next step has a clear completion condition.",
