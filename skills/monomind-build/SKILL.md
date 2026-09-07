@@ -10,10 +10,14 @@ Deliver the smallest complete behavior, prove it, then expand. Preserve the user
 ## Orient the slice
 
 1. If `.monomind/workflow.md` or a managed Monomind instruction block exists, require the installed workflow script's `check --gate build --repo <repository>` to pass before editing. A present profile is not enough: route a failed gate to `monomind-onboarding` when installed and obtain the repository owner/project lead decision. If the gate script is unavailable, inspect the profile directly and do not proceed with unresolved owner, task/workspace, naming, setup, focused/regression test, architecture, shared-resource, continuity, or mutation-authority fields.
-2. Confirm the work is in a fresh owned task worktree based on `origin/main` and the current branch is not `main`, then read local instructions, the approved spec or task, relevant code and tests, and the working-tree state. If isolation is missing, stop before editing and create it through the repository convention; use the Isolate beat from `monomind-workflow` when that skill is installed.
+2. Confirm this task's owned linked worktree and recorded authoritative base; never implement on `main`, the base branch, or another task's workspace. Reuse a valid task worktree and orientation record from the workflow. If isolation is missing, establish it through the repository convention before editing.
 3. Discover repository-native build, test, type, lint, and formatting commands from checked-in configuration or CI. Do not substitute familiar defaults.
 4. Detect exact dependency versions. For version-sensitive external APIs, consult current primary documentation for the specific pattern being used.
 5. Name the slice's outcome, public test seam, scope boundary, and expected files before editing. If an unresolved choice would materially change the result, surface it first.
+
+Reuse previously verified commands, approvals, and passing gate results from this
+task until relevant policy, tooling, code, base, or environment changes. Do not
+repeat the workflow's orientation or rerun an identical gate at each slice.
 
 ## Run the slice loop
 

@@ -57,6 +57,17 @@
         "The Build-ready gate remains failed and no implementation begins.",
         "The handoff names the exact fields and authorized decision maker required to continue."
       ]
+    },
+    {
+      "id": 3,
+      "kind": "dialogue",
+      "prompt": "Assess integration readiness of a profile with all integration policy approved and only future deployment fields unresolved. The user requests no deployment.",
+      "expected_output": "Integration readiness is checked without asking deployment questions or rewriting approved policy.",
+      "expectations": [
+        "Runs the integration gate, which includes structural and Build checks.",
+        "Does not run every gate or interview about unrelated deployment policy.",
+        "Preserves existing approvals and reports the actual boundary result."
+      ]
     }
   ]
 }

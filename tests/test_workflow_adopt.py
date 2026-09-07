@@ -290,6 +290,51 @@ class WorkflowAdoptionTest(unittest.TestCase):
         self.assertIn("project workflow skill is ignored", result.stderr)
         self.assertFalse((self.task / "AGENTS.md").exists())
 
+    def test_approved_alternate_remote_base_is_used_and_persisted(self) -> None:
+        run('git', 'remote', 'add', 'upstream', str(self.remote), cwd=self.task)
+        run('git', 'push', 'upstream', 'HEAD:develop', cwd=self.task)
+        run('git', 'fetch', 'upstream', cwd=self.task)
+        result = self.adopt(self.task, '--base', 'upstream/develop')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        profile = (self.task / '.monomind/workflow.md').read_text()
+        self.assertIn('- Authoritative base branch: `upstream/develop`', profile)
+        result = run('python3', str(self.installed_script), 'preflight', '--repo', str(self.task), check=False)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('upstream/develop', result.stdout)
+        mismatch = self.adopt(self.task, '--base', 'origin/main')
+        self.assertNotEqual(mismatch.returncode, 0)
+        self.assertIn('conflicts with the recorded', mismatch.stderr)
+
+    def test_protected_alternate_base_branch_is_refused(self) -> None:
+        run('git', 'push', 'origin', 'HEAD:develop', cwd=self.task)
+        run('git', 'fetch', 'origin', cwd=self.task)
+        run('git', 'branch', '-m', 'develop', cwd=self.task)
+        result = self.adopt(self.task, '--base', 'origin/develop')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('refusing to adopt on develop', result.stderr)
+
+    def test_integration_passes_without_release_policy(self) -> None:
+        self.assertEqual(self.adopt(self.task).returncode, 0)
+        profile = self.task / '.monomind/workflow.md'
+        text = profile.read_text().replace('UNRESOLVED', 'approved value — evidence: README.md')
+        text = text.replace('- Release command or pipeline: approved value — evidence: README.md',
+                            '- Release command or pipeline: UNRESOLVED')
+        profile.write_text(text)
+        self.assertEqual(self.check_contract('--gate', 'integration').returncode, 0)
+        self.assertNotEqual(self.check_contract('--gate', 'release').returncode, 0)
+
+    def test_blank_owner_fails_through_cli(self) -> None:
+        self.assertEqual(self.adopt(self.task).returncode, 0)
+        profile = self.task / '.monomind/workflow.md'
+        text = profile.read_text().replace('UNRESOLVED', 'approved value — evidence: README.md')
+        text = text.replace('- Repository owner or project lead: approved value — evidence: README.md',
+                            '- Repository owner or project lead:\n\n## Unrelated heading')
+        profile.write_text(text)
+        for gate in ('build', 'integration', 'release'):
+            result = self.check_contract('--gate', gate)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('Repository owner or project lead [empty]', result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

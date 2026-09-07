@@ -75,6 +75,18 @@
         "It requires matched before/after evidence for the visible UI claim even when automated tests pass.",
         "It treats commit, push, pull-request mutation, and merge as separate authority gates."
       ]
+    },
+    {
+      "id": 4,
+      "kind": "execution",
+      "prompt": "Continue this already-isolated task using its approved upstream/develop base, valid Build gate, recorded repository checks, and unchanged environment. Implement the small fix and stop at a local handoff.",
+      "expected_output": "The existing workspace, base, and valid evidence are reused; the fix is implemented without repeated onboarding or adoption-only reads.",
+      "expectations": [
+        "Uses the recorded authoritative base rather than requiring origin/main.",
+        "Reuses this task's exclusive worktree rather than creating a phase worktree.",
+        "Does not repeat an unchanged Build gate or read the adoption reference in Run mode.",
+        "Runs affected checks after the code change and reports a scoped local result."
+      ]
     }
   ]
 }

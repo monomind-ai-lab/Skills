@@ -10,6 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from policy import PolicyError, issues, parse_fields, required_fields
+
 
 START_MARKER = "<!-- monomind-workflow:start -->"
 END_MARKER = "<!-- monomind-workflow:end -->"
@@ -17,9 +19,9 @@ POLICY_BLOCK = f"""{START_MARKER}
 ## Monomind software factory
 
 - Before any newly started feature, fix, refactor, migration, or other code-changing task, invoke the installed `monomind-workflow` skill (in Codex: `$monomind-workflow`) and complete its Isolate gate before editing.
-- Implementation must use a fresh task-owned Git worktree and branch based on `origin/main`. Never implement on `main`, and never reuse another task's worktree.
-- Every `UNRESOLVED` value in `.monomind/workflow.md` must be defined for this repository and approved by its repository owner, project lead, or explicitly named delegate. Agents may discover facts and draft options but must not invent or approve policy. Invoke the installed `monomind-onboarding` skill (in Codex: `$monomind-onboarding`) to resolve them.
-- Before Build, require `adopt.py check --gate build --repo <repository>` to pass. Before integration, merge, deployment, or release, require `adopt.py check --gate release --repo <repository>` to pass. Stop at a failed gate and name the owner/lead decision required.
+- Implementation must use a task-owned linked Git worktree from the profile's authoritative base. Never implement on `main` or the configured base branch, and never reuse another task's worktree.
+- Resolve `UNRESOLVED` fields required by the requested boundary with the repository owner, project lead, or named delegate through `monomind-onboarding`. Reuse existing approvals; agents may establish mechanical facts but must not invent policy. Unrelated deployment fields do not block implementation or integration.
+- Before Build, run `adopt.py check --gate build --repo <repository>`; before integration or merge, use `--gate integration`; before deployment, migration execution, or release, use `--gate release`. Resolve only the requested boundary's missing policy. Reuse results until policy, tools, revision, or environment changes invalidate them.
 - In side-effecting workflows, actions or boundaries own policy and why/when; services or capabilities own reusable how through explicit inputs and structured returns. Do not extract pass-through services for ceremony.
 - For a visible UI change, capture matched before/after evidence and include a PR-ready comparison. Invoke the installed `monomind-before-after` skill (in Codex: `$monomind-before-after`) when available.
 - Read `.monomind/workflow.md` for project-native collaboration, integration, testing, CI/CD, release, evidence, continuity, shared-resource, and authority rules.
@@ -31,39 +33,6 @@ PROJECT_SKILL_LOCATIONS = (
     Path(".claude/skills/monomind-workflow/SKILL.md"),
     Path(".factory/skills/monomind-workflow/SKILL.md"),
 )
-
-PROFILE_FIELD_RE = re.compile(r"^- (?P<label>[^:\n]+):\s*(?P<value>.*)$", re.MULTILINE)
-UNRESOLVED_RE = re.compile(r"\bUNRESOLVED\b", re.IGNORECASE)
-EXPLICIT_NOT_APPLICABLE_RE = re.compile(
-    r"^NOT_APPLICABLE\s*(?:—|–|-)\s*\S.+$",
-    re.IGNORECASE,
-)
-BUILD_REQUIRED_FIELDS = (
-    "Repository owner or project lead",
-    "Approved policy decision-maker(s)",
-    "Policy approval record and date",
-    "Task ownership and assignment source",
-    "Parallel work and overlap coordination",
-    "Authoritative base branch",
-    "Task isolation",
-    "Branch/worktree naming convention",
-    "Canonical remote and change-request target",
-    "Environment setup",
-    "Focused test",
-    "Full regression suite",
-    "Architecture and dependency direction",
-    "Shared-resource isolation and allocation",
-    "Authoritative project context and decision records",
-    "Task and handoff location and required contents",
-    "Actions agents may take without a new prompt",
-    "Actions requiring explicit user instruction",
-)
-NON_OPTIONAL_POLICY_FIELDS = {
-    "Repository owner or project lead",
-    "Approved policy decision-maker(s)",
-    "Policy approval record and date",
-}
-
 
 class AdoptionError(RuntimeError):
     """A safe adoption precondition or contract check failed."""
@@ -177,59 +146,14 @@ def profile_template_path() -> Path:
 
 
 def parse_profile_fields(text: str, path: Path) -> dict[str, str]:
-    fields: dict[str, str] = {}
-    duplicates: list[str] = []
-    for match in PROFILE_FIELD_RE.finditer(text):
-        label = match.group("label").strip()
-        value = match.group("value").strip()
-        if label in fields:
-            duplicates.append(label)
-        else:
-            fields[label] = value
-    if duplicates:
-        labels = ", ".join(sorted(set(duplicates)))
-        raise AdoptionError(f"workflow profile has duplicate field labels in {path}: {labels}")
-    return fields
-
-
-def invalid_profile_value(value: str) -> str | None:
-    stripped = value.strip()
-    if not stripped:
-        return "empty"
-    if UNRESOLVED_RE.search(stripped):
-        return "UNRESOLVED"
-
-    upper = stripped.upper()
-    if upper in {"N/A", "NA", "NOT APPLICABLE", "NOT_APPLICABLE"}:
-        return "not applicable without a reason"
-    if upper.startswith("N/A ") or upper.startswith("NA "):
-        return "use NOT_APPLICABLE with a reason"
-    if upper.startswith("NOT_APPLICABLE") and not EXPLICIT_NOT_APPLICABLE_RE.match(stripped):
-        return "NOT_APPLICABLE without a reason"
-    return None
+    try:
+        return parse_fields(text)
+    except PolicyError as error:
+        raise AdoptionError(f'{path}: {error}') from error
 
 
 def readiness_issues(profile: Path, gate: str) -> list[tuple[str, str]]:
-    profile_fields = parse_profile_fields(read_utf8(profile), profile)
-    template = profile_template_path()
-    template_fields = parse_profile_fields(read_utf8(template), template)
-    required = BUILD_REQUIRED_FIELDS if gate == "build" else tuple(template_fields)
-
-    issues: list[tuple[str, str]] = []
-    for label in required:
-        if label not in profile_fields:
-            issues.append((label, "missing"))
-            continue
-        reason = invalid_profile_value(profile_fields[label])
-        if (
-            reason is None
-            and label in NON_OPTIONAL_POLICY_FIELDS
-            and EXPLICIT_NOT_APPLICABLE_RE.match(profile_fields[label])
-        ):
-            reason = "owner/lead approval field cannot be NOT_APPLICABLE"
-        if reason:
-            issues.append((label, reason))
-    return issues
+    return issues(parse_profile_fields(read_utf8(profile), profile), gate)
 
 
 def format_issues(issues: list[tuple[str, str]]) -> str:
@@ -280,25 +204,43 @@ def print_diff(path: Path, before: str, after: str) -> None:
     sys.stdout.writelines(diff)
 
 
-def preflight(repo: Path) -> None:
+def authoritative_base(repo: Path, override: str | None = None) -> str:
+    profile = repo / PROFILE_RELATIVE_PATH
+    require_path_inside(repo, profile, 'workflow profile')
+    fields = parse_profile_fields(read_utf8(profile), profile) if profile.is_file() else {}
+    recorded = fields.get('Authoritative base branch')
+    if recorded:
+        match = re.match(r'^`?([^`\s]+)`?(?:\s.*)?$', recorded)
+        base = match.group(1) if match else ''
+        if override and override != base:
+            raise AdoptionError('--base conflicts with the recorded authoritative base; update approved policy first')
+    else:
+        base = override or 'origin/main'
+    if '/' not in base or base.startswith(('refs/', '-')):
+        raise AdoptionError('authoritative base must be a remote-tracking branch such as origin/main')
+    if run_git(repo, 'check-ref-format', f'refs/remotes/{base}', check=False).returncode:
+        raise AdoptionError(f'invalid authoritative base: {base}')
+    remote = base.split('/', 1)[0]
+    if run_git(repo, 'config', '--get', f'remote.{remote}.url', check=False).returncode:
+        raise AdoptionError(f'{remote} is not configured')
+    return base
+
+
+def preflight(repo: Path, base_override: str | None = None) -> str:
     require_project_skill(repo)
+    base_name = authoritative_base(repo, base_override)
 
     branch = run_git(repo, "symbolic-ref", "--quiet", "--short", "HEAD", check=False)
     branch_name = branch.stdout.strip()
     if branch.returncode or not branch_name:
         raise AdoptionError("workflow preflight requires a named task branch, not detached HEAD")
-    if branch_name == "main":
+    if branch_name in {"main", base_name.split('/', 1)[1]}:
         raise AdoptionError(
-            "refusing to adopt on main; create a fresh task worktree from origin/main first"
+            f"refusing to adopt on {branch_name}; create a fresh task worktree from {base_name} first"
         )
-
-    remote = run_git(repo, "config", "--get", "remote.origin.url", check=False)
-    if remote.returncode or not remote.stdout.strip():
-        raise AdoptionError("origin is not configured")
-
-    base = run_git(repo, "rev-parse", "--verify", "refs/remotes/origin/main^{commit}", check=False)
+    base = run_git(repo, "rev-parse", "--verify", f"refs/remotes/{base_name}^{{commit}}", check=False)
     if base.returncode:
-        raise AdoptionError("origin/main is not available locally; run `git fetch origin` first")
+        raise AdoptionError(f"{base_name} is not available locally; fetch its remote first")
 
     git_dir = Path(run_git(repo, "rev-parse", "--git-dir").stdout.strip())
     common_dir = Path(run_git(repo, "rev-parse", "--git-common-dir").stdout.strip())
@@ -311,18 +253,19 @@ def preflight(repo: Path) -> None:
         repo,
         "merge-base",
         "--is-ancestor",
-        "refs/remotes/origin/main",
+        f"refs/remotes/{base_name}",
         "HEAD",
         check=False,
     )
     if based_on_main.returncode:
-        raise AdoptionError("the current task branch is not based on the available origin/main")
+        raise AdoptionError(f"the current task branch is not based on the available {base_name}")
 
-    print(f"OK: task workspace {repo} is isolated on {branch_name} from origin/main")
+    print(f"OK: task workspace {repo} is isolated on {branch_name} from {base_name}")
+    return base_name
 
 
-def apply_contract(repo: Path, agents_file: str | None, dry_run: bool) -> None:
-    preflight(repo)
+def apply_contract(repo: Path, agents_file: str | None, dry_run: bool, base: str | None = None) -> None:
+    base_name = preflight(repo, base)
     target = instruction_path(repo, agents_file)
     require_not_ignored(repo, target, "active repository instructions")
     before = read_utf8(target) if target.exists() else ""
@@ -337,6 +280,7 @@ def apply_contract(repo: Path, agents_file: str | None, dry_run: bool) -> None:
         read_utf8(profile)
     profile_template = profile_template_path()
     profile_after = read_utf8(profile_template)
+    profile_after = profile_after.replace('`origin/main`', f'`{base_name}`')
 
     if dry_run:
         if before != after:
@@ -389,38 +333,39 @@ def check_contract(
     if not profile.is_file():
         raise AdoptionError(f"workflow profile is missing: {profile}")
 
-    remote = run_git(repo, "config", "--get", "remote.origin.url", check=False)
-    if remote.returncode or not remote.stdout.strip():
-        raise AdoptionError("origin is not configured")
+    # A structural check can report an incomplete profile; readiness below blocks it.
+    fields = parse_profile_fields(read_utf8(profile), profile)
+    if fields.get('Authoritative base branch') and not any(
+        label == 'Authoritative base branch' for label, _ in issues(fields, 'build')
+    ):
+        authoritative_base(repo)
 
     print(f"OK: project skill found at {skill}")
     print(f"OK: managed policy is current in {target}")
     print(f"OK: workflow profile exists at {profile}")
 
-    issues = readiness_issues(profile, gate or "release")
-    if gate and issues:
+    pending = readiness_issues(profile, gate or "release")
+    if gate and pending:
         raise AdoptionError(
             f"{gate}-ready policy gate failed. The repository owner, project lead, or "
             "explicitly named delegate must define or approve these project fields:\n"
-            f"{format_issues(issues)}\nRun the monomind-onboarding skill, update "
+            f"{format_issues(pending)}\nRun the monomind-onboarding skill, update "
             ".monomind/workflow.md, and rerun this gate."
         )
     if gate:
-        required_count = len(BUILD_REQUIRED_FIELDS) if gate == "build" else len(
-            parse_profile_fields(read_utf8(profile_template_path()), profile_template_path())
-        )
+        required_count = len(required_fields(gate, fields))
         print(f"OK: {gate}-ready policy gate passed ({required_count} required fields resolved)")
-    elif issues:
+    elif pending:
         print(
             "WARN: workflow profile is structurally installed but not Release-ready; "
-            f"{len(issues)} current field(s) need resolution:\n{format_issues(issues)}"
+            f"{len(pending)} current field(s) need resolution:\n{format_issues(pending)}"
         )
         print(
             "NEXT: the repository owner or project lead should run monomind-onboarding, "
-            "then use `check --gate build` or `check --gate release` before that work."
+            "then use the build, integration, or release gate required for that work."
         )
     else:
-        print("OK: workflow profile contains no unresolved current-template fields")
+        print("OK: workflow profile contains no unresolved required policy fields")
 
 
 def parse_args() -> argparse.Namespace:
@@ -429,6 +374,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("command", choices=("apply", "check", "preflight"))
     parser.add_argument("--repo", default=".", help="Target repository or a path inside it")
+    parser.add_argument('--base', help='Approved remote/base for initial apply or preflight; cannot override recorded policy')
     parser.add_argument(
         "--agents-file",
         help="Project-relative AGENTS.md or AGENTS.override.md to manage",
@@ -440,7 +386,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--gate",
-        choices=("build", "release"),
+        choices=("build", "integration", "release"),
         help="For check only, fail unless fields required for that readiness level are resolved",
     )
     args = parser.parse_args()
@@ -448,6 +394,8 @@ def parse_args() -> argparse.Namespace:
         parser.error("--dry-run is valid only with apply")
     if args.gate and args.command != "check":
         parser.error("--gate is valid only with check")
+    if args.base and args.command == 'check':
+        parser.error('--base is only for initial apply or preflight')
     return args
 
 
@@ -456,12 +404,12 @@ def main() -> int:
     try:
         repo = repository_root(args.repo)
         if args.command == "apply":
-            apply_contract(repo, args.agents_file, args.dry_run)
+            apply_contract(repo, args.agents_file, args.dry_run, args.base)
         elif args.command == "check":
             check_contract(repo, args.agents_file, args.gate)
         else:
-            preflight(repo)
-    except (AdoptionError, OSError) as error:
+            preflight(repo, args.base)
+    except (AdoptionError, PolicyError, OSError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
     return 0

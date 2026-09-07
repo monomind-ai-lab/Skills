@@ -62,7 +62,8 @@ class SessionStartHookTest(unittest.TestCase):
             template,
         )
 
-    def test_missing_profile_adds_onboarding_context(self) -> None:
+    def test_missing_profile_adds_context_only_after_opt_in(self) -> None:
+        (self.repo / 'AGENTS.md').write_text('<!-- monomind-workflow:start -->\n')
         result = run_hook(self.repo)
         self.assertEqual(result.returncode, 0, result.stderr)
         output = json.loads(result.stdout)
@@ -78,7 +79,7 @@ class SessionStartHookTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         context = json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
         self.assertIn("field(s) need resolution", context)
-        self.assertIn("Integration strategy", context)
+        self.assertIn("build", context)
 
     def test_complete_profile_is_silent(self) -> None:
         self.write_profile(self.complete_profile())
@@ -88,14 +89,53 @@ class SessionStartHookTest(unittest.TestCase):
 
     def test_bare_not_applicable_adds_onboarding_context(self) -> None:
         profile = self.complete_profile().replace(
-            "- Runtime or smoke check: approved value — evidence: README.md",
-            "- Runtime or smoke check: NOT_APPLICABLE",
+            "- Focused test: approved value — evidence: README.md",
+            "- Focused test: NOT_APPLICABLE",
         )
         self.write_profile(profile)
         result = run_hook(self.repo)
         self.assertEqual(result.returncode, 0, result.stderr)
         context = json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
-        self.assertIn("Runtime or smoke check", context)
+        self.assertIn("Focused test", context)
+
+    def test_unadopted_repository_is_silent(self) -> None:
+        result = run_hook(self.repo)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, '')
+
+    def test_release_gaps_do_not_nag_build_sessions(self) -> None:
+        self.write_profile(self.complete_profile().replace(
+            '- Release command or pipeline: approved value — evidence: README.md',
+            '- Release command or pipeline: UNRESOLVED'))
+        self.assertEqual(run_hook(self.repo).stdout, '')
+
+    def test_dismissal_suppresses_even_incomplete_profiles(self) -> None:
+        self.write_profile('- Focused test: UNRESOLVED\n')
+        (self.repo / '.monomind/onboarding.json').write_text('{"enabled":false}')
+        self.assertEqual(run_hook(self.repo).stdout, '')
+
+    def test_explicit_release_boundary_reports_release_gaps(self) -> None:
+        self.write_profile(self.complete_profile().replace(
+            '- Release command or pipeline: approved value — evidence: README.md',
+            '- Release command or pipeline: UNRESOLVED'))
+        (self.repo / '.monomind/onboarding.json').write_text('{"enabled":true,"gate":"release"}')
+        self.assertIn('Release command or pipeline', run_hook(self.repo).stdout)
+
+    def test_duplicate_profile_is_not_silently_accepted(self) -> None:
+        self.write_profile(self.complete_profile() + '\n- Focused test: duplicate\n')
+        self.assertIn('duplicate', run_hook(self.repo).stdout)
+
+    def test_future_schema_requires_compatible_plugin(self) -> None:
+        self.write_profile(self.complete_profile().replace('Policy schema version: 2', 'Policy schema version: 999'))
+        self.assertIn('unsupported policy schema', run_hook(self.repo).stdout)
+
+    def test_invalid_settings_are_reported_without_a_traceback(self) -> None:
+        self.write_profile(self.complete_profile())
+        (self.repo / '.monomind/onboarding.json').write_text('{"enabled":true,"gate":[]}')
+        result = run_hook(self.repo)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('gate must be', result.stdout)
+        self.assertNotIn('Traceback', result.stderr)
 
     def test_owner_field_cannot_be_reasoned_not_applicable(self) -> None:
         profile = self.complete_profile().replace(

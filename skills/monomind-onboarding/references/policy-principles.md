@@ -17,8 +17,9 @@ people, commands, locations, gates, and exceptions needed to apply it.
 ## Collaboration
 
 - Give each task one named owner, one owned branch, and one owned worktree.
-- Start implementation in a fresh linked worktree based on `origin/main`; never
-  edit on `main` or in another task's workspace.
+- Start implementation in a task-owned linked worktree from the approved
+  authoritative base; reuse it across phases. Never edit on `main`, the
+  configured base branch, or another task's workspace.
 - Coordinate likely file overlap and shared resources before parallel work
   diverges. Worktrees do not isolate ports, databases, queues, caches, buckets,
   emulators, test accounts, or externally generated locks.
@@ -29,7 +30,7 @@ people, commands, locations, gates, and exceptions needed to apply it.
 ## Integration
 
 - Integrate through the repository's configured change-request path; protect
-  `main` from direct implementation and direct push.
+  the authoritative base from direct implementation and direct push.
 - Define one integration strategy—merge, squash, rebase, or another explicit
   method—and state who performs it. Do not infer strategy from personal habit.
 - Reconcile the owned branch with the authoritative base before integration and
@@ -77,9 +78,9 @@ people, commands, locations, gates, and exceptions needed to apply it.
 
 ## Context management and continuity
 
-Monomind's context pipeline is [project-context](https://github.com/monomind-ai-lab/project-context)
-(repo-level records) with the org-level hub in
-[project-hub](https://github.com/monomind-ai-lab/project-hub).
+Optional context tools include [project-context](https://github.com/monomind-ai-lab/project-context)
+and [project-hub](https://github.com/monomind-ai-lab/project-hub). Use the
+repository's approved context locations; these tools are not prerequisites.
 
 - Keep durable truth in repository-owned specifications, decisions, current
   project context, task records, and evidence—not only in chat transcripts or

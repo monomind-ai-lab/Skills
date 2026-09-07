@@ -1,5 +1,7 @@
 # Monomind workflow profile
 
+- Policy schema version: 2
+
 This file records the project-specific facts and policies used by the Monomind
 skills. Every `UNRESOLVED` value is a deliberate stop marker: it must be defined
 for this repository and approved by its repository owner, project lead, or an
@@ -30,7 +32,7 @@ owner-approved decision plus approval date/reference, or
 
 - Authoritative base branch: `origin/main`
 - Integration strategy: UNRESOLVED
-- Task isolation: fresh task-owned Git worktree and branch from `origin/main`; never implement on `main` or in another task's worktree
+- Task isolation: task-owned linked Git worktree and branch from the authoritative base; never implement on the base branch or in another task's worktree
 - Branch/worktree naming convention: UNRESOLVED
 - Canonical remote and change-request target: UNRESOLVED
 - History rewrite policy: never rewrite shared or protected history; owned-task exceptions require an explicit recorded decision
@@ -87,7 +89,9 @@ owner-approved decision plus approval date/reference, or
 
 ## Context management and continuity
 
-- Context pipeline: [project-context](https://github.com/monomind-ai-lab/project-context) (repo-level) and [project-hub](https://github.com/monomind-ai-lab/project-hub) (org-level)
+Optional context tools: [project-context](https://github.com/monomind-ai-lab/project-context)
+and [project-hub](https://github.com/monomind-ai-lab/project-hub). The authoritative
+locations below are repository decisions; these links are not readiness fields.
 - Authoritative project context and decision records: UNRESOLVED
 - Task and handoff location and required contents: UNRESOLVED
 - Context update triggers: before compaction, session transfer, long pause, or handoff, and after a material decision or verification result
@@ -101,10 +105,14 @@ owner-approved decision plus approval date/reference, or
 
 ## Readiness gates
 
-The structural check may pass while onboarding remains incomplete. Build and
-Release agents must use the corresponding gate and stop on failure:
+The structural check may pass while onboarding remains incomplete. Use Build
+before implementation, Integration before integrating/merging, and Release
+before executing deployments or migrations. Only the requested boundary's
+fields must be resolved. Schema membership lives in scripts/policy.py, not
+this template. Unversioned legacy profiles remain supported.
 
 ```bash
 python3 <monomind-workflow-skill-dir>/scripts/adopt.py check --gate build --repo .
+python3 <monomind-workflow-skill-dir>/scripts/adopt.py check --gate integration --repo .
 python3 <monomind-workflow-skill-dir>/scripts/adopt.py check --gate release --repo .
 ```

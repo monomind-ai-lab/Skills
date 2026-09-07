@@ -1,87 +1,82 @@
-# Project workflow adoption
+# Adopt the repository workflow
 
-Read this reference only when adopting the Monomind workflow into a repository.
-The portable skill cannot know project commands, shared resources, ownership,
-integration, release, or authority defaults, so adoption creates a repository
-profile and a mandatory instruction pointer. The profile is not complete merely
-because the file exists.
+Use this reference only for adoption, profile migration, or hook configuration.
 
-## What installation does not do
+## Install and isolate
 
-Copying a skill folder only makes its name and description discoverable. The
-body remains lazy until the agent selects the skill. Do not claim that a
-repository follows Monomind merely because `.agents/skills/monomind-workflow`
-exists.
+A project-local copy of monomind-workflow makes the scripts and policy travel
+with the repository. Supported locations are .agents/skills, .claude/skills,
+and .factory/skills. Global/plugin installation alone does not establish team
+policy. Do not install missing packages unless the request authorizes it.
 
-Adoption adds the other two pieces:
+Inspect existing instructions and approved base. Create or reuse an exclusive
+linked task worktree from that base; origin/main is the initial default.
+Use a named task branch, never main or the configured protected base branch.
 
-- a managed block in the active root `AGENTS.md` or `AGENTS.override.md`, which
-  requires the workflow before new code-changing tasks; and
-- `.monomind/workflow.md`, which records verified project facts and approved
-  repository policy.
+## Apply
 
-The bundled `scripts/adopt.py` performs the deterministic merge and drift check.
-It copies `assets/workflow-profile.md` only when the target profile is absent.
+Run the installed script:
 
-## Evidence to inspect
+```bash
+python3 <skill-dir>/scripts/adopt.py apply --repo <repository>
+# Initial adoption with an explicitly approved alternative:
+python3 <skill-dir>/scripts/adopt.py apply --repo <repository> --base upstream/develop
+```
 
-Before filling the profile, inspect only sources relevant to these fields:
+Use --dry-run for a proposed diff. The script updates only its managed block in
+the active root AGENTS.override.md or AGENTS.md, and creates the profile only
+when absent. It rejects ignored/external skill copies and unsafe workspaces.
+An explicit base must match an existing recorded base. Existing profiles are
+preserved even when incomplete.
 
-- remotes, default branch, branch naming, and integration strategy;
-- manifests, task runners, checked-in CI, tests, linters, type checks, builds,
-  and smoke-test configuration;
-- architecture and dependency rules, migrations, generated files, security,
-  reliability, and performance constraints;
-- gitignored artifact paths, approved test data, visual targets, viewports, and
-  capture restrictions;
-- ports, databases, queues, caches, emulators, test accounts, and how a running
-  service is tied to the task worktree; and
-- change-request requirements, required reviewers, blocking gates, merge
-  authority, and all other external-action boundaries.
+Use monomind-onboarding when installed; otherwise inspect only the requested
+boundary's missing fields and conduct the same evidence/approval loop here.
+Verified mechanical facts cite evidence. Owner/lead policy and not-applicable
+decisions require approval; retain unresolved values until then.
 
-Point to an existing authoritative source instead of copying a large instruction
-set into the profile. Never invent a familiar command or permission for an empty
-field.
+## Readiness and schema upgrades
 
-## Who resolves `UNRESOLVED`
+```bash
+python3 <skill-dir>/scripts/adopt.py check --repo <repository>
+python3 <skill-dir>/scripts/adopt.py check --gate build --repo <repository>
+python3 <skill-dir>/scripts/adopt.py check --gate integration --repo <repository>
+python3 <skill-dir>/scripts/adopt.py check --gate release --repo <repository>
+```
 
-Every `UNRESOLVED` value is a deliberate stop marker. Agents may discover
-mechanical facts, cite evidence, explain tradeoffs, and draft proposed values.
-The repository owner, project lead, or an explicitly named delegate must define
-or approve project policy, including any decision that a field is not
-applicable. No response or missing configuration is not approval.
+Choose **one** gate for the requested boundary. A gated check includes structural
+validation and lower boundaries. The ungated command is only for a structural
+audit; it warns about unresolved policy without claiming readiness.
 
-Use `monomind-onboarding` when installed. It should:
+Build permits implementation; Integration permits integration/merge under the
+recorded authority; Release additionally requires deployment and recovery
+policy. Passing a gate never authorizes an action the user did not request.
 
-1. inspect the evidence above and prefill only mechanically verified facts;
-2. present those facts and their sources to the owner or lead;
-3. ask grouped questions only for decisions evidence cannot establish;
-4. write confirmed values with an approval date/reference, or
-   `NOT_APPLICABLE — <specific reason>`;
-5. preserve every unanswered decision as `UNRESOLVED` and identify its owner;
-6. run the structural, Build-ready, and Release-ready checks and report each
-   status separately.
+Required fields and supported versions live in scripts/policy.py. Documentation
+bullets and optional links are not a schema. New profiles declare version 2;
+unversioned/version-1 profiles remain readable without adding informational
+fields. For upgrades, update the project-local skill and plugin together, review
+the managed-block diff using apply --dry-run, then apply in the task worktree.
+Do not replace the existing profile: resolve required missing fields reported
+by the selected gate while preserving approvals. Unknown schema versions fail
+with a compatibility message.
 
-The profile may be committed as an onboarding draft, but Build or Release must
-not proceed merely because the draft exists.
+## Optional onboarding reminder
 
-## Adoption checks
+The trusted plugin SessionStart hook reads policy using its own packaged shared
+module. It never executes Python from the target repository. A profile or active
+managed instruction block opts the repository in; otherwise it remains silent.
 
-- The current task is a linked worktree on a named non-`main` branch based on
-  the locally available `origin/main`.
-- The workflow skill is project-local, so teammates receive the same version.
-- Existing instruction text and an existing profile are preserved.
-- The managed policy requires Isolate before editing, states the why/when versus
-  reusable-how boundary, and routes visible UI work to matched proof.
-- Every recorded command comes from checked-in configuration or a verified
-  help/dry-run path.
-- Local editing, commits, pushes, review replies, and merge authority are stated
-  separately.
-- `scripts/adopt.py check --repo <repository>` passes for structural adoption;
-  unresolved or missing current-template values are reported rather than
-  hidden.
-- `scripts/adopt.py check --gate build --repo <repository>` passes before Build.
-- `scripts/adopt.py check --gate release --repo <repository>` passes before
-  integration, merge, deployment, or release.
-- The handoff says that a new agent run is required before the newly written
-  repository instructions become startup context.
+Optional .monomind/onboarding.json settings:
+
+```json
+{"enabled": true, "gate": "integration"}
+```
+
+The default reminder boundary is Build. Set enabled to false to dismiss reminders.
+This does not bypass any gate. Incomplete Release policy does not nag a Build
+session. An unchanged unresolved required field can still prompt on a later
+session; this is stateless and creates no hidden cache files.
+
+Installation cannot start an agent turn or supply policy approval. Hook trust,
+CI, branch protection, and agent instructions remain separate enforcement layers.
+After adoption, start a new agent run to load the persistent instructions.
