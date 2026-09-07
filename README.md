@@ -14,6 +14,31 @@ HANDOFF captures durable continuation state at any phase.
 WORKFLOW conducts a complete code task as ISOLATE → BUILD → PROVE → SHIP.
 ```
 
+## Evaluation candidate: version 0.2
+
+The architecture updates and measured agent evaluation are published on **`eval`**;
+they have not been merged into `main`. To inspect this candidate:
+
+```bash
+git clone --branch eval --single-branch https://github.com/monomind-ai-lab/Skills.git monomind-skills-eval
+```
+
+The default-branch installation examples below do **not** select this candidate.
+The plugin marketplace example explicitly selects `main`; evaluation requires
+selecting the `eval` source instead. Keep candidate and stable installations
+separate when comparing behavior.
+
+Version 0.2 adds a shared versioned policy parser, separate Build/Integration/
+Release gates, approved-base support, opt-in/dismissible onboarding reminders,
+and shorter entrypoints that reuse valid facts and checks. Legacy profiles do
+not need optional context-tool links to remain ready. Blank and duplicate fields
+are rejected, and approved prose mentioning unresolved findings is no longer
+mistaken for a leading `UNRESOLVED` status marker.
+
+See [measured results](#measured-agent-results) and the
+[full evaluation report](docs/benchmarks/architecture-agent-evals.md), including
+failed intermediate candidates and measurement limitations.
+
 ## Start here: install, onboard, use
 
 Installation, structural adoption, and readiness are separate states:
@@ -256,7 +281,6 @@ For stronger enforcement, use the layers together:
 Wire this command into CI when policy drift should fail a build:
 
 ```bash
-python3 .agents/skills/monomind-workflow/scripts/adopt.py check --repo .
 python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate integration --repo .
 # Use --gate release instead when deployment/migration is the requested boundary.
 ```
@@ -342,11 +366,15 @@ policy in case its contract changed:
 npx skills update -p -y
 python3 .agents/skills/monomind-workflow/scripts/adopt.py apply --repo .
 # Use $monomind-onboarding only for required missing fields at the requested boundary.
-python3 .agents/skills/monomind-workflow/scripts/adopt.py check --repo .
 python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate build --repo .
-python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate integration --repo .
-# Use --gate release instead when deployment/migration is the requested boundary.
+# Select integration or release instead when that is the requested boundary.
 ```
+
+Update the project-local workflow skill and plugin together so their policy
+readers agree. Reapplication preserves existing approved profile values; resolve
+only missing requirements for the selected boundary. Each readiness gate already
+includes structural checks and lower-boundary requirements—do not run all gates
+as a routine sequence. See the [schema upgrade guidance](skills/monomind-workflow/references/project-profile.md#readiness-and-schema-upgrades).
 
 Contributors to this catalog should run:
 
@@ -359,6 +387,44 @@ The catalog validator checks skill structure, UI metadata, eval coverage,
 trigger routing, negative-owner routing, and description collisions. Behavioral
 scenarios live in `evals/cases/`. Real paired agent runs (quality, clarification,
 tool calls, reported tokens) are documented in [evals/README.md](evals/README.md).
+
+## Measured agent results
+
+The 2026-09-07 regression pilot compared baseline `a00d263` with the final 0.2
+candidate using real Codex CLI runs (`gpt-5.6-sol`, medium reasoning). Each arm
+ran implementation, merge-only readiness, and legacy-profile compatibility
+twice, with deterministic external quality checks.
+
+| Metric, six trials per arm | Baseline | Candidate |
+| --- | ---: | ---: |
+| Full completion | 2/6 | 6/6 |
+| Mean check-based quality | 70.8% | 100% |
+| Clarification turns / questions | 1 / 2 | 0 / 0 |
+| Tool calls | 42 | 37 |
+| Input tokens | 931,861 | 720,883 |
+| Cached input tokens (included above) | 784,128 | 597,376 |
+| Output tokens | 13,589 | 10,485 |
+
+Observed input tokens fell **22.6%** overall. Implementation alone maintained
+2/2 completion in both arms with **29.6% fewer input tokens** and 23 → 15 tool
+calls. Integration used more calls to reach a correct conclusion instead of
+stopping early; fewer calls are not a goal at the expense of completion.
+
+This is a small targeted pilot, **not a general savings guarantee**. Clarification
+measures one-turn requests for answers, not completed interviews. Cache state,
+model variance, and rerun order affect results; automatic plugin activation and
+production release quality were not measured. The final candidate was rerun
+after a real parser defect surfaced; unchanged baseline controls were reused.
+Failed intermediate runs and invalid calibration records are documented, not
+silently discarded.
+
+The [full report](docs/benchmarks/architecture-agent-evals.md) contains per-trial
+metrics, snapshot hashes, grading criteria, corrections, and total reported
+benchmark usage. The [eval protocol](evals/README.md#actual-paired-agent-runs)
+provides reproduction and rescoring commands. Benchmark transcripts and fixtures
+remain local under gitignored `evals/results/`; the report and runner are tracked.
+Repository verification for the candidate passed 55 unit tests and 42/42 catalog
+rank-1 routing cases across 13 skills.
 
 ## License
 
