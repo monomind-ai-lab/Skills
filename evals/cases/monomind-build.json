@@ -53,6 +53,17 @@
         "The extraction is incremental and both flows remain covered through their public seams.",
         "The resulting service is composable and does not become a method that owns the entire workflow."
       ]
+    },
+    {
+      "id": 3,
+      "kind": "execution",
+      "prompt": "Implement a small second slice in this owned worktree. A task record already verifies the approved base, commands, and passing Build gate; policy and environment have not changed.",
+      "expected_output": "A focused implementation reusing valid orientation and policy evidence.",
+      "expectations": [
+        "Reuses the existing task worktree and approved base.",
+        "Does not repeat unchanged policy gates or rediscover recorded commands.",
+        "Runs code checks affected by the new edit and inspects the final diff."
+      ]
     }
   ]
 }

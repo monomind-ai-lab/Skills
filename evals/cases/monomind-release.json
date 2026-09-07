@@ -40,6 +40,17 @@
         "The data change preserves compatibility through expand–migrate–contract and includes an executable rollback treatment.",
         "Observability maps operator questions to metrics, traces, logs, and an observation window."
       ]
+    },
+    {
+      "id": 2,
+      "kind": "execution",
+      "prompt": "Assess a merge-only change. Integration policy is complete, but deployment pipeline and observation policy remain unresolved. Do not merge or deploy.",
+      "expected_output": "The integration gate is used and deployment gaps are not treated as blockers to integration assessment.",
+      "expectations": [
+        "Separates integration readiness from deployment readiness.",
+        "Does not invent or seek deployment policy for this merge-only request.",
+        "Reports the check result and preserves the no-mutation boundary."
+      ]
     }
   ]
 }

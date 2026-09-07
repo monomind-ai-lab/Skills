@@ -14,24 +14,56 @@ HANDOFF captures durable continuation state at any phase.
 WORKFLOW conducts a complete code task as ISOLATE → BUILD → PROVE → SHIP.
 ```
 
+## Version 0.2: architecture and evaluation
+
+The architecture updates and measured agent evaluation were developed on
+**`eval`**. To inspect the evaluation branch:
+
+```bash
+git clone --branch eval --single-branch https://github.com/monomind-ai-lab/Skills.git monomind-skills-eval
+```
+
+The installation examples below use the default branch; the plugin marketplace
+example explicitly selects `main`. For reproducible comparisons, use the baseline
+revision and tested snapshot hashes in the report rather than assuming a moving
+branch still contains the exact measured version. Keep comparison installations
+separate.
+
+Version 0.2 adds a shared versioned policy parser, separate Build/Integration/
+Release gates, approved-base support, opt-in/dismissible onboarding reminders,
+and shorter entrypoints that reuse valid facts and checks. Legacy profiles do
+not need optional context-tool links to remain ready. Blank and duplicate fields
+are rejected, and approved prose mentioning unresolved findings is no longer
+mistaken for a leading `UNRESOLVED` status marker.
+
+See [measured results](#measured-agent-results) and the
+[full evaluation report](docs/benchmarks/architecture-agent-evals.md), including
+failed intermediate candidates and measurement limitations.
+
 ## Start here: install, onboard, use
 
 Installation, structural adoption, and readiness are separate states:
+
+Version 0.2 uses one versioned policy parser for the workflow and trusted plugin
+hook. Build, Integration, and Release have separate gates. Informational links
+are not required policy, and unversioned legacy profiles remain supported.
 
 - **Install** makes skill names and descriptions available to the agent.
 - **Adopt** writes the small always-on repository instruction block and creates
   the `.monomind/workflow.md` scaffold without replacing existing content.
 - **Onboard** discovers project facts, asks the repo owner or project lead for
-  policy decisions, writes approved answers, and certifies Build/Release gates.
+  policy decisions, writes approved answers, and certifies the requested readiness gate.
 
 Skill installation alone does **not** make cross-cutting principles mandatory,
 and the presence of `.monomind/workflow.md` does **not** make a repository ready.
 
 ### 1. Create the adoption worktree
 
-Factory adoption is itself a code-changing task, so start from a fresh linked
-worktree. If your harness already created an exclusive worktree from
-`origin/main`, use it instead.
+Factory adoption is a repository change. Use a task-owned linked worktree from
+the approved authoritative base; reuse the harness-created task worktree when
+available. These examples use the bootstrap default `origin/main`. For a different
+approved base, create the worktree from that ref and supply `--base upstream/develop`
+on initial `adopt.py apply`; the script records it and honors it thereafter.
 
 ```bash
 git fetch origin
@@ -103,9 +135,11 @@ This is first-session onboarding after installation, not an installer callback.
 Codex skills do not execute while they are installed, hooks cannot open a chat
 or answer policy questions, and non-managed plugin hooks are skipped until the
 user trusts their exact definition. On `startup`, `resume`, or `clear`, the hook
-checks the current Git root and adds onboarding context only when the profile is
-absent, incomplete, or uses an invalid bare not-applicable value. It is silent
-once the current profile is complete. The agent inspects and begins asking the
+checks the current Git root only for opted-in repositories (a profile, active
+managed policy, or `.monomind/onboarding.json` with `enabled: true`). It defaults
+to the Build boundary and is silent when that boundary is complete. Select
+`gate: "integration"` or `"release"` in that settings file to change the reminder
+boundary; set `enabled: false` to dismiss reminders without bypassing gates. The agent inspects and begins asking the
 policy questions on the first user turn in that repository; installation itself
 does not create a background conversation. See OpenAI's official
 [plugin packaging](https://developers.openai.com/plugins/build/plugins#bundled-mcp-servers-and-lifecycle-hooks)
@@ -127,25 +161,28 @@ $monomind-onboarding Onboard this repository for the Monomind software factory. 
 
 The onboarding agent uses the workflow's bundled adoption script to:
 
-- refuse setup on `main`, detached HEAD, a primary checkout, or a branch not
-  based on the available `origin/main`;
+- refuse setup on `main`, the configured base branch, detached HEAD, a primary
+  checkout, or a branch not based on the available approved base;
 - preserve existing instructions and add or refresh one managed block in the
   active root `AGENTS.md` or `AGENTS.override.md`;
 - create `.monomind/workflow.md` only when it does not exist; and
 - check that the project-local workflow skill, policy block, profile, and
-  `origin` configuration remain present;
+  configured remote remain present;
 - inspect repository-native commands and policy evidence before asking; and
 - interview the authorized repo owner/project lead, write approved answers, and
   run readiness gates.
 
-The equivalent mechanical commands are:
+Choose the single gate for your requested boundary; a gated check already
+includes structural validation and lower-boundary requirements. The following
+commands illustrate the available checks, not a mandatory sequence:
 
 ```bash
 python3 .agents/skills/monomind-workflow/scripts/adopt.py apply --repo .
 # Run $monomind-onboarding to resolve project facts and policy decisions.
 python3 .agents/skills/monomind-workflow/scripts/adopt.py check --repo .
 python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate build --repo .
-python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate release --repo .
+python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate integration --repo .
+# Use --gate release instead when deployment/migration is the requested boundary.
 ```
 
 Every `UNRESOLVED` value must be defined separately for this repository. Agents
@@ -156,7 +193,7 @@ strategy, authority, required gates, release controls, continuity ownership
 other policy choices must be approved by the repository owner, project lead, or
 an explicitly named delegate. If a field truly does not apply, record
 `NOT_APPLICABLE — <specific approved or evidenced reason>`; a bare `N/A` does
-not pass either readiness gate.
+not pass any readiness gate. Resolve fields for the requested boundary only.
 
 The interview follows a reviewable loop:
 
@@ -171,12 +208,13 @@ The interview follows a reviewable loop:
 
 | Status | Meaning |
 | --- | --- |
-| Structurally adopted | Skill, managed instruction block, profile, and origin are present; `UNRESOLVED` may remain and is reported |
+| Structurally adopted | Skill, managed instruction block, profile, and configured remote are present; `UNRESOLVED` may remain and is reported |
 | Build-ready | Ownership, task/worktree model, naming, setup, focused/regression tests, architecture, shared resources, continuity, and mutation authority are resolved |
-| Release-ready | Build-ready plus every current integration, check, CI/review, evidence, safety, release/rollback, context, and approval field is resolved |
+| Integration-ready | Build-ready plus integration, check, CI/review, evidence, safety, context, and merge policy is resolved |
+| Release-ready | Integration-ready plus deployment, release, observation, and recovery policy is resolved |
 
-Build agents must stop when the Build gate fails. Integration, merge,
-deployment, and Release agents must stop when the Release gate fails. A
+Build agents stop when the Build gate fails. Integration and merge use the
+Integration gate; executing deployment or migration uses Release. A
 read-only assessment may identify gaps without crossing those mutation gates.
 
 Review the resulting diff before committing. Installation and adoption do not
@@ -195,7 +233,7 @@ Add team invitations and take the change through a PR-ready handoff.
 The adopted `AGENTS.md` rule requires the Build-ready gate and
 `$monomind-workflow` before editing, even if implicit skill matching would
 otherwise miss them. The workflow conducts Isolate → Build → Prove → Ship,
-requires Release-ready before integration or release, and stops Ship at the
+requires Integration-ready before integration and Release-ready before deployment, and stops Ship at the
 furthest action the user or project has authorized.
 
 For an already-isolated single phase, invoke the narrower skill directly:
@@ -220,7 +258,7 @@ There are four activation paths:
 | Explicit | Mention `$monomind-build`, or use `/skills`/`$` selection in Codex | Forces that skill for the current task |
 | Implicit | The request matches a skill's frontmatter `description` | Convenient routing, but still a model decision |
 | Persistent policy | The adopted root `AGENTS.md` contains mandatory if/then rules | Loaded before repository work and applies across tasks |
-| Plugin first-session nudge | A trusted `SessionStart` hook sees a missing or incomplete profile | Adds developer context that routes the agent to onboarding; cannot start a turn or decide policy |
+| Plugin first-session nudge | A trusted `SessionStart` hook sees an opted-in repository missing policy for its selected boundary | Adds developer context that routes the agent to onboarding; cannot start a turn or decide policy |
 
 The skills-CLI path does not install a lifecycle hook. The optional Codex plugin
 bundles the first-session nudge, but it remains a separate, host-specific layer
@@ -234,18 +272,18 @@ For stronger enforcement, use the layers together:
 | --- | --- | --- |
 | `monomind-onboarding` | Evidence discovery, owner/lead interview, profile writing, and readiness certification | That its proposed policy is approved without an authorized human answer |
 | Skill body | Correct procedure while that skill is active | That the skill will always be selected |
-| Trusted plugin `SessionStart` hook | First-session routing while the profile is missing or incomplete | An install-time conversation, repository writes, or policy approval |
+| Trusted plugin `SessionStart` hook | Routing for opted-in repositories missing policy at the selected boundary | An install-time conversation, repository writes, or policy approval |
 | Adopted `AGENTS.md` | Mandatory onboarding/readiness routing, worktree rule, architecture ownership, and UI proof | Compliance by tools that ignore repository instructions |
 | `adopt.py check` | Detects missing or drifted policy, profile, project skill, and remote configuration | Readiness while reported values remain unresolved |
-| `adopt.py check --gate build/release` | Fails when fields required at that boundary are missing, unresolved, empty, or bare not-applicable | Whether an apparently resolved value was approved honestly |
-| `adopt.py preflight` | Verifies the current branch is an `origin/main`-based linked task worktree | Future pushes, reviews, or merges |
+| `adopt.py check --gate build/integration/release` | Fails when fields required at that boundary are missing, unresolved, empty, or bare not-applicable | Whether an apparently resolved value was approved honestly |
+| `adopt.py preflight` | Verifies the current branch is an approved-base linked task worktree | Future pushes, reviews, or merges |
 | CI and branch protection | Required checks and no direct push to protected `main` | Local edits made before CI starts |
 
 Wire this command into CI when policy drift should fail a build:
 
 ```bash
-python3 .agents/skills/monomind-workflow/scripts/adopt.py check --repo .
-python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate release --repo .
+python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate integration --repo .
+# Use --gate release instead when deployment/migration is the requested boundary.
 ```
 
 Use branch protection for a server-side no-direct-push rule. Keep any additional
@@ -259,7 +297,7 @@ the explicit form when deterministic selection matters.
 
 | Skill | Reach for it when | Explicit example |
 | --- | --- | --- |
-| [`monomind-onboarding`](skills/monomind-onboarding/SKILL.md) | The profile is absent/incomplete, owner or lead policies need an interview, or Build/Release readiness must be certified | `$monomind-onboarding Complete this repo's policy profile with me.` |
+| [`monomind-onboarding`](skills/monomind-onboarding/SKILL.md) | The profile is absent/incomplete, owner or lead policies need an interview, or readiness must be certified | `$monomind-onboarding Complete this repo's policy profile with me.` |
 | [`monomind-workflow`](skills/monomind-workflow/SKILL.md) | Structurally adopting the factory, starting a ready code-changing task, coordinating concurrent work, or taking work end to end | `$monomind-workflow Take this issue through a PR-ready handoff.` |
 | [`monomind-intake`](skills/monomind-intake/SKILL.md) | The user, outcome, success signal, constraint, or non-goals are unclear | `$monomind-intake Clarify this feature request.` |
 | [`monomind-spec`](skills/monomind-spec/SKILL.md) | Clear intent needs a living behavioral and operational contract | `$monomind-spec Turn the approved intent into a spec.` |
@@ -285,11 +323,11 @@ adoption makes those principles persistent across repository tasks.
 | Area | Monomind policy posture |
 | --- | --- |
 | Collaboration | One named task owner, branch, and worktree; coordinate overlap and shared resources; never alter another owner's unknown work |
-| Integration | Base work on `origin/main`, protect `main`, define one project integration strategy, and keep commit/push/PR/reply/merge authority separate |
+| Integration | Base work on the approved authoritative branch, protect that base, define one project integration strategy, and keep commit/push/PR/reply/merge authority separate |
 | Testing | Use exact repository-native commands, prove behavior through public seams, retain failing-before evidence when feasible, and never weaken gates to reach green |
 | CI/CD | Declare required gates, triggers, reviewers, blocking findings, and override authority; enforce server-side invariants in reviewed configuration |
 | Release | Separate assessment from live execution; name artifact, environment, owner, approval, signals, observation, migration, rollback, and cleanup |
-| Context and continuity | Keep durable truth in repository-owned specs, decisions, task/context records, and evidence; update before transfer/compaction and verify freshness on resume. Monomind's context pipeline is [project-context](https://github.com/monomind-ai-lab/project-context) (repo-level) with the org-level hub in [project-hub](https://github.com/monomind-ai-lab/project-hub) |
+| Context and continuity | Keep durable truth in repository-owned specs, decisions, task/context records, and evidence; update before transfer/compaction and verify freshness on resume. Optional context tools include [project-context](https://github.com/monomind-ai-lab/project-context) (repo-level) with the org-level hub in [project-hub](https://github.com/monomind-ai-lab/project-hub) |
 
 The full interview guidance and rationale live in
 [`policy-principles.md`](skills/monomind-onboarding/references/policy-principles.md).
@@ -297,7 +335,7 @@ The full interview guidance and rationale live in
 ## Curation principles
 
 - **Isolate implementation:** every implementation task starts from
-  `origin/main` in a fresh owned worktree; never build on `main` or another
+  the approved base in an owned linked worktree; never build on the base or another
   agent's state.
 - **Actions own why/when; services own reusable how:** side-effecting boundaries
   retain policy while reusable capabilities expose explicit inputs, structured
@@ -328,11 +366,16 @@ policy in case its contract changed:
 ```bash
 npx skills update -p -y
 python3 .agents/skills/monomind-workflow/scripts/adopt.py apply --repo .
-# Use $monomind-onboarding to review new fields with the repo owner/project lead.
-python3 .agents/skills/monomind-workflow/scripts/adopt.py check --repo .
+# Use $monomind-onboarding only for required missing fields at the requested boundary.
 python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate build --repo .
-python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate release --repo .
+# Select integration or release instead when that is the requested boundary.
 ```
+
+Update the project-local workflow skill and plugin together so their policy
+readers agree. Reapplication preserves existing approved profile values; resolve
+only missing requirements for the selected boundary. Each readiness gate already
+includes structural checks and lower-boundary requirements—do not run all gates
+as a routine sequence. See the [schema upgrade guidance](skills/monomind-workflow/references/project-profile.md#readiness-and-schema-upgrades).
 
 Contributors to this catalog should run:
 
@@ -343,7 +386,46 @@ python3 -m unittest discover -s tests -v
 
 The catalog validator checks skill structure, UI metadata, eval coverage,
 trigger routing, negative-owner routing, and description collisions. Behavioral
-scenarios live in `evals/cases/` for independent forward-testing.
+scenarios live in `evals/cases/`. Real paired agent runs (quality, clarification,
+tool calls, reported tokens) are documented in [evals/README.md](evals/README.md).
+
+## Measured agent results
+
+The 2026-09-07 regression pilot compared baseline `a00d263` with the final 0.2
+candidate using real Codex CLI runs (`gpt-5.6-sol`, medium reasoning). Each arm
+ran implementation, merge-only readiness, and legacy-profile compatibility
+twice, with deterministic external quality checks.
+
+| Metric, six trials per arm | Baseline | Candidate |
+| --- | ---: | ---: |
+| Full completion | 2/6 | 6/6 |
+| Mean check-based quality | 70.8% | 100% |
+| Clarification turns / questions | 1 / 2 | 0 / 0 |
+| Tool calls | 42 | 37 |
+| Input tokens | 931,861 | 720,883 |
+| Cached input tokens (included above) | 784,128 | 597,376 |
+| Output tokens | 13,589 | 10,485 |
+
+Observed input tokens fell **22.6%** overall. Implementation alone maintained
+2/2 completion in both arms with **29.6% fewer input tokens** and 23 → 15 tool
+calls. Integration used more calls to reach a correct conclusion instead of
+stopping early; fewer calls are not a goal at the expense of completion.
+
+This is a small targeted pilot, **not a general savings guarantee**. Clarification
+measures one-turn requests for answers, not completed interviews. Cache state,
+model variance, and rerun order affect results; automatic plugin activation and
+production release quality were not measured. The final candidate was rerun
+after a real parser defect surfaced; unchanged baseline controls were reused.
+Failed intermediate runs and invalid calibration records are documented, not
+silently discarded.
+
+The [full report](docs/benchmarks/architecture-agent-evals.md) contains per-trial
+metrics, snapshot hashes, grading criteria, corrections, and total reported
+benchmark usage. The [eval protocol](evals/README.md#actual-paired-agent-runs)
+provides reproduction and rescoring commands. Benchmark transcripts and fixtures
+remain local under gitignored `evals/results/`; the report and runner are tracked.
+Repository verification for the candidate passed 55 unit tests and 42/42 catalog
+rank-1 routing cases across 13 skills.
 
 ## License
 
