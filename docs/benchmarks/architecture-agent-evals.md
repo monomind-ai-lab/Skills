@@ -155,6 +155,6 @@ and this implementation/review conversation; it is not a total account bill.
 - Production rollout quality, complex UI evidence workflows, full onboarding
   interviews, and automatic plugin activation remain unmeasured. Existing UI
   evidence requirements were retained rather than trimmed without supporting tests.
-- Implementation and this report are published on `eval` by user request;
-  original main remains unchanged at the baseline. Raw local transcripts and
+- Implementation and this report were published on `eval` by user request;
+  main was unchanged at the baseline when the benchmark ran. Raw local transcripts and
   disposable fixtures are intentionally not committed.

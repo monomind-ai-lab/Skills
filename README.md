@@ -14,19 +14,20 @@ HANDOFF captures durable continuation state at any phase.
 WORKFLOW conducts a complete code task as ISOLATE → BUILD → PROVE → SHIP.
 ```
 
-## Evaluation candidate: version 0.2
+## Version 0.2: architecture and evaluation
 
-The architecture updates and measured agent evaluation are published on **`eval`**;
-they have not been merged into `main`. To inspect this candidate:
+The architecture updates and measured agent evaluation were developed on
+**`eval`**. To inspect the evaluation branch:
 
 ```bash
 git clone --branch eval --single-branch https://github.com/monomind-ai-lab/Skills.git monomind-skills-eval
 ```
 
-The default-branch installation examples below do **not** select this candidate.
-The plugin marketplace example explicitly selects `main`; evaluation requires
-selecting the `eval` source instead. Keep candidate and stable installations
-separate when comparing behavior.
+The installation examples below use the default branch; the plugin marketplace
+example explicitly selects `main`. For reproducible comparisons, use the baseline
+revision and tested snapshot hashes in the report rather than assuming a moving
+branch still contains the exact measured version. Keep comparison installations
+separate.
 
 Version 0.2 adds a shared versioned policy parser, separate Build/Integration/
 Release gates, approved-base support, opt-in/dismissible onboarding reminders,
