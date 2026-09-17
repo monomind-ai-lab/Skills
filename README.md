@@ -2,7 +2,7 @@
 
 A curated, original collection for moving software work from intent to a safe
 release. This repository is a new composition, not a fork or source mirror. It
-combines durable ideas from three public skill collections and reconciles them
+combines durable ideas from selected public skill collections and reconciles them
 with Monomind's authority, isolation, architecture, and evidence model.
 
 ```text
@@ -12,6 +12,8 @@ INSTALL → ONBOARD → INTAKE → SPEC → PLAN → BUILD → EVIDENCE → REVI
 
 HANDOFF captures durable continuation state at any phase.
 WORKFLOW conducts a complete code task as ISOLATE → BUILD → PROVE → SHIP.
+FIRSTMATE coordinates delegated agent work without implementing it.
+MONOLAYER turns visually dense results into reviewable local HTML artifacts.
 ```
 
 ## Version 0.2: architecture and evaluation
@@ -39,6 +41,49 @@ mistaken for a leading `UNRESOLVED` status marker.
 See [measured results](#measured-agent-results) and the
 [full evaluation report](docs/benchmarks/architecture-agent-evals.md), including
 failed intermediate candidates and measurement limitations.
+
+## New integrations: First Mate and Monolayer
+
+### First Mate: delegated engineering orchestration
+
+First Mate is an explicit-only system-strategist role for substantial work that
+benefits from multiple agents. Invoke it with `/firstmate` or the host's native
+explicit skill syntax:
+
+```text
+$firstmate Coordinate the database foundation, API migration, client update,
+and independent verification for this feature.
+```
+
+First Mate inspects project context, builds the smallest useful dependency
+graph, selects a reasoning tier for each assignment, delegates bounded work,
+reviews returned evidence, and determines a safe integration order. It remains
+above implementation: workers modify code while First Mate supervises scope,
+quality, dependencies, and project state. Invocation authorizes in-session
+orchestration, not package installation, commits, pushes, pull requests, review
+replies, merges, deployments, or external tracker changes.
+
+### Monolayer: reviewable visual artifacts
+
+Monolayer turns plans, comparisons, diagrams, code views, and reports into local
+interactive HTML artifacts that can be annotated and reviewed:
+
+```text
+$monolayer Turn these migration options into an interactive comparison I can
+annotate locally.
+```
+
+The catalog integration is named `monolayer`; its external executable remains
+`lavish-axi`. The skill prefers an existing PATH or repository-local executable
+and does not silently download the package. If execution would require `npx`, it
+asks before downloading the pinned audited release. Artifacts remain local by
+default, and hosted sharing, hooks, plugins, pull-request changes, and publication
+remain separate authority gates.
+
+Monolayer is maintained as a curated wrapper rather than a vendored source tree
+or submodule. Its upstream manifest pins the audited Lavish revision, and the
+[read-only review command](#update-and-validate) shows selected upstream changes
+for deliberate adoption.
 
 ## Start here: install, onboard, use
 
@@ -113,6 +158,11 @@ npx skills add monomind-ai-lab/Skills \
 A review-only repository can install only `monomind-review`. That skill governs
 reviews when selected, but it does not install the factory-wide implementation
 contract.
+
+`firstmate` is an explicit-only orchestration role for users who want one agent
+to coordinate a delegated crew. `monolayer` is an optional local artifact-review
+integration backed by the external `lavish-axi` CLI; installing the skill does
+not install that package or authorize a later download.
 
 Use `-g` only for personal experimentation across repositories. A global skill
 is available to that user; it does not add team policy to any repository.
@@ -310,6 +360,8 @@ the explicit form when deterministic selection matters.
 | [`monomind-review`](skills/monomind-review/SKILL.md) | A diff or pull request needs spec-fidelity and engineering-quality review | `$monomind-review Review this branch against its spec.` |
 | [`monomind-release`](skills/monomind-release/SKILL.md) | Work approaches a live rollout, migration, or launch gate | `$monomind-release Assess release readiness.` |
 | [`monomind-handoff`](skills/monomind-handoff/SKILL.md) | Another session, agent, or human must continue without rereading the transcript | `$monomind-handoff Prepare continuation state.` |
+| [`firstmate`](skills/firstmate/SKILL.md) | The user explicitly wants an implementation-free orchestrator to delegate, review, and sequence multi-agent engineering work | `$firstmate Coordinate this multi-service change.` |
+| [`monolayer`](skills/monolayer/SKILL.md) | A plan, comparison, diagram, code view, or report will be clearer as an annotatable local HTML artifact | `$monolayer Turn this architecture comparison into an interactive artifact.` |
 
 Routing rule: a missing/incomplete profile or failed readiness gate enters
 through `monomind-onboarding`; a ready newly started code-changing task enters
@@ -359,6 +411,19 @@ Michael Shimeles `AGENTS.md` benchmark is reviewed in
 Full notices are in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 ## Update and validate
+
+Curated external integrations do not merge upstream histories. To review what
+changed in Lavish since Monolayer's last audited revision, run:
+
+```bash
+python3 scripts/review_upstream_skill.py upstreams/monolayer.json
+```
+
+The command resolves the configured upstream ref, compares only the selected
+source files with the pinned revision, and prints a read-only diff. If a change
+is worth adopting, update the Monolayer wrapper, eval, provenance, and manifest
+in one reviewed change. This keeps upstream discovery repeatable without making
+the catalog a source mirror or silently overriding Monomind authority rules.
 
 Update project-installed skills with the skills CLI, then reapply the managed
 policy in case its contract changed:

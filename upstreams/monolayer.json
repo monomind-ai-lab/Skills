@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "integration": "monolayer",
+  "repository": "https://github.com/kunchenguid/lavish-axi.git",
+  "tracking_ref": "refs/heads/main",
+  "audited_revision": "4413dcc8eff35cdc659e2035b94194d3c9be55fa",
+  "audited_at": "2026-09-17",
+  "audited_package_version": "0.1.71",
+  "tracked_files": [
+    {
+      "path": "skills/lavish/SKILL.md",
+      "reason": "Upstream agent-facing workflow and trigger changes"
+    },
+    {
+      "path": "package.json",
+      "reason": "CLI version, runtime requirements, and dependency changes"
+    },
+    {
+      "path": "THIRD-PARTY-NOTICES.md",
+      "reason": "Bundled dependency and attribution changes"
+    }
+  ],
+  "integration_files": [
+    "skills/monolayer/SKILL.md",
+    "skills/monolayer/agents/openai.yaml",
+    "evals/cases/monolayer.json",
+    "docs/curation.md",
+    "THIRD_PARTY_NOTICES.md"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "skill_name": "monolayer",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Turn this architecture comparison into an interactive HTML artifact I can annotate.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Use monolayer to make this migration plan easier to review visually.",
+        "top_k": 1
+      },
+      {
+        "prompt": "/monolayer Turn this architecture comparison into a local, reviewable HTML artifact.",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Capture matched production and preview screenshots for this CSS change.",
+        "owner": "monomind-before-after"
+      },
+      {
+        "prompt": "Review this pull request against the approved specification.",
+        "owner": "monomind-review"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Use monolayer to create a local, interactive comparison of three migration options. lavish-axi is already available on PATH. Do not publish it.",
+      "expected_output": "A clearly named local HTML artifact opened through the available lavish-axi CLI, with the artifact path and review state reported and no external publication.",
+      "expectations": [
+        "The agent uses the existing CLI rather than downloading or globally installing another copy.",
+        "The agent reads current CLI design and applicable playbook guidance before writing the artifact.",
+        "The artifact makes the option differences and tradeoffs materially easier to inspect than prose alone.",
+        "The artifact remains local; no share, upload, hook, plugin, pull-request, or publication action occurs.",
+        "The final response names the artifact path, CLI/version evidence, and whether feedback remains open."
+      ]
+    }
+  ]
+}

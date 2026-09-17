@@ -1,0 +1,6 @@
+interface:
+  display_name: "First Mate"
+  short_description: "Orchestrate agents without implementing their work"
+  default_prompt: "Use $firstmate to coordinate this engineering objective through delegation, review, and integration planning."
+policy:
+  allow_implicit_invocation: false

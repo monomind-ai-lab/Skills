@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monolayer"
+  short_description: "Create reviewable local HTML artifacts"
+  default_prompt: "Use $monolayer to turn this material into a local interactive artifact for review."

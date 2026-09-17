@@ -9,12 +9,26 @@ This record explains what was learned from each source, what entered the Monomin
 | [`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) | `d2c37ef6225dd8726cdd369a8030307f48592d26` (2026-08-28) | MIT | Lifecycle coverage, assumption surfacing, gated specs, vertical slices, per-skill verification, multi-axis review, source verification, reversible rollout, catalog evals |
 | [`mattpocock/skills`](https://github.com/mattpocock/skills) | `6654f6b60cd9d5be8b54c6fafe44346dabeb3b76` (2026-08-24) | MIT | Small composable skills, progressive disclosure, domain language, deep modules and test seams, tracer-bullet tickets, spec-vs-standards review, tight debugging loops, pointer-based handoffs |
 | [`michaelshimeles/skills`](https://github.com/michaelshimeles/skills) | `5d403ea66775c04df222a1e9b302ef64ae45c712` (2026-09-01) | No repository-wide license found; `before-and-after/` is PolyForm Shield 1.0.0 | Benchmark for its `AGENTS.md` four-beat workflow, worktree isolation, action/service separation, evidence captured during implementation, and before/after PR proof |
+| [`kunchenguid/firstmate`](https://github.com/kunchenguid/firstmate) | `795e5e4aacdf120908224617cfcc4dd1b76e0d37` (2026-09-16) | MIT | Agent-distro reference for orchestration boundaries, minimal crew sizing, explicit authority, model-tier routing, supervision, and integration sequencing |
+| [`kunchenguid/lavish-axi`](https://github.com/kunchenguid/lavish-axi) | `4413dcc8eff35cdc659e2035b94194d3c9be55fa` / package `0.1.71` (2026-09-16) | MIT | Local HTML artifact review, CLI-disclosed current guidance, annotation feedback loops, and separation of local review from hosted sharing |
 
-Access date: 2026-09-02.
+Access dates: first three sources 2026-09-02; Firstmate and Lavish AXI 2026-09-17.
 
 Detailed benchmark analysis: [`docs/benchmarks/michaelshimeles-agents.md`](benchmarks/michaelshimeles-agents.md).
 
 The Michael Shimeles repository was used only to study ideas and workflow shape. Its unlicensed root material, including `AGENTS.md`, was not copied. Its `before-and-after` software and skill text were not copied or redistributed; Monomind's original integration invokes the external [`@vercel/before-and-after`](https://www.npmjs.com/package/@vercel/before-and-after) package under its PolyForm Shield 1.0.0 license. Its Greptile-specific MIT subtrees remain excluded because they are vendor-specific rather than factory primitives.
+
+Firstmate was inspected as an agent-distro and orchestration reference. The
+catalog's `firstmate` skill is an original, explicit-only role refined from the
+user-supplied brief and Monomind's existing authority model. It does not include
+Firstmate's scripts, hooks, internal skills, state layout, or source tree.
+
+Lavish AXI's public skill and package contract informed the original
+`monolayer` wrapper. The package remains external under its own license and
+name; Monolayer adds explicit download, hook, sharing, and publication authority
+gates. [`upstreams/monolayer.json`](../upstreams/monolayer.json) pins the audited
+revision, while `scripts/review_upstream_skill.py` compares selected files with
+newer upstream revisions without merging or overwriting catalog content.
 
 ## Selection matrix
 
@@ -32,6 +46,8 @@ The Michael Shimeles repository was used only to study ideas and workflow shape.
 | Review | Fixed comparison point; independent spec-fidelity and standards axes; prioritized findings | Matt's two-axis review; Addy's correctness/readability/architecture/security/performance review |
 | Release | Evidence-based gates, project-derived thresholds, observability questions, staged exposure, executable rollback | Addy's shipping and observability skills |
 | Continuation | Compact state with verified repository facts and pointers instead of duplicated artifacts | Matt's handoff and writing-for-agents skills |
+| Delegated orchestration | An explicit-only, implementation-free coordinator with minimal crew sizing, model tiers, evidence review, and authority-gated integration | User-provided First Mate brief; Firstmate's agent-distro boundary; Monomind authority model |
+| Interactive artifact review | A local-first Monolayer wrapper that asks the external CLI for current guidance while separating local creation from download, hooks, sharing, and publication | Lavish AXI |
 | Quality of the collection | Structural and routing evals with realistic positive/negative prompts and behavioral expectations | Addy's three-tier eval approach; Matt's trigger-focused descriptions |
 
 ## Conflict resolutions
@@ -51,6 +67,8 @@ The Michael Shimeles repository was used only to study ideas and workflow shape.
 | Upload visual proof as part of evidence capture | Support PR-ready Markdown through `@vercel/before-and-after`, but verify local artifacts first and require authority for the package download, public/default upload, custom upload destination, and PR mutation. |
 | Put shared checklists at repository root | Keep each installable skill self-contained so individual installation does not break references. |
 | Installing a skill makes its principles automatic | Separate availability from adoption: skill metadata routes lazily, a managed `AGENTS.md` block supplies persistent mandatory rules, and a deterministic script checks policy/profile drift. Hooks and CI remain separate explicit controls. |
+| Run the latest external CLI automatically | Prefer an existing installation; require explicit authority before downloading and executing the pinned audited package. Update the pin only through a reviewed upstream comparison. |
+| An orchestrator should rescue failed implementation itself | Keep First Mate above implementation. Remediate through a worker once, then change approach or escalate after the same evidence-backed failure repeats. |
 
 ## Intentionally excluded
 
@@ -65,3 +83,8 @@ The Michael Shimeles repository was used only to study ideas and workflow shape.
 ## Maintenance rule
 
 Upstream changes are research inputs, not updates to merge. A curator may re-audit a newer revision, record what decision-relevant idea changed, and make a fresh Monomind edit with its own tests and provenance. Never replace this collection with an upstream tree or make one of the sources its Git parent.
+
+For selected integrations, an `upstreams/*.json` manifest may pin the audited
+revision and files worth watching. `scripts/review_upstream_skill.py` performs a
+read-only comparison against the configured ref. Advancing a pin is a curation
+decision: update the wrapper, evals, notices, and manifest together after review.
