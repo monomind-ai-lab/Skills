@@ -1,6 +1,6 @@
 # Third-party notices
 
-This project is an original curation informed by the repositories listed below. It does not include their Git histories or source trees. Some workflow language and structure was adapted from the two MIT-licensed collections; their notices are preserved here. The third collection was used only as an unlicensed design reference, as documented below.
+This project is an original curation informed by the repositories listed below. It does not include their Git histories or source trees. Licensed influences and the one unlicensed design reference are documented here; external software remains under its own license.
 
 ## addyosmani/agent-skills
 
@@ -73,3 +73,29 @@ SOFTWARE.
 This repository was consulted only for design ideas: its `AGENTS.md` four-beat task workflow, multi-agent isolation, revision-bound evidence, action/service separation, and PR completion discipline. No source file, recorder, fixture, or upstream wording from its unlicensed root material is included here.
 
 Its `before-and-after` subtree is not copied or redistributed. The original `monomind-before-after` instructions optionally invoke the external [`@vercel/before-and-after`](https://www.npmjs.com/package/@vercel/before-and-after) package, which remains copyright (c) 2026 James Clements and licensed under [PolyForm Shield 1.0.0](https://polyformproject.org/licenses/shield/1.0.0). Users are responsible for complying with that external license. Its Greptile subtrees were MIT licensed but were intentionally excluded as vendor-specific.
+
+## kunchenguid/firstmate
+
+- Source: <https://github.com/kunchenguid/firstmate>
+- Revision inspected: `795e5e4aacdf120908224617cfcc4dd1b76e0d37`
+- Copyright (c) 2026 Kun Chen
+- License: MIT
+
+Firstmate was used as an orchestration and agent-distro design reference. The
+Monomind `firstmate` skill is original catalog material refined from a
+user-provided role brief. No upstream script, hook, internal skill, state tree,
+or Git history is included.
+
+## kunchenguid/lavish-axi
+
+- Source: <https://github.com/kunchenguid/lavish-axi>
+- Revision inspected: `4413dcc8eff35cdc659e2035b94194d3c9be55fa`
+- Package inspected: `lavish-axi@0.1.71`
+- Copyright (c) 2026 Kun Chen
+- License: MIT
+
+The original Monolayer skill integrates with the external `lavish-axi` package;
+it does not vendor the package, its generated bundles, fonts, source tree, or Git
+history. The package's own `THIRD-PARTY-NOTICES.md` governs software bundled in
+its published distribution. Users who authorize package execution or hosted
+sharing remain responsible for the external package and service terms.

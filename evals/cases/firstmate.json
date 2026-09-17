@@ -1,0 +1,50 @@
+{
+  "skill_name": "firstmate",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "/firstmate Coordinate the API migration, client update, and independent verification across agents.",
+        "top_k": 1
+      },
+      {
+        "prompt": "$firstmate Invoke the explicit-command AI orchestrator for this multi-service change.",
+        "top_k": 1
+      },
+      {
+        "prompt": "/firstmate Act as the explicit-command-only AI orchestrator and keep delivery actions behind their authority gates.",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Implement the approved invitation feature in this isolated worktree.",
+        "owner": "monomind-build"
+      },
+      {
+        "prompt": "Review this completed branch against its specification and repository standards.",
+        "owner": "monomind-review"
+      },
+      {
+        "prompt": "Break the approved specification into dependency-aware implementation tasks.",
+        "owner": "monomind-plan"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "dialogue",
+      "prompt": "/firstmate Coordinate a database foundation, API migration, client update, and independent review. The user has authorized in-session delegation but has not authorized commits, pushes, pull requests, or merge.",
+      "expected_output": "A minimal dependency-aware crew plan with model tiers, bounded delegation contracts, independent verification, integration order, and explicit delivery authority boundaries, without direct implementation.",
+      "expectations": [
+        "The First Mate inspects or requests the objective, repository constraints, active ownership, and acceptance evidence before dispatch.",
+        "The work is decomposed only where ownership and dependencies justify separate agents.",
+        "Each assignment contains objective, scope, constraints, acceptance criteria, verification, Git/delivery boundaries, and a return contract.",
+        "Model tiers follow complexity, uncertainty, blast radius, verification importance, and cost without inventing unavailable model names.",
+        "The database foundation precedes dependent API and client work, followed by integration proof and independent review.",
+        "No production file is edited and no commit, push, pull request, review reply, merge, or deployment is performed.",
+        "Completion depends on observed evidence rather than an agent merely returning."
+      ]
+    }
+  ]
+}
