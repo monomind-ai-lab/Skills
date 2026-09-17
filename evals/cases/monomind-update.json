@@ -1,0 +1,57 @@
+{
+  "skill_name": "monomind-update",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Check whether my globally installed Engineering Skills have newer versions in the remote catalog.",
+        "top_k": 1
+      },
+      {
+        "prompt": "Are the Monomind skills current, and has any curated upstream moved past its audited revision?",
+        "top_k": 1
+      },
+      {
+        "prompt": "Refresh only the outdated global Engineering Skills from their remote source, then verify them.",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Assess whether this application is ready for a staged production rollout.",
+        "owner": "monomind-release"
+      },
+      {
+        "prompt": "Refresh this repository's unresolved workflow policy with the project owner.",
+        "owner": "monomind-onboarding"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "execution",
+      "prompt": "Check whether my global Monomind Engineering Skills are current and whether any curated upstream has advanced. This is check-only; do not update anything.",
+      "expected_output": "A revision-bound, read-only freshness report separating catalog drift, missing skills, curated upstream drift, and failed checks without installing or overwriting anything.",
+      "expectations": [
+        "The skill resolves the installed skill root and compares it with a temporary checkout of the current remote catalog.",
+        "The report names the catalog revision and separates current, changed, and missing skills.",
+        "Curated upstream tracking refs are compared with their audited revisions and reported separately from installable catalog updates.",
+        "No package installer, skill update, new-skill installation, pin advancement, or source adoption occurs.",
+        "Network or malformed-data failures are reported as incomplete checks rather than current status."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "execution",
+      "prompt": "Check and refresh only outdated globally installed Engineering Skills. Do not update unrelated global skills or adopt unaudited upstream changes.",
+      "expected_output": "A scoped catalog check, explicitly authorized refresh of only changed installed skills, and a second check proving the resulting state while leaving curated upstream drift untouched.",
+      "expectations": [
+        "The read-only catalog comparison runs before mutation and identifies exact changed skill names.",
+        "The skills CLI update targets only reported Engineering Skills at global scope.",
+        "Newly published missing skills are not added unless adding them is separately authorized by the prompt.",
+        "The read-only comparison runs again after the refresh and reports the resulting catalog revision.",
+        "Curated upstream drift remains a curation report and is never pulled automatically."
+      ]
+    }
+  ]
+}

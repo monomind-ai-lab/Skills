@@ -14,6 +14,7 @@ HANDOFF captures durable continuation state at any phase.
 WORKFLOW conducts a complete code task as ISOLATE → BUILD → PROVE → SHIP.
 FIRSTMATE coordinates delegated agent work without implementing it.
 MONOLAYER turns visually dense results into reviewable local HTML artifacts.
+UPDATE checks installed skills and curated upstream pins without silent mutation.
 ```
 
 ## Version 0.2: architecture and evaluation
@@ -362,6 +363,7 @@ the explicit form when deterministic selection matters.
 | [`monomind-review`](skills/monomind-review/SKILL.md) | A diff or pull request needs spec-fidelity and engineering-quality review | `$monomind-review Review this branch against its spec.` |
 | [`monomind-release`](skills/monomind-release/SKILL.md) | Work approaches a live rollout, migration, or launch gate | `$monomind-release Assess release readiness.` |
 | [`monomind-handoff`](skills/monomind-handoff/SKILL.md) | Another session, agent, or human must continue without rereading the transcript | `$monomind-handoff Prepare continuation state.` |
+| [`monomind-update`](skills/monomind-update/SKILL.md) | Installed Engineering Skills or curated upstream pins need a read-only freshness check or an explicitly authorized scoped refresh | `$monomind-update Check whether my Engineering Skills are current.` |
 | [`firstmate`](skills/firstmate/SKILL.md) | The user explicitly wants an implementation-free orchestrator to delegate, review, and sequence multi-agent engineering work | `$firstmate Coordinate this multi-service change.` |
 | [`monolayer`](skills/monolayer/SKILL.md) | A plan, comparison, diagram, code view, or report will be clearer as an annotatable local HTML artifact | `$monolayer Turn this architecture comparison into an interactive artifact.` |
 
@@ -413,6 +415,19 @@ Michael Shimeles `AGENTS.md` benchmark is reviewed in
 Full notices are in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 ## Update and validate
+
+Use the standalone update skill to compare installed skill contents with the
+current catalog and inspect curated upstream pins without changing anything:
+
+```text
+$monomind-update Check my Engineering Skills and curated upstreams for remote changes.
+```
+
+Ordinary skills do not phone home during unrelated work. A check does not grant
+update authority; when a refresh is explicitly requested, `monomind-update`
+targets only the reported Engineering Skills and verifies the result afterward.
+An advanced curated upstream remains a review signal rather than source to pull
+automatically.
 
 Curated external integrations do not merge upstream histories. To review what
 changed in the upstream `lavish-axi` source since Monolayer's last audited

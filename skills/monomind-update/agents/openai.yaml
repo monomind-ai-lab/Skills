@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind Update"
+  short_description: "Check and refresh Engineering Skills safely"
+  default_prompt: "Use $monomind-update to check my Engineering Skills and curated upstreams for remote changes."
