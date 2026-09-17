@@ -7,7 +7,7 @@
         "top_k": 1
       },
       {
-        "prompt": "Use monolayer to make this migration plan easier to review visually.",
+        "prompt": "Use monolayer to turn this migration plan into a local, reviewable HTML artifact I can annotate visually.",
         "top_k": 1
       },
       {
