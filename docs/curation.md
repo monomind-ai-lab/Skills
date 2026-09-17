@@ -28,7 +28,9 @@ Lavish AXI's public skill and package contract informed the original
 name; Monolayer adds explicit download, hook, sharing, and publication authority
 gates. [`upstreams/monolayer.json`](../upstreams/monolayer.json) pins the audited
 revision, while `scripts/review_upstream_skill.py` compares selected files with
-newer upstream revisions without merging or overwriting catalog content.
+newer upstream revisions without merging or overwriting catalog content. Its
+mandatory curation rules rename all adopted user-facing product and editor copy
+to Monolayer while preserving compatibility identifiers and legal attribution.
 
 ## Selection matrix
 
@@ -87,4 +89,7 @@ Upstream changes are research inputs, not updates to merge. A curator may re-aud
 For selected integrations, an `upstreams/*.json` manifest may pin the audited
 revision and files worth watching. `scripts/review_upstream_skill.py` performs a
 read-only comparison against the configured ref. Advancing a pin is a curation
-decision: update the wrapper, evals, notices, and manifest together after review.
+decision: satisfy every manifest rule, then update the wrapper, evals, notices,
+and manifest together after review. For Monolayer, upstream product/editor copy
+must be rebranded before adoption; technical identifiers and attribution remain
+verbatim.
