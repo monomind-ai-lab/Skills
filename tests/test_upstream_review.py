@@ -17,13 +17,16 @@ SPEC.loader.exec_module(MODULE)
 class UpstreamReviewTests(unittest.TestCase):
     def manifest(self):
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "integration": "example",
             "repository": "https://github.com/example/tool.git",
             "tracking_ref": "refs/heads/main",
             "audited_revision": "a" * 40,
             "tracked_files": [{"path": "SKILL.md", "reason": "instructions"}],
             "integration_files": ["skills/example/SKILL.md"],
+            "curation_rules": [
+                "Use Example as the user-facing name while preserving tool-cli."
+            ],
         }
 
     def test_load_manifest_requires_full_audit_revision(self):
@@ -35,6 +38,15 @@ class UpstreamReviewTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "full lowercase Git SHA"):
                 MODULE.load_manifest(path)
 
+    def test_schema_one_manifest_remains_readable_without_rules(self):
+        data = self.manifest()
+        data["schema_version"] = 1
+        del data["curation_rules"]
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "manifest.json"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            self.assertEqual(MODULE.load_manifest(path)["schema_version"], 1)
+
     def test_github_raw_url_preserves_nested_path(self):
         url = MODULE.github_raw_url(
             "https://github.com/example/tool.git", "b" * 40, "skills/demo/SKILL.md"
@@ -45,6 +57,15 @@ class UpstreamReviewTests(unittest.TestCase):
             + "b" * 40
             + "/skills/demo/SKILL.md",
         )
+
+    def test_load_manifest_rejects_empty_curation_rule(self):
+        data = self.manifest()
+        data["curation_rules"] = [""]
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "manifest.json"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "curation_rules"):
+                MODULE.load_manifest(path)
 
     @mock.patch.object(MODULE.subprocess, "run")
     def test_resolve_revision_uses_exact_remote_ref(self, run):
@@ -76,6 +97,8 @@ class UpstreamReviewTests(unittest.TestCase):
         self.assertIn("+name: new", report)
         self.assertIn("Changes detected: yes", report)
         self.assertIn("no catalog files were changed", report)
+        self.assertIn("Curation rules (mandatory before advancing the pin)", report)
+        self.assertIn("Use Example as the user-facing name", report)
 
 
 if __name__ == "__main__":

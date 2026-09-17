@@ -73,17 +73,19 @@ $monolayer Turn these migration options into an interactive comparison I can
 annotate locally.
 ```
 
-The catalog integration is named `monolayer`; its external executable remains
-`lavish-axi`. The skill prefers an existing PATH or repository-local executable
-and does not silently download the package. If execution would require `npx`, it
-asks before downloading the pinned audited release. Artifacts remain local by
-default, and hosted sharing, hooks, plugins, pull-request changes, and publication
-remain separate authority gates.
+The product and editor are named **Monolayer** throughout the curated
+integration; its external executable remains `lavish-axi`. The skill prefers an
+existing PATH or repository-local executable and does not silently download the
+package. If execution would require `npx`, it asks before downloading the pinned
+audited release. Artifacts remain local by default, and hosted sharing, hooks,
+plugins, pull-request changes, and publication remain separate authority gates.
 
 Monolayer is maintained as a curated wrapper rather than a vendored source tree
-or submodule. Its upstream manifest pins the audited Lavish revision, and the
+or submodule. Its upstream manifest pins the audited upstream revision, and the
 [read-only review command](#update-and-validate) shows selected upstream changes
-for deliberate adoption.
+for deliberate adoption. User-facing “Lavish” or “Lavish Editor” copy is always
+adapted to “Monolayer”; package names, commands, environment variables, internal
+protocol keys, source citations, and legal notices retain their upstream names.
 
 ## Start here: install, onboard, use
 
@@ -413,17 +415,20 @@ Full notices are in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 ## Update and validate
 
 Curated external integrations do not merge upstream histories. To review what
-changed in Lavish since Monolayer's last audited revision, run:
+changed in the upstream `lavish-axi` source since Monolayer's last audited
+revision, run:
 
 ```bash
 python3 scripts/review_upstream_skill.py upstreams/monolayer.json
 ```
 
-The command resolves the configured upstream ref, compares only the selected
-source files with the pinned revision, and prints a read-only diff. If a change
-is worth adopting, update the Monolayer wrapper, eval, provenance, and manifest
-in one reviewed change. This keeps upstream discovery repeatable without making
-the catalog a source mirror or silently overriding Monomind authority rules.
+The command resolves the configured upstream ref, prints the mandatory curation
+rules, compares only the selected source files with the pinned revision, and
+produces a read-only diff. If a change is worth adopting, apply every rule first,
+including the Monolayer branding adaptation, then update the wrapper, eval,
+provenance, and manifest in one reviewed change. This keeps upstream discovery
+repeatable without making the catalog a source mirror or silently overriding
+Monomind authority or branding rules.
 
 Update project-installed skills with the skills CLI, then reapply the managed
 policy in case its contract changed:

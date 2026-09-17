@@ -1,11 +1,16 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "integration": "monolayer",
   "repository": "https://github.com/kunchenguid/lavish-axi.git",
   "tracking_ref": "refs/heads/main",
   "audited_revision": "4413dcc8eff35cdc659e2035b94194d3c9be55fa",
   "audited_at": "2026-09-17",
   "audited_package_version": "0.1.71",
+  "curation_rules": [
+    "Whenever user-facing copy names the product, editor, review session, or skill, use Monolayer; never adopt Lavish or Lavish Editor as the curated product name.",
+    "Preserve upstream technical and legal identifiers verbatim where compatibility or attribution requires them: the lavish-axi package and executable, LAVISH_AXI_* environment variables, .lavish-axi paths, protocol and storage keys, repository URLs, source titles, copyright, and license text.",
+    "Apply the branding adaptation to every adopted upstream change before advancing audited_revision, then verify affected skills, documentation, evals, examples, and interface metadata."
+  ],
   "tracked_files": [
     {
       "path": "skills/lavish/SKILL.md",
@@ -24,6 +29,7 @@
     "skills/monolayer/SKILL.md",
     "skills/monolayer/agents/openai.yaml",
     "evals/cases/monolayer.json",
+    "README.md",
     "docs/curation.md",
     "THIRD_PARTY_NOTICES.md"
   ]

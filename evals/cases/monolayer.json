@@ -35,6 +35,7 @@
       "expectations": [
         "The agent uses the existing CLI rather than downloading or globally installing another copy.",
         "The agent reads current CLI design and applicable playbook guidance before writing the artifact.",
+        "Every user-facing product, editor, and session name uses Monolayer; lavish-axi appears only where the executable or another compatibility identifier must be named.",
         "The artifact makes the option differences and tradeoffs materially easier to inspect than prose alone.",
         "The artifact remains local; no share, upload, hook, plugin, pull-request, or publication action occurs.",
         "The final response names the artifact path, CLI/version evidence, and whether feedback remains open."

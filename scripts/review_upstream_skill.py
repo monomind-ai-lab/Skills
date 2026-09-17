@@ -35,7 +35,7 @@ def load_manifest(path: Path) -> dict:
     missing = sorted(REQUIRED_FIELDS - data.keys())
     if missing:
         raise ValueError(f"manifest missing fields: {', '.join(missing)}")
-    if data["schema_version"] != 1:
+    if data["schema_version"] not in {1, 2}:
         raise ValueError(f"unsupported schema_version: {data['schema_version']!r}")
     if not SHA_RE.fullmatch(data["audited_revision"]):
         raise ValueError("audited_revision must be a full lowercase Git SHA")
@@ -45,6 +45,16 @@ def load_manifest(path: Path) -> dict:
     for entry in tracked:
         if not isinstance(entry, dict) or not entry.get("path") or not entry.get("reason"):
             raise ValueError("each tracked_files entry requires path and reason")
+    rules = data.get("curation_rules")
+    if data["schema_version"] == 2 and rules is None:
+        raise ValueError("schema_version 2 manifests require curation_rules")
+    if rules is not None:
+        if (
+            not isinstance(rules, list)
+            or not rules
+            or any(not isinstance(rule, str) or not rule.strip() for rule in rules)
+        ):
+            raise ValueError("curation_rules must be a non-empty list of non-empty strings")
     return data
 
 
@@ -97,6 +107,15 @@ def render_report(manifest: dict, target_revision: str, fetcher=fetch_text) -> s
         "Mode: read-only review; no catalog files were changed.",
         "",
     ]
+    rules = manifest.get("curation_rules", [])
+    if rules:
+        lines.extend(
+            [
+                "## Curation rules (mandatory before advancing the pin)",
+                *[f"- {rule}" for rule in rules],
+                "",
+            ]
+        )
     changed = False
     for entry in manifest["tracked_files"]:
         source_path = entry["path"]
@@ -124,7 +143,8 @@ def render_report(manifest: dict, target_revision: str, fetcher=fetch_text) -> s
             f"Changes detected: {'yes' if changed else 'no'}",
             "",
             "If changes are adopted, update the curated integration manually,",
-            "advance the manifest only after review, refresh evals/provenance as needed,",
+            "satisfy every curation rule before advancing the manifest,",
+            "refresh evals/provenance as needed,",
             "and run the repository and skill validators. Do not merge upstream text wholesale.",
         ]
     )
