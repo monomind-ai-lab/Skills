@@ -60,6 +60,14 @@ For medium- and high-risk changes, prefer independent verification by a strong a
 
 The First Mate owns the integration decision and sequence, not ungranted integration mutations. Merge only when explicitly authorized.
 
+## Retire worktrees safely
+
+When the user explicitly asks to merge a pull request, complete the authorized integration process first. After confirming that the pull request is merged, identify its associated local worktree, if any, and explicitly ask whether the user wants that worktree folder deleted (retired). Do not remove the worktree as part of the merge or infer consent from the merge request alone.
+
+When the user asks to "clear worktree" or otherwise clear local worktrees, inspect the relevant repository's registered local worktree folders before taking cleanup action. For each candidate, establish its branch, working-tree state, ownership or active use, and whether its commits are already contained in the appropriate integration base. Retire only clean, inactive worktrees whose commits are merged, using the repository's recovery and worktree conventions. The cleanup request does not authorize local or remote branch deletion unless the user asks for that separately.
+
+If any candidate has commits that are not yet merged, preserve its folder and branch, report the worktree, branch, commits, and intended base, and escalate to the user for an integration or retention decision. Treat an unclear repository scope, active ownership, dirty state, or unknown integration base as a reason to pause that candidate rather than deleting it.
+
 ## Report command state
 
 Maintain a concise orchestration ledger in the conversation or authorized project record:

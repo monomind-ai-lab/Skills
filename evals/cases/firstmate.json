@@ -45,6 +45,30 @@
         "No production file is edited and no commit, push, pull request, review reply, merge, or deployment is performed.",
         "Completion depends on observed evidence rather than an agent merely returning."
       ]
+    },
+    {
+      "id": 2,
+      "kind": "dialogue",
+      "prompt": "/firstmate The repository checks and required approvals are complete. Merge PR #42, which was made in /worktrees/api-migration. The user has authorized the merge but has not said whether to remove the worktree afterward.",
+      "expected_output": "The First Mate completes or delegates the authorized merge under the repository's integration convention, confirms it succeeded, then asks whether the user wants /worktrees/api-migration deleted (retired) without deleting it automatically.",
+      "expectations": [
+        "The merge follows the repository's required integration and verification gates.",
+        "The worktree is not removed before or as an implied side effect of the merge.",
+        "After a confirmed merge, the First Mate explicitly asks the user whether to delete (retire) the identified worktree folder.",
+        "The response does not assume authority to delete the associated local or remote branch."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "dialogue",
+      "prompt": "/firstmate Clear the local worktrees for this repository. Retire the eligible folders, but one worktree may contain commits not yet merged into main.",
+      "expected_output": "The First Mate inventories and reviews the repository's local worktrees, retires only clean inactive folders whose commits are merged into the appropriate base, and escalates any unmerged worktree instead of deleting it.",
+      "expectations": [
+        "Each candidate is checked for branch, working-tree state, ownership or active use, and merge ancestry against the appropriate integration base.",
+        "An unmerged candidate is preserved and reported with its folder, branch, commits, and intended base for the user's decision.",
+        "Unclear scope, active ownership, dirty state, or an unknown base pauses that candidate rather than treating it as eligible for deletion.",
+        "The cleanup request does not imply deletion of local or remote branches."
+      ]
     }
   ]
 }
