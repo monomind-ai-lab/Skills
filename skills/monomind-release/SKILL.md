@@ -28,6 +28,10 @@ Derive advance, hold, and rollback thresholds from project SLOs, historical base
 
 For each new operational path, start from the questions an operator will ask. Use metrics to show that something is wrong, traces to show where, and structured logs to show why. Keep identifiers bounded in metric labels and keep secrets and personal data out of telemetry.
 
+When several entry points feed one job and log sink, record the entry point at the boundary and carry it with the run's correlation ID through queues and calls. A correlation ID alone cannot tell an operator whether a scheduler, replay endpoint, or manual run started the work.
+
+For each actionable release alert, link an owned runbook that states what the alert means, the first diagnostic check, and who to escalate to if that check does not resolve it. Verify the check and escalation path before rollout; correct the runbook when an incident reveals a missing or wrong step.
+
 ## Roll out proportionally
 
 When the platform and risk justify staging:

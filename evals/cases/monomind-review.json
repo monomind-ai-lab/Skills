@@ -39,6 +39,18 @@
         "Change-introduced defects are separated from pre-existing issues and unverified assumptions.",
         "The reviewer does not modify files and states what verification could and could not be performed."
       ]
+    },
+    {
+      "id": 2,
+      "kind": "execution",
+      "prompt": "Review a branch with a repeated mechanical import rule violation. The repository has a lint command but it is unclear whether CI runs it. This is a read-only review.",
+      "expected_output": "A finding grounded in the existing check wiring and a narrow deterministic prevention proposal, without editing the branch.",
+      "expectations": [
+        "Inspects the existing lint command and CI or hook wiring before recommending a new check.",
+        "Distinguishes a missing or unwired mechanical check from a judgment-based standards issue.",
+        "Proposes the smallest repository-native deterministic check for the recurring violation.",
+        "Does not install the check during the read-only review."
+      ]
     }
   ]
 }

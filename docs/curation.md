@@ -2,7 +2,7 @@
 
 This record explains what was learned from each source, what entered the Monomind collection, and what was intentionally left out. The upstream repositories were inspected as temporary source material; none is a parent remote, subtree, or vendored snapshot of this repository.
 
-## Audited revisions
+## Last full audited revisions
 
 | Source | Revision inspected | Upstream license | Primary contribution to the synthesis |
 | --- | --- | --- | --- |
@@ -13,6 +13,27 @@ This record explains what was learned from each source, what entered the Monomin
 | [`kunchenguid/lavish-axi`](https://github.com/kunchenguid/lavish-axi) | `4413dcc8eff35cdc659e2035b94194d3c9be55fa` / package `0.1.71` (2026-09-16) | MIT | Local HTML artifact review, CLI-disclosed current guidance, annotation feedback loops, and separation of local review from hosted sharing |
 
 Access dates: first three sources 2026-09-02; Firstmate and Lavish AXI 2026-09-17.
+
+## Focused upstream review — 2026-09-28
+
+This review used the last full audits above as baselines and inspected the
+decision-relevant changes identified below. It was not a new full audit of any
+upstream repository. No upstream source tree, history, or expression was copied
+into this catalog.
+
+| Source | Focused revision reviewed | Decision and scope |
+| --- | --- | --- |
+| [`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) | `2686b620fc1fed2e8f60c704839c766b8594c6b6` | Reviewed `6fa76fa`, `cb4366f`, `cd33117`, and `6a9f2eb`. Added original dependency-free checks for the catalog's single-line YAML frontmatter and skill-local Markdown links, with failure tests. Added conditional alert runbook and shared-log entry-point guidance to `monomind-release`, with a behavioral eval. Did not import the upstream validator or its example runbook. |
+| [`mattpocock/skills`](https://github.com/mattpocock/skills) | `c55ee46073ed923f86ce59a5eb3b6d895095d1b7` | Reviewed `c55ee46` and `0243b6e`. Added reversibility and affected users/components to the workflow handoff, and guidance to inspect existing checks before proposing deterministic prevention of repeated mechanical review findings. Updated both evals. Did not adopt an upstream PR template or impose new CI/hook policy. |
+| [`michaelshimeles/skills`](https://github.com/michaelshimeles/skills) | `4b72f46b045e6fef52e6a98d4c162dd309826aed` | No adoption from this focused review. The root expression remains unlicensed in the reviewed evidence and the PolyForm subtree is unchanged; neither was copied. The last full license assessment above remains the provenance baseline. |
+| [`kunchenguid/firstmate`](https://github.com/kunchenguid/firstmate) | `3c2a91d70e07b48c982a8fe3460ba367795bb5d3` | Reviewed investigation-report and PR-landing guidance against the existing `firstmate` orchestration contract. No skill change: it already separates delegated investigation from implementation, holds an implementation-free boundary, and gates integration mutations. Fleet internals were excluded. Explicit-only activation stays intact. |
+| [`kunchenguid/lavish-axi`](https://github.com/kunchenguid/lavish-axi) | `40cafa206916cf21e4996158c347e58364d01559`, package `0.1.79` | Compared the tracked upstream skill, `package.json`, and third-party notice with the prior pin, and reviewed `README.md` and `CHANGELOG.md` for published CLI behavior. An independent pin check matched npm metadata, provenance, the published tarball, source package file, and release tag to this commit; Node >=22 remained unchanged. Advanced the focused pin and adapted the Monolayer wrapper for single-listener poll ownership (`--owner` optional; `--takeover` explicitly displaces), explanation/input playbooks, standalone HTML output, and optional revision guidance. Copy all answers is an optional input-playbook HTML control, not an answer CLI; live feedback uses `poll`. `export` stays local, while `share` publishes externally and publicly by default. Updated its eval, manifest watch list, README, and notice. The upstream third-party notice did not change; package runtime behavior was not executed here. |
+
+The focused review did not alter the MIT attribution recorded for Addy, Matt,
+Firstmate, or the external `lavish-axi` package. It did not change the treatment
+of unlicensed Michael Shimeles root material or the PolyForm Shield external
+package. `THIRD_PARTY_NOTICES.md` updates only Monolayer's reviewed pin and
+package version; the last full audit remains visible there.
 
 Detailed benchmark analysis: [`docs/benchmarks/michaelshimeles-agents.md`](benchmarks/michaelshimeles-agents.md).
 
@@ -26,7 +47,7 @@ Firstmate's scripts, hooks, internal skills, state layout, or source tree.
 Lavish AXI's public skill and package contract informed the original
 `monolayer` wrapper. The package remains external under its own license and
 name; Monolayer adds explicit download, hook, sharing, and publication authority
-gates. [`upstreams/monolayer.json`](../upstreams/monolayer.json) pins the audited
+gates. [`upstreams/monolayer.json`](../upstreams/monolayer.json) pins the focused reviewed
 revision, while `scripts/review_upstream_skill.py` compares selected files with
 newer upstream revisions without merging or overwriting catalog content. Its
 mandatory curation rules rename all adopted user-facing product and editor copy

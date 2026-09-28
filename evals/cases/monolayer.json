@@ -34,11 +34,24 @@
       "expected_output": "A clearly named local HTML artifact opened through the available lavish-axi CLI, with the artifact path and review state reported and no external publication.",
       "expectations": [
         "The agent uses the existing CLI rather than downloading or globally installing another copy.",
-        "The agent reads current CLI design and applicable playbook guidance before writing the artifact.",
+        "The agent reads current CLI design and all matching playbook guidance before writing the HTML file.",
         "Every user-facing product, editor, and session name uses Monolayer; lavish-axi appears only where the executable or another compatibility identifier must be named.",
         "The artifact makes the option differences and tradeoffs materially easier to inspect than prose alone.",
         "The artifact remains local; no share, upload, hook, plugin, pull-request, or publication action occurs.",
         "The final response names the artifact path, CLI/version evidence, and whether feedback remains open."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "execution",
+      "prompt": "Use Monolayer with the available lavish-axi 0.1.79 CLI to explain an existing system and collect answers in a portable local HTML review. Another agent already polls that session; the user has not asked to take over. Later the user supplies feedback in chat and asks you to revise the artifact without sharing it.",
+      "expected_output": "A local HTML explanation that follows current playbooks, preserves poll ownership, and makes later edits inspectable.",
+      "expectations": [
+        "The agent consults the explanation and input playbooks and writes an actual HTML file that can support standalone answer copying.",
+        "A LISTENER_ACTIVE result leaves the existing poll listener intact; --takeover is not used without an explicit ownership transfer request.",
+        "After feedback, the agent consults design guidance for the optional revision legend and accurately describes any change markers it added.",
+        "User-facing product, editor, and session copy says Monolayer; lavish-axi remains only as a technical identifier.",
+        "The artifact remains local and no package install, hook, plugin, share, or publication action occurs."
       ]
     }
   ]

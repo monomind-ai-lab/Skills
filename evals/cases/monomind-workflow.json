@@ -45,7 +45,7 @@
         "Isolation establishes a fresh owned task worktree and branch from origin/main and assigns shared ports or data resources without modifying another agent's work.",
         "Build proceeds in a thin public-seam slice; actions retain why/when policy while any earned shared service exposes explicit-input, structured-result mechanics.",
         "Proof maps every acceptance claim to repository checks or revision-bound runtime evidence, including the failing before state when feasible.",
-        "Ship inspects the diff and produces a PR-ready handoff without committing, pushing, opening a PR, replying to review, or merging."
+        "Ship inspects the diff and produces a PR-ready handoff naming reversibility and affected users or components, without committing, pushing, opening a PR, replying to review, or merging."
       ]
     },
     {

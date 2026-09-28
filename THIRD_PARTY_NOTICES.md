@@ -89,8 +89,8 @@ or Git history is included.
 ## kunchenguid/lavish-axi
 
 - Source: <https://github.com/kunchenguid/lavish-axi>
-- Revision inspected: `4413dcc8eff35cdc659e2035b94194d3c9be55fa`
-- Package inspected: `lavish-axi@0.1.71`
+- Last full audit: `4413dcc8eff35cdc659e2035b94194d3c9be55fa` / `lavish-axi@0.1.71`
+- Focused reviewed pin: `40cafa206916cf21e4996158c347e58364d01559` / `lavish-axi@0.1.79` (2026-09-28)
 - Copyright (c) 2026 Kun Chen
 - License: MIT
 
@@ -99,3 +99,6 @@ it does not vendor the package, its generated bundles, fonts, source tree, or Gi
 history. The package's own `THIRD-PARTY-NOTICES.md` governs software bundled in
 its published distribution. Users who authorize package execution or hosted
 sharing remain responsible for the external package and service terms.
+The upstream `THIRD-PARTY-NOTICES.md` content did not change between the two
+reviewed pins; this update records the newer external package version without
+importing its software or notice text.

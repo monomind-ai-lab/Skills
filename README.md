@@ -77,16 +77,25 @@ annotate locally.
 The product and editor are named **Monolayer** throughout the curated
 integration; its external executable remains `lavish-axi`. The skill prefers an
 existing PATH or repository-local executable and does not silently download the
-package. If execution would require `npx`, it asks before downloading the pinned
-audited release. Artifacts remain local by default, and hosted sharing, hooks,
-plugins, pull-request changes, and publication remain separate authority gates.
+package. The reviewed CLI requires Node.js 22 or newer. If execution would
+require `npx`, the skill asks before downloading the focused reviewed release.
+Artifacts remain local by default, and hosted sharing, hooks, plugins,
+pull-request changes, and publication remain separate authority gates.
+The focused review pin is `lavish-axi@0.1.79`. Its review loop identifies the
+poll owner when useful and leaves an existing listener in place unless the user
+explicitly requests a takeover; the skill also consults applicable explanation
+and input playbooks before creating an HTML file. Standalone answer copying is
+an optional input-playbook HTML control, while live feedback uses `poll`; `export`
+is local and `share` publishes externally, public by default.
 
 Monolayer is maintained as a curated wrapper rather than a vendored source tree
-or submodule. Its upstream manifest pins the audited upstream revision, and the
+or submodule. Its upstream manifest pins the focused reviewed revision, and the
 [read-only review command](#update-and-validate) shows selected upstream changes
 for deliberate adoption. User-facing “Lavish” or “Lavish Editor” copy is always
 adapted to “Monolayer”; package names, commands, environment variables, internal
 protocol keys, source citations, and legal notices retain their upstream names.
+The original full audit remains recorded separately in the
+[curation record](docs/curation.md).
 
 ## Start here: install, onboard, use
 
@@ -123,9 +132,11 @@ cd ../my-repo-adopt-monomind
 ### 2. Install the skills
 
 The commands below use the open [`skills` CLI](https://github.com/vercel-labs/skills)
-through `npx`, so Git, Node.js, and `npx` must be available.
+through `npx`, so Git, Node.js, and `npx` must be available. Adoption scripts
+and the optional plugin hook also require Python 3.10 or newer. `npx` may fetch
+and execute the skills CLI when it is not already cached.
 
-List the catalog without installing anything:
+List the catalog without installing any catalog skills:
 
 ```bash
 npx skills add monomind-ai-lab/Skills --list
@@ -138,8 +149,11 @@ npx skills add monomind-ai-lab/Skills \
   --skill '*' --agent codex --copy -y
 ```
 
-This places repo-scoped Codex skills under `.agents/skills/`. `--copy` makes the
-checked-in project self-contained instead of depending on a local symlink target.
+This places repo-scoped Codex skills under `.agents/skills/`. `--copy` puts skill
+files in the repository instead of depending on a local symlink target; commit
+those files if teammates need them. External tools used by individual skills
+remain separate dependencies.
+
 Replace `codex` with another [supported agent identifier](https://github.com/vercel-labs/skills#supported-agents)
 when needed, and use that host's native explicit-invocation syntax. The `$skill`
 examples below are Codex syntax.
@@ -192,9 +206,10 @@ checks the current Git root only for opted-in repositories (a profile, active
 managed policy, or `.monomind/onboarding.json` with `enabled: true`). It defaults
 to the Build boundary and is silent when that boundary is complete. Select
 `gate: "integration"` or `"release"` in that settings file to change the reminder
-boundary; set `enabled: false` to dismiss reminders without bypassing gates. The agent inspects and begins asking the
-policy questions on the first user turn in that repository; installation itself
-does not create a background conversation. See OpenAI's official
+boundary; set `enabled: false` to dismiss reminders without bypassing gates.
+The hook adds context for the agent to inspect and route missing policy on an
+active turn; installation itself does not create a background conversation or
+guarantee that the agent will follow the reminder. See OpenAI's official
 [plugin packaging](https://developers.openai.com/plugins/build/plugins#bundled-mcp-servers-and-lifecycle-hooks)
 and [hooks](https://learn.chatgpt.com/docs/hooks#sessionstart) documentation.
 
@@ -220,10 +235,13 @@ The onboarding agent uses the workflow's bundled adoption script to:
   active root `AGENTS.md` or `AGENTS.override.md`;
 - create `.monomind/workflow.md` only when it does not exist; and
 - check that the project-local workflow skill, policy block, profile, and
-  configured remote remain present;
-- inspect repository-native commands and policy evidence before asking; and
-- interview the authorized repo owner/project lead, write approved answers, and
-  run readiness gates.
+  configured remote remain present.
+
+The onboarding skill also directs the agent to inspect repository-native
+commands and policy evidence, interview the authorized repo owner or project
+lead, write approved answers, and run the requested readiness gate. The script
+checks structure and required fields; it cannot establish human approval from
+the text of a completed field.
 
 Choose the single gate for your requested boundary; a gated check already
 includes structural validation and lower-boundary requirements. The following
@@ -345,8 +363,10 @@ hook is an onboarding nudge, not a general command interceptor.
 
 ## Which skill should I use?
 
-Natural-language requests can trigger these implicitly. The last column shows
-the explicit form when deterministic selection matters.
+This checkout contains 16 installable skills, each with a matching eval case.
+Natural-language requests can trigger the phase skills implicitly; `firstmate`
+requires an explicit `/firstmate` or `$firstmate` invocation. The last column
+shows the explicit form when deterministic selection matters.
 
 | Skill | Reach for it when | Explicit example |
 | --- | --- | --- |
@@ -445,22 +465,25 @@ provenance, and manifest in one reviewed change. This keeps upstream discovery
 repeatable without making the catalog a source mirror or silently overriding
 Monomind authority or branding rules.
 
-Update project-installed skills with the skills CLI, then reapply the managed
-policy in case its contract changed:
+After an explicitly authorized refresh, update only the project-installed
+skills reported as changed. For example, when `monomind-workflow` is among
+them, use the skills CLI and reapply its managed policy in case the contract
+changed:
 
 ```bash
-npx skills update -p -y
+npx skills update monomind-workflow -p -y
 python3 .agents/skills/monomind-workflow/scripts/adopt.py apply --repo .
 # Use $monomind-onboarding only for required missing fields at the requested boundary.
 python3 .agents/skills/monomind-workflow/scripts/adopt.py check --gate build --repo .
 # Select integration or release instead when that is the requested boundary.
 ```
 
-Update the project-local workflow skill and plugin together so their policy
-readers agree. Reapplication preserves existing approved profile values; resolve
-only missing requirements for the selected boundary. Each readiness gate already
-includes structural checks and lower-boundary requirements—do not run all gates
-as a routine sequence. See the [schema upgrade guidance](skills/monomind-workflow/references/project-profile.md#readiness-and-schema-upgrades).
+If the plugin is installed, update it alongside the project-local workflow
+skill before relying on their policy readers to agree. Reapplication preserves
+existing approved profile values; resolve only missing requirements for the
+selected boundary. Each readiness gate already includes structural checks and
+lower-boundary requirements—do not run all gates as a routine sequence. See the
+[schema upgrade guidance](skills/monomind-workflow/references/project-profile.md#readiness-and-schema-upgrades).
 
 Contributors to this catalog should run:
 
@@ -469,10 +492,19 @@ python3 scripts/validate_catalog.py
 python3 -m unittest discover -s tests -v
 ```
 
-The catalog validator checks skill structure, UI metadata, eval coverage,
-trigger routing, negative-owner routing, and description collisions. Behavioral
-scenarios live in `evals/cases/`. Real paired agent runs (quality, clarification,
-tool calls, reported tokens) are documented in [evals/README.md](evals/README.md).
+The catalog validator checks skill structure (including the supported
+single-line YAML frontmatter subset), UI metadata, eval coverage, deterministic
+lexical trigger routing, negative-owner routing, and description collisions.
+Behavioral scenarios live in `evals/cases/`. Real paired agent runs (quality,
+clarification, tool calls, reported tokens) are documented in
+[evals/README.md](evals/README.md).
+Its local-link check covers single-line inline Markdown links (including balanced
+parentheses) and explicit `[label][id]` references with definitions inside each
+skill's Markdown files. It ignores fenced and inline code. Shortcut references,
+HTML links, multiline destinations, and section anchors are outside this bounded
+check; it does not check README links or external URLs, and it does not claim to
+parse all Markdown. In this checkout, it reports 16 skills, 16 eval files, and
+51/51 positive rank-1 routing cases.
 
 ## Measured agent results
 
@@ -509,8 +541,9 @@ metrics, snapshot hashes, grading criteria, corrections, and total reported
 benchmark usage. The [eval protocol](evals/README.md#actual-paired-agent-runs)
 provides reproduction and rescoring commands. Benchmark transcripts and fixtures
 remain local under gitignored `evals/results/`; the report and runner are tracked.
-Repository verification for the candidate passed 55 unit tests and 42/42 catalog
-rank-1 routing cases across 13 skills.
+At the time of that pilot, repository verification passed 55 unit tests and
+42/42 catalog rank-1 routing cases across 13 skills; those historical counts
+do not describe the current catalog.
 
 ## License
 
