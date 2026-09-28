@@ -98,9 +98,9 @@ when needed, rerunning only affected proof.
 
 Commit, push, open/update a change request, or merge only within supplied
 authority. Otherwise return a local PR-ready handoff. Include outcome, checks,
-evidence, remaining risks, and next state; link existing artifacts instead of
-duplicating them. Use review, release, or handoff skills only when that phase
-needs their additional guidance.
+evidence, remaining risks, reversibility, affected users or components, and
+next state; link existing artifacts instead of duplicating them. Use review,
+release, or handoff skills only when that phase needs their additional guidance.
 
 Address blocking CI/review findings; escalate contradictions or feedback that
 repeats without new evidence. Preserve isolation until completion or deliberate

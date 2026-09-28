@@ -6,9 +6,11 @@ from __future__ import annotations
 import json
 import math
 import re
+import string
 import sys
 from collections import Counter
 from pathlib import Path
+from urllib.parse import unquote as url_unquote, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +18,11 @@ SKILLS_DIR = ROOT / "skills"
 CASES_DIR = ROOT / "evals" / "cases"
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 WORD_RE = re.compile(r"[a-z0-9]+")
+FIELD_RE = re.compile(r"^[a-z][a-z0-9_-]*$")
+INLINE_LINK_START_RE = re.compile(r"!?\[[^\]\n]+\]\(")
+REFERENCE_USE_RE = re.compile(r"!?\[([^\]\n]+)\]\[([^\]\n]*)\]")
+REFERENCE_DEF_RE = re.compile(r"^ {0,3}\[([^\]\n]+)\]:\s*(<[^>\n]+>|\S+)")
+MARKDOWN_PUNCTUATION_ESCAPE_RE = re.compile(r"\\([" + re.escape(string.punctuation) + r"])")
 
 STOP_WORDS = {
     "a", "an", "and", "are", "as", "at", "be", "before", "both", "by",
@@ -64,11 +71,36 @@ class Validation:
         self.warnings.append(message)
 
 
-def unquote(value: str) -> str:
-    value = value.strip()
-    if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
-        return value[1:-1]
+def read_scalar(value: str, location: str, validation: Validation) -> str | None:
+    """Read the single-line scalar subset used by this catalog, without a YAML dependency."""
+    if value.startswith('"'):
+        try:
+            parsed, end = json.JSONDecoder().raw_decode(value)
+        except json.JSONDecodeError:
+            validation.error(f"{location}: invalid double-quoted YAML scalar")
+            return None
+        if not isinstance(parsed, str) or not valid_comment_suffix(value[end:]):
+            validation.error(f"{location}: invalid double-quoted YAML scalar")
+            return None
+        return parsed
+    if value.startswith("'"):
+        match = re.match(r"'((?:[^']|'')*)'", value)
+        if not match or not valid_comment_suffix(value[match.end():]):
+            validation.error(f"{location}: invalid single-quoted YAML scalar")
+            return None
+        return match.group(1).replace("''", "'")
+    value = re.split(r"\s+#", value, maxsplit=1)[0].strip()
+    if not value or value.startswith("#"):
+        validation.error(f"{location}: comment-only or empty YAML scalar")
+        return None
+    if re.search(r":(?:\s|$)", value) or value.startswith(("[", "{", "|", ">")):
+        validation.error(f"{location}: quote or simplify the unsupported YAML scalar")
+        return None
     return value
+
+
+def valid_comment_suffix(suffix: str) -> bool:
+    return not suffix or bool(re.fullmatch(r"\s+#.*", suffix))
 
 
 def read_frontmatter(path: Path, validation: Validation) -> dict[str, str]:
@@ -82,16 +114,150 @@ def read_frontmatter(path: Path, validation: Validation) -> dict[str, str]:
         return {}
 
     result: dict[str, str] = {}
-    for line in text[4:marker].splitlines():
-        if not line.strip() or line.startswith((" ", "\t")):
+    mapping: str | None = None
+    seen: set[tuple[str | None, str]] = set()
+    for number, line in enumerate(text[4:marker].splitlines(), start=2):
+        if not line.strip() or line.lstrip().startswith("#"):
             continue
-        key, separator, value = line.partition(":")
-        if separator:
-            result[key.strip()] = unquote(value)
+        location = f"{path.relative_to(ROOT)}:{number}"
+        indentation = len(line) - len(line.lstrip(" "))
+        if "\t" in line[:len(line) - len(line.lstrip())] or indentation not in {0, 2}:
+            validation.error(f"{location}: unsupported or tabbed YAML indentation")
+            continue
+        if indentation == 2 and mapping is None:
+            validation.error(f"{location}: nested field without a mapping")
+            continue
+        key, separator, value = line.strip().partition(":")
+        if not separator or not FIELD_RE.fullmatch(key) or (value and not value[0].isspace()):
+            validation.error(f"{location}: malformed YAML field")
+            continue
+        identity = (mapping if indentation == 2 else None, key)
+        if identity in seen:
+            validation.error(f"{location}: duplicate YAML field {key!r}")
+            continue
+        seen.add(identity)
+        value = value.strip()
+        if not value:
+            if indentation == 2:
+                validation.error(f"{location}: nested mappings are unsupported")
+            else:
+                mapping = key
+            continue
+        if indentation == 0:
+            mapping = None
+        scalar = read_scalar(value, location, validation)
+        if scalar is not None and indentation == 0:
+            result[key] = scalar
 
     if "TODO" in text or "[TODO" in text:
         validation.error(f"{path.relative_to(ROOT)}: unfinished scaffold placeholder")
     return result
+
+
+def without_inline_code(line: str) -> str:
+    """Blank complete backtick code spans while preserving line positions."""
+    result = list(line)
+    index = 0
+    while index < len(line):
+        if line[index] != "`":
+            index += 1
+            continue
+        end = index
+        while end < len(line) and line[end] == "`":
+            end += 1
+        marker = line[index:end]
+        closing = line.find(marker, end)
+        if closing < 0:
+            index = end
+            continue
+        result[index:closing + len(marker)] = " " * (closing + len(marker) - index)
+        index = closing + len(marker)
+    return "".join(result)
+
+
+def inline_destinations(line: str):
+    """Yield single-line inline link destinations, respecting balanced parentheses."""
+    for match in INLINE_LINK_START_RE.finditer(line):
+        start = match.end()
+        if start >= len(line):
+            continue
+        if line[start] == "<":
+            end = line.find(">", start + 1)
+            if end >= 0:
+                yield line[start + 1:end]
+            continue
+        depth = 0
+        index = start
+        while index < len(line):
+            char = line[index]
+            if char == "\\" and index + 1 < len(line):
+                index += 2
+                continue
+            if char == "(":
+                depth += 1
+            elif char == ")":
+                if depth == 0:
+                    break
+                depth -= 1
+            elif char.isspace() and depth == 0:
+                break
+            index += 1
+        if index < len(line) and line[start:index]:
+            yield line[start:index]
+
+
+def reference_key(label: str) -> str:
+    return " ".join(label.split()).casefold()
+
+
+def validate_local_links(skill_dir: Path, validation: Validation) -> None:
+    """Check single-line inline and explicit reference links in skill Markdown.
+
+    Fenced and inline code are ignored. Shortcut references, HTML links, and
+    multiline destinations are outside this deliberately bounded check.
+    """
+    root = skill_dir.resolve()
+    for document in sorted(skill_dir.rglob("*.md")):
+        fence_marker: str | None = None
+        fence_length = 0
+        definitions: set[str] = set()
+        references: list[tuple[str, str]] = []
+        destinations: list[tuple[str, str]] = []
+        for number, line in enumerate(document.read_text(encoding="utf-8").splitlines(), start=1):
+            fence = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", line)
+            if fence:
+                marker, rest = fence.groups()
+                if fence_marker is None:
+                    fence_marker, fence_length = marker[0], len(marker)
+                elif marker[0] == fence_marker and len(marker) >= fence_length and not rest.strip():
+                    fence_marker = None
+                continue
+            if fence_marker is not None:
+                continue
+            line = without_inline_code(line)
+            location = f"{document.relative_to(ROOT)}:{number}"
+            definition = REFERENCE_DEF_RE.match(line)
+            if definition:
+                definitions.add(reference_key(definition.group(1)))
+                destinations.append((definition.group(2).strip("<>"), location))
+                continue
+            destinations.extend((target, location) for target in inline_destinations(line))
+            for use in REFERENCE_USE_RE.finditer(line):
+                references.append((reference_key(use.group(2) or use.group(1)), location))
+
+        for key, location in references:
+            if key not in definitions:
+                validation.error(f"{location}: undefined reference: {key}")
+        for target, location in destinations:
+            normalized_target = MARKDOWN_PUNCTUATION_ESCAPE_RE.sub(r"\1", target)
+            parsed = urlsplit(normalized_target)
+            if parsed.scheme or parsed.netloc or not parsed.path:
+                continue
+            local = (document.parent / url_unquote(parsed.path)).resolve()
+            if not local.is_relative_to(root):
+                validation.error(f"{location}: local link escapes the standalone skill: {target}")
+            elif not local.is_file():
+                validation.error(f"{location}: broken local link: {target}")
 
 
 def read_ui_metadata(path: Path, skill_name: str, validation: Validation) -> None:
@@ -190,6 +356,7 @@ def load_catalog(validation: Validation):
         if len(description) > 500:
             validation.error(f"{skill_path.relative_to(ROOT)}: description exceeds 500 characters")
         read_ui_metadata(folder / "agents" / "openai.yaml", name, validation)
+        validate_local_links(folder, validation)
         if name:
             skills[name] = {"description": description}
     return skills

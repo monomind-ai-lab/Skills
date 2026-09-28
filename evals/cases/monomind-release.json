@@ -51,6 +51,18 @@
         "Does not invent or seek deployment policy for this merge-only request.",
         "Reports the check result and preserves the no-mutation boundary."
       ]
+    },
+    {
+      "id": 3,
+      "kind": "execution",
+      "prompt": "Assess launch readiness for a job started by a scheduler, replay endpoint, or manual CLI, with all runs entering one log sink. A new failure alert will page an operator. No live execution is authorized.",
+      "expected_output": "A release readiness finding that makes run origin attributable and the alert actionable without mutating production.",
+      "expectations": [
+        "The entry point is recorded when each run starts and propagated with its correlation ID across async boundaries.",
+        "The alert links to an owned runbook stating the likely meaning, first diagnostic check, and escalation contact.",
+        "The first check and escalation path are verified before rollout, with a path to correct stale runbook steps after an incident.",
+        "The report stays within readiness assessment and does not deploy."
+      ]
     }
   ]
 }

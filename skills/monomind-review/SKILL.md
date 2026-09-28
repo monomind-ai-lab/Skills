@@ -38,6 +38,8 @@ Review tests first, then implementation:
 
 Verify material test/build claims when the environment permits. A green suite is evidence, not proof that the tests exercise the right behavior.
 
+If the same mechanical standards violation keeps recurring, inspect the repository's existing lint, test, hook, and CI checks before recommending another. Report a missing or unwired check as a finding and propose the smallest repository-native deterministic check. Keep judgment calls in review guidance; a read-only review proposes the check but does not install it.
+
 ## Report findings first
 
 Use these priorities:
