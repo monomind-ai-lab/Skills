@@ -3,15 +3,16 @@
   "integration": "monolayer",
   "repository": "https://github.com/kunchenguid/lavish-axi.git",
   "tracking_ref": "refs/heads/main",
-  "audited_revision": "40cafa206916cf21e4996158c347e58364d01559",
-  "audited_at": "2026-09-28",
-  "audited_package_version": "0.1.79",
+  "audited_revision": "a2a199cd2275ab4d5cea1b94d42e2479bda36321",
+  "audited_at": "2026-09-30",
+  "audited_package_version": "0.1.80",
   "audit_scope": "Focused comparison of tracked skill, package, notices, README, and changelog; not a repository-wide audit",
   "last_full_audit_revision": "4413dcc8eff35cdc659e2035b94194d3c9be55fa",
   "curation_rules": [
     "Whenever user-facing copy names the product, editor, review session, or skill, use Monolayer; never adopt Lavish or Lavish Editor as the curated product name.",
     "Preserve upstream technical and legal identifiers verbatim where compatibility or attribution requires them: the lavish-axi package and executable, LAVISH_AXI_* environment variables, .lavish-axi paths, protocol and storage keys, repository URLs, source titles, copyright, and license text.",
-    "Apply the branding adaptation to every adopted upstream change before advancing audited_revision, then verify affected skills, documentation, evals, examples, and interface metadata."
+    "Apply the branding adaptation to every adopted upstream change before advancing audited_revision, then verify affected skills, documentation, evals, examples, and interface metadata.",
+    "Add the Monolayer runtime branding layer from skills/monolayer/SKILL.md to every reviewed artifact: rewrite rendered chrome brand text and window titles to Monolayer at presentation time while preserving compatibility identifiers, protocol or storage keys, code samples, and third-party or legal notes."
   ],
   "tracked_files": [
     {

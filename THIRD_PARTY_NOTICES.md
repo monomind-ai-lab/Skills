@@ -90,7 +90,7 @@ or Git history is included.
 
 - Source: <https://github.com/kunchenguid/lavish-axi>
 - Last full audit: `4413dcc8eff35cdc659e2035b94194d3c9be55fa` / `lavish-axi@0.1.71`
-- Focused reviewed pin: `40cafa206916cf21e4996158c347e58364d01559` / `lavish-axi@0.1.79` (2026-09-28)
+- Focused reviewed pin: `a2a199cd2275ab4d5cea1b94d42e2479bda36321` / `lavish-axi@0.1.80` (2026-09-30)
 - Copyright (c) 2026 Kun Chen
 - License: MIT
 

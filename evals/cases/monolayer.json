@@ -37,6 +37,7 @@
         "The agent reads current CLI design and all matching playbook guidance before writing the HTML file.",
         "Every user-facing product, editor, and session name uses Monolayer; lavish-axi appears only where the executable or another compatibility identifier must be named.",
         "The artifact makes the option differences and tradeoffs materially easier to inspect than prose alone.",
+        "The artifact carries the Monolayer branding layer: rendered chrome brand text and the window title read Monolayer, while code samples and third-party or legal notes stay verbatim.",
         "The artifact remains local; no share, upload, hook, plugin, pull-request, or publication action occurs.",
         "The final response names the artifact path, CLI/version evidence, and whether feedback remains open."
       ]
@@ -44,7 +45,7 @@
     {
       "id": 2,
       "kind": "execution",
-      "prompt": "Use Monolayer with the available lavish-axi 0.1.79 CLI to explain an existing system and collect answers in a portable local HTML review. Another agent already polls that session; the user has not asked to take over. Later the user supplies feedback in chat and asks you to revise the artifact without sharing it.",
+      "prompt": "Use Monolayer with the available lavish-axi 0.1.80 CLI to explain an existing system and collect answers in a portable local HTML review. Another agent already polls that session; the user has not asked to take over. Later the user supplies feedback in chat and asks you to revise the artifact without sharing it.",
       "expected_output": "A local HTML explanation that follows current playbooks, preserves poll ownership, and makes later edits inspectable.",
       "expectations": [
         "The agent consults the explanation and input playbooks and writes an actual HTML file that can support standalone answer copying.",
@@ -52,6 +53,18 @@
         "After feedback, the agent consults design guidance for the optional revision legend and accurately describes any change markers it added.",
         "User-facing product, editor, and session copy says Monolayer; lavish-axi remains only as a technical identifier.",
         "The artifact remains local and no package install, hook, plugin, share, or publication action occurs."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "execution",
+      "prompt": "Use monolayer to hand back the accepted result of an existing local review without waiting for more feedback; lavish-axi 0.1.80 is on PATH. Do not publish anything.",
+      "expected_output": "A concise reply posted through the reply command that exits after the server acceptance receipt, with the review still local and the branding intact.",
+      "expectations": [
+        "The agent uses `lavish-axi reply <html-file> --agent-reply \"<message>\"` or `--agent-reply-file` instead of another poll wait.",
+        "The agent does not claim the board stopped showing Working until the reply command exits 0.",
+        "User-facing copy names the product Monolayer; lavish-axi remains a technical identifier.",
+        "No share, upload, hook, plugin, pull-request, or publication action occurs."
       ]
     }
   ]
