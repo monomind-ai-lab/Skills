@@ -53,6 +53,12 @@ newer upstream revisions without merging or overwriting catalog content. Its
 mandatory curation rules rename all adopted user-facing product and editor copy
 to Monolayer while preserving compatibility identifiers and legal attribution.
 
+## Focused upstream review — 2026-09-30
+
+| Source | Focused revision reviewed | Decision and scope |
+| --- | --- | --- |
+| [`kunchenguid/lavish-axi`](https://github.com/kunchenguid/lavish-axi) | `a2a199cd2275ab4d5cea1b94d42e2479bda36321`, package `0.1.80` | Reviewed the diff from the `40cafa2` focused pin: a release-please version bump to `0.1.80` and a new `reply` CLI command with a server acceptance receipt, including a `reply --help` pointer and poll/reply contract wording in the upstream skill plus server, session-store, and test updates. Curated the reply-first hand-back contract into the Monolayer wrapper for `0.1.80` and advanced the focused pin. Added the runtime Monolayer branding layer as a manifest curation rule: every reviewed artifact embeds the presentation-time layer that rebrands rendered chrome brand text, the top-bar brand mark, and window titles to Monolayer while preserving compatibility identifiers, code samples, and third-party or legal notes. Updated its eval for the reply contract and the branding layer; upstream third-party notices did not change, and no package runtime behavior was executed here. |
+
 ## Selection matrix
 
 | Factory need | Adopted synthesis | Sources that most influenced it |
