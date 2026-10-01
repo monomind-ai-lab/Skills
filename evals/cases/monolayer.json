@@ -13,6 +13,10 @@
       {
         "prompt": "/monolayer Turn this architecture comparison into a local, reviewable HTML artifact.",
         "top_k": 1
+      },
+      {
+        "prompt": "Use monolayer to create a local HTML diagram artifact with Full screen that I can annotate.",
+        "top_k": 1
       }
     ],
     "negative": [
@@ -65,6 +69,44 @@
         "The agent does not claim the board stopped showing Working until the reply command exits 0.",
         "User-facing copy names the product Monolayer; lavish-axi remains a technical identifier.",
         "No share, upload, hook, plugin, pull-request, or publication action occurs."
+      ]
+    },
+    {
+      "id": 4,
+      "kind": "execution",
+      "prompt": "Use Monolayer to render this Mermaid diagram as a local review artifact: flowchart LR; subgraph Checkout; A[Cart] -->|submit| B[Payment]; B -->|approved| C[Receipt]; B -->|declined| A; end. lavish-axi 0.1.80 and a local Mermaid runtime are available. Its help says .mermaid containers become Excalidraw whiteboards and its diagram playbook recommends hand-drawn SVG. Include Full screen. Do not download, publish, or install anything.",
+      "expected_output": "A local artifact with faithful Mermaid SVG and an accessible Full screen viewer, preserving Monolayer branding and annotation without whiteboard conversion.",
+      "expectations": [
+        "The diagram uses rendered Mermaid SVG despite the upstream hand-drawn recommendation; no whiteboard is opened or conversion requested.",
+        "Source is stored as inert data with safe serialization, no container has class mermaid, and direct mermaid.render with startOnLoad false produces SVG in a differently named container.",
+        "The rendered diagram retains all three directed edges, their labels, the Checkout group, node labels, arrowheads, viewBox, and label markup.",
+        "A visibly labeled keyboard-accessible Full screen control requests browser fullscreen on the viewer including controls; unsupported or rejected requests use a viewport-filling dialog with managed focus and blocked background interaction.",
+        "Escape and visible Close exit the expanded view, fullscreenchange synchronizes browser exit, and focus returns to the opener.",
+        "Fit, zoom, and keyboard/pointer/touch pan remain accessible; fitting accounts for the toolbar and diagram bounds and updates after opening or resize.",
+        "Normal and narrow layouts keep labels readable and content reachable without clipping; branding, annotation state, and feedback remain usable after closing.",
+        "The handoff distinguishes performed visual/interaction checks from unverified behavior; no unsupported CLI flags, download, external runtime load, or publication occurs."
+      ]
+    },
+    {
+      "id": 5,
+      "kind": "dialogue",
+      "prompt": "Use Monolayer to create a local Mermaid diagram with Full screen. lavish-axi is available, but there is no local Mermaid runtime, pre-rendered SVG, or installed rendering tool. Downloads and external runtime loads are not authorized.",
+      "expected_output": "An explicit missing-renderer limitation and an authorization request for any dependency acquisition, without silently substituting a whiteboard or claiming a rendered diagram.",
+      "expectations": [
+        "The agent does not download a runtime, load a CDN script, install packages, or invent a lavish-axi rendering flag.",
+        "It identifies the unavailable Mermaid renderer and does not claim rendering or visual verification succeeded.",
+        "It preserves the Mermaid default and requests explicit authority for dependency acquisition rather than routing to a whiteboard."
+      ]
+    },
+    {
+      "id": 6,
+      "kind": "dialogue",
+      "prompt": "Use Monolayer and the already available lavish-axi CLI to convert this Mermaid diagram to an editable Excalidraw whiteboard. I explicitly want a whiteboard. Keep it local; do not install or publish anything.",
+      "expected_output": "The explicitly requested local whiteboard workflow, with accurate branding limitations and no expanded dependency or publication authority.",
+      "expectations": [
+        "The explicit whiteboard request permits that route rather than forcing the default Mermaid SVG viewer.",
+        "The agent checks available CLI support and does not invent flags, download packages, or publish the board.",
+        "User-authored copy names Monolayer and the handoff accurately reports residual upstream branding on the external whiteboard page."
       ]
     }
   ]
