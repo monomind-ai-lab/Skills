@@ -53,6 +53,8 @@ Record an architectural decision separately only when it is hard to reverse, sur
 
 Update the spec when implementation evidence changes a decision. Record the change and its reason; do not let the code and spec silently diverge.
 
+Before handing off prose edits, compare the result with the original and its sources. Preserve identifiers, quantities and units, commands, paths, links, conditions, tradeoffs, and uncertainty. Flag unverified claims; do not replace a caveat with a stronger promise or an invented example merely to improve the wording.
+
 ## Completion criteria
 
 - Every requirement has an observable acceptance signal.

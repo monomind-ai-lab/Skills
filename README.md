@@ -344,7 +344,7 @@ For stronger enforcement, use the layers together:
 | `monomind-onboarding` | Evidence discovery, owner/lead interview, profile writing, and readiness certification | That its proposed policy is approved without an authorized human answer |
 | Skill body | Correct procedure while that skill is active | That the skill will always be selected |
 | Trusted plugin `SessionStart` hook | Routing for opted-in repositories missing policy at the selected boundary | An install-time conversation, repository writes, or policy approval |
-| Adopted `AGENTS.md` | Mandatory onboarding/readiness routing, worktree rule, architecture ownership, and UI proof | Compliance by tools that ignore repository instructions |
+| Adopted `AGENTS.md` | Mandatory onboarding/readiness routing, worktree rule, post-merge cleanup consent, architecture ownership, and UI proof | Compliance by tools that ignore repository instructions |
 | `adopt.py check` | Detects missing or drifted policy, profile, project skill, and remote configuration | Readiness while reported values remain unresolved |
 | `adopt.py check --gate build/integration/release` | Fails when fields required at that boundary are missing, unresolved, empty, or bare not-applicable | Whether an apparently resolved value was approved honestly |
 | `adopt.py preflight` | Verifies the current branch is an approved-base linked task worktree | Future pushes, reviews, or merges |

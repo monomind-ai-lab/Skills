@@ -24,6 +24,7 @@ POLICY_BLOCK = f"""{START_MARKER}
 - Before Build, run `adopt.py check --gate build --repo <repository>`; before integration or merge, use `--gate integration`; before deployment, migration execution, or release, use `--gate release`. Resolve only the requested boundary's missing policy. Reuse results until policy, tools, revision, or environment changes invalidate them.
 - In side-effecting workflows, actions or boundaries own policy and why/when; services or capabilities own reusable how through explicit inputs and structured returns. Do not extract pass-through services for ceremony.
 - For a visible UI change, capture matched before/after evidence and include a PR-ready comparison. Invoke the installed `monomind-before-after` skill (in Codex: `$monomind-before-after`) when available.
+- After any confirmed merge, identify associated worktrees and local/remote task branches and ask which exact targets the user wants deleted, reusing prior explicit target-specific approval. Merge authority alone never permits cleanup. Recheck clean state, inactive ownership, and integration of each current tip before approved removal; preserve uncertain targets and protect base/shared branches.
 - Read `.monomind/workflow.md` for project-native collaboration, integration, testing, CI/CD, release, evidence, continuity, shared-resource, and authority rules.
 {END_MARKER}"""
 

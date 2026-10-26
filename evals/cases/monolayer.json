@@ -49,7 +49,7 @@
     {
       "id": 2,
       "kind": "execution",
-      "prompt": "Use Monolayer with the available lavish-axi 0.1.80 CLI to explain an existing system and collect answers in a portable local HTML review. Another agent already polls that session; the user has not asked to take over. Later the user supplies feedback in chat and asks you to revise the artifact without sharing it.",
+      "prompt": "Use Monolayer with the available lavish-axi 0.1.93 CLI to explain an existing system and collect answers in a portable local HTML review. Another agent already polls that session; the user has not asked to take over. Later the user supplies feedback in chat and asks you to revise the artifact without sharing it.",
       "expected_output": "A local HTML explanation that follows current playbooks, preserves poll ownership, and makes later edits inspectable.",
       "expectations": [
         "The agent consults the explanation and input playbooks and writes an actual HTML file that can support standalone answer copying.",
@@ -62,7 +62,7 @@
     {
       "id": 3,
       "kind": "execution",
-      "prompt": "Use monolayer to hand back the accepted result of an existing local review without waiting for more feedback; lavish-axi 0.1.80 is on PATH. Do not publish anything.",
+      "prompt": "Use monolayer to hand back the accepted result of an existing local review without waiting for more feedback; lavish-axi 0.1.93 is on PATH. Do not publish anything.",
       "expected_output": "A concise reply posted through the reply command that exits after the server acceptance receipt, with the review still local and the branding intact.",
       "expectations": [
         "The agent uses `lavish-axi reply <html-file> --agent-reply \"<message>\"` or `--agent-reply-file` instead of another poll wait.",
@@ -74,7 +74,7 @@
     {
       "id": 4,
       "kind": "execution",
-      "prompt": "Use Monolayer to render this Mermaid diagram as a local review artifact: flowchart LR; subgraph Checkout; A[Cart] -->|submit| B[Payment]; B -->|approved| C[Receipt]; B -->|declined| A; end. lavish-axi 0.1.80 and a local Mermaid runtime are available. Its help says .mermaid containers become Excalidraw whiteboards and its diagram playbook recommends hand-drawn SVG. Include Full screen. Do not download, publish, or install anything.",
+      "prompt": "Use Monolayer to render this Mermaid diagram as a local review artifact: flowchart LR; subgraph Checkout; A[Cart] -->|submit| B[Payment]; B -->|approved| C[Receipt]; B -->|declined| A; end. lavish-axi 0.1.93 and a local Mermaid runtime are available. Its help says .mermaid containers become Excalidraw whiteboards and its diagram playbook recommends hand-drawn SVG. Include Full screen. Do not download, publish, or install anything.",
       "expected_output": "A local artifact with faithful Mermaid SVG and an accessible Full screen viewer, preserving Monolayer branding and annotation without whiteboard conversion.",
       "expectations": [
         "The diagram uses rendered Mermaid SVG despite the upstream hand-drawn recommendation; no whiteboard is opened or conversion requested.",
@@ -107,6 +107,18 @@
         "The explicit whiteboard request permits that route rather than forcing the default Mermaid SVG viewer.",
         "The agent checks available CLI support and does not invent flags, download packages, or publish the board.",
         "User-authored copy names Monolayer and the handoff accurately reports residual upstream branding on the external whiteboard page."
+      ]
+    },
+    {
+      "id": 7,
+      "kind": "dialogue",
+      "prompt": "Use the available reviewed 0.1.93 executable locally. Its reply exits 0; a note has not been polled. Can we mark it complete and serve assets from the parent directory?",
+      "expected_output": "Distinguish reply acceptance from per-note delivery and keep assets within the permitted HTML artifact tree.",
+      "expectations": [
+        "An unpolled note is not claimed Done merely because reply was accepted.",
+        "No serving scope or host allowlist is broadened to reach unrelated files.",
+        "Injected SDK/styles mean standalone and review rendering are not promised identical.",
+        "The local-only path uses process-scoped LAVISH_AXI_TELEMETRY=0 without changing host configuration."
       ]
     }
   ]

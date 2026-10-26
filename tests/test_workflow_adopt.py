@@ -117,6 +117,28 @@ class WorkflowAdoptionTest(unittest.TestCase):
         self.assertEqual(check.returncode, 0, check.stderr)
         self.assertIn("managed policy is current", check.stdout)
 
+    def test_old_policy_requires_explicit_upgrade_and_preserves_local_content(self) -> None:
+        agents = self.task / "AGENTS.md"
+        prefix = "# Local instructions\n\nKeep local policy.\n"
+        agents.write_text(prefix, encoding="utf-8")
+        self.assertEqual(self.adopt(self.task).returncode, 0)
+        current = agents.read_text(encoding="utf-8")
+        cleanup_rule = next(line for line in current.splitlines(keepends=True)
+                            if line.startswith("- After any confirmed merge,"))
+        agents.write_text(current.replace(cleanup_rule, ""), encoding="utf-8")
+        profile = self.task / ".monomind" / "workflow.md"
+        original_profile = profile.read_bytes()
+
+        stale = self.check_contract()
+        self.assertNotEqual(stale.returncode, 0)
+        self.assertNotIn(cleanup_rule, agents.read_text(encoding="utf-8"))
+        reapplied = self.adopt(self.task)
+        self.assertEqual(reapplied.returncode, 0, reapplied.stderr)
+        self.assertEqual(agents.read_text(encoding="utf-8"), current)
+        self.assertTrue(current.startswith(prefix))
+        self.assertEqual(profile.read_bytes(), original_profile)
+        self.assertEqual(self.check_contract().returncode, 0)
+
     def test_active_override_file_is_updated_instead_of_shadowed_agents_file(self) -> None:
         agents = self.task / "AGENTS.md"
         override = self.task / "AGENTS.override.md"

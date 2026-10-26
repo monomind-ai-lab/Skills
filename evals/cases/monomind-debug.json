@@ -39,6 +39,28 @@
         "Alternative hypotheses are falsified through one-variable observations rather than broad speculative edits.",
         "The minimal fix turns the focused loop green, relevant regressions pass, and temporary instrumentation is removed."
       ]
+    },
+    {
+      "id": 2,
+      "kind": "dialogue",
+      "prompt": "An authorized temporary fixture mutation should force a red test, but the patch tool reported success without changing the fixture.",
+      "expected_output": "Compare with the preserved original and reject the result as mutation proof until the intended change is verified.",
+      "expectations": [
+        "Command success alone does not prove the mutation landed.",
+        "Only experiment-owned changes are restored; unrelated edits remain intact.",
+        "A failure for an unrelated setup reason is not accepted as regression proof."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "dialogue",
+      "prompt": "Diagnose this failure only. A code mutation might prove whether the regression test detects it.",
+      "expected_output": "Use read-only evidence or propose the experiment without applying it.",
+      "expectations": [
+        "Diagnosis alone does not authorize code or fixture mutation.",
+        "Available read-only observations are used to narrow the causal hypothesis.",
+        "Any remaining proof gap is reported without claiming a verified root cause."
+      ]
     }
   ]
 }
