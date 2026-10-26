@@ -138,14 +138,26 @@ def render_report(manifest: dict, target_revision: str, fetcher=fetch_text) -> s
         else:
             lines.append("No content changes.")
         lines.append("")
-    lines.extend(
+    complete_distribution = manifest.get("distribution_model") == "complete-unmodified-snapshot"
+    adoption_guidance = (
         [
-            f"Changes detected: {'yes' if changed else 'no'}",
-            "",
+            "Selected-file comparison is triage only; new/deleted paths and the complete tree require review.",
+            "For adoption, replace the complete unmodified snapshot and its inventory at one reviewed revision.",
+            "Do not patch individual upstream files or treat an unchanged watch list as distribution approval.",
+        ]
+        if complete_distribution
+        else [
             "If changes are adopted, update the curated integration manually,",
             "satisfy every curation rule before advancing the manifest,",
             "refresh evals/provenance as needed,",
             "and run the repository and skill validators. Do not merge upstream text wholesale.",
+        ]
+    )
+    lines.extend(
+        [
+            f"Changes detected: {'yes' if changed else 'no'}",
+            "",
+            *adoption_guidance,
         ]
     )
     return "\n".join(lines)

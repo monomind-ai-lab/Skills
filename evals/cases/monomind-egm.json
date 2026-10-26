@@ -1,0 +1,60 @@
+{
+  "skill_name": "monomind-egm",
+  "trigger": {
+    "positive": [
+      {"prompt": "Use the optional EGM distribution for this feature's design.", "top_k": 1},
+      {"prompt": "Compare the Elephant-Goldfish Model with the normal development approach.", "top_k": 1},
+      {"prompt": "Would fresh-context Goldfish spec stress-testing help with our consequential architecture uncertainty?", "top_k": 1}
+    ],
+    "negative": [
+      {"prompt": "Review this pull request against its specification and engineering standards.", "owner": "monomind-review"},
+      {"prompt": "Diagnose the reproducible intermittent test failure.", "owner": "monomind-debug"}
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "kind": "dialogue",
+      "prompt": "We have competing migration designs and unknown architectural assumptions. Would EGM help? Compare it with our usual approach; do not start it yet.",
+      "expected_output": "A task-specific recommendation with cost and capability limits, without activating EGM.",
+      "expectations": [
+        "Explains the benefit of fresh reviewers and the model usage and approval costs.",
+        "Waits for user selection before loading runtime personas or dispatching reviewers.",
+        "Does not replace the existing workflow or install plugins automatically."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "execution",
+      "prompt": "I selected EGM for this design. Only monomind-egm is installed here; there is no EGM plugin or catalog checkout. Help me proceed without installing anything.",
+      "expected_output": "Identifies the missing complete runtime and gives the distribution setup path without treating the standalone router as an installation.",
+      "expectations": [
+        "Does not rely on a relative sibling catalog file or search unrelated host directories.",
+        "Explains the complete plugin assets needed and supplies the distribution guide.",
+        "Does not download packages, simulate reviewers, or claim EGM execution."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "execution",
+      "prompt": "Use EGM to review the supplied design with the complete plugin root I provided. This host cannot create fresh-context subagents. Do not edit the design.",
+      "expected_output": "A precise missing-isolation report that preserves the read-only boundary.",
+      "expectations": [
+        "Reads the selected adapter and required skill resources rather than upstream contribution policy.",
+        "Does not present same-context roleplay as a Goldfish review or claim reviewers completed.",
+        "Leaves the design unchanged and reports what remains unverified."
+      ]
+    },
+    {
+      "id": 4,
+      "kind": "execution",
+      "prompt": "Check whether a newer EGM revision is worth adopting. The candidate adds a hook and deletes a shared persona, while the watched README is unchanged. This is review-only.",
+      "expected_output": "Whole-distribution triage that reports the behavioral changes without updating the snapshot or enabling the hook.",
+      "expectations": [
+        "Does not equate an unchanged selected-file report with a compatible complete snapshot.",
+        "Records a candidate disposition with required packaging and host verification.",
+        "Does not advance pins, edit upstream files, install, enable hooks, or execute fetched code."
+      ]
+    }
+  ]
+}

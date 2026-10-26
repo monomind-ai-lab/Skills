@@ -1,6 +1,42 @@
 # Curation record
 
-This record explains what was learned from each source, what entered the Monomind collection, and what was intentionally left out. The upstream repositories were inspected as temporary source material; none is a parent remote, subtree, or vendored snapshot of this repository.
+This record explains what was learned from each source, what entered the Monomind collection, and what was intentionally left out. Original Monomind skills use upstreams as temporary research inputs. EGM is the explicitly approved exception: a complete, unmodified optional distribution, with no upstream Git history or parent remote.
+
+## Optional EGM distribution — 2026-10-26
+
+- Source: [google/elephant-goldfish-model](https://github.com/google/elephant-goldfish-model).
+- Reviewed and imported revision: `3d0b34821ce88ad328b0c9bf0e06d7eb5f1cd669`, plugin `0.1.0`.
+- Scope: all 125 tracked files, preserving bytes and executable modes. The
+  inventory and Git tree are pinned in `upstreams/egm.json`; the snapshot lives
+  under `distributions/egm/upstream/`, outside the normal skill root.
+- Decision: preserve EGM as a user-selected approach instead of rewriting its
+  process into Monomind skills. The standalone `monomind-egm` router may suggest
+  EGM, but suggestion is not activation. Its design output may feed Monomind
+  implementation without bypassing project isolation or delivery authority.
+- License: upstream Apache-2.0 and Google copyrights are retained unchanged.
+  The site identifies its bundled fonts as OFL; supplemental Google Sans Flex
+  and Google Sans Code license copies sit outside the pristine snapshot, with
+  source URLs and digests in the manifest.
+- Verification scope: full-inventory and reconstructed-tree verification,
+  executable modes, export and refusal cases, catalog checks, and EGM offline
+  tests. No plugin installation, hook activation, authenticated live reviewer
+  test, or model-performance claim is part of this import.
+- Evidence commands: `python3 scripts/egm_distribution.py verify`,
+  `python3 scripts/validate_catalog.py`, the skill-creator validator for
+  `monomind-egm`, and `python3 -m unittest discover -s tests -v`. EGM's 50
+  offline tests also passed against a verified export using cached pytest and
+  PyYAML with bytecode and pytest cache writes disabled. No package download or
+  installed-skill refresh was needed. The offline suite exercises the read-hook
+  parser with isolated fixture inputs; no hook was enabled in a host.
+  Behavioral eval scenarios are authored
+  routing/authority cases, not a claim of completed live agent evaluation.
+- Pre-publication review found that the exporter verified only upstream files
+  and licenses while copying the enclosing bundle. A harmless unrelated-file
+  fixture reproduced the gap. Verification now rejects extra files and symlinks
+  throughout that bundle before copying; failure tests cover both unrelated
+  content and a guide redirected outside the bundle.
+- Maintenance: [two-lane upstream curation](upstream-curation.md). EGM updates
+  replace the complete reviewed snapshot; wrapper updates remain selective.
 
 ## Last full audited revisions
 
@@ -103,7 +139,8 @@ to Monolayer while preserving compatibility identifiers and legal attribution.
 
 - Broad always-on meta-routing that adds context to unrelated tasks. The adopted root instruction block contains only mandatory cross-cutting invariants and one workflow trigger.
 - Vendor-specific Greptile loops, issue-tracker setup, and silently installed lifecycle hooks. The Vercel before/after CLI is integrated narrowly because the user selected it as a factory primitive.
-- Upstream scripts, screenshots, fixtures, and source trees.
+- Upstream scripts, screenshots, fixtures, and source trees in the original
+  skill catalog. The approved EGM optional distribution is the sole exception.
 - Vendored PolyForm Shield software and unlicensed upstream expression. The external PolyForm package is referenced and invoked without redistribution.
 - Universal file-count, line-count, coverage, rollout-percentage, or timing rules presented as facts.
 - Automatic commits, pushes, messages, issue creation, package installation, public upload, or production mutation. Fresh worktree creation is the explicit Isolate beat of an end-to-end implementation workflow.
@@ -111,7 +148,7 @@ to Monolayer while preserving compatibility identifiers and legal attribution.
 
 ## Maintenance rule
 
-Upstream changes are research inputs, not updates to merge. A curator may re-audit a newer revision, record what decision-relevant idea changed, and make a fresh Monomind edit with its own tests and provenance. Never replace this collection with an upstream tree or make one of the sources its Git parent.
+For original skills, upstream changes are research inputs, not updates to merge. A curator may re-audit a newer revision, record what decision-relevant idea changed, and make a fresh Monomind edit with its own tests and provenance. Never replace the original collection with an upstream tree or make one of the sources its Git parent. EGM's separate optional distribution instead advances as one complete reviewed snapshot, with its manifest and evidence in the same change.
 
 For selected integrations, an `upstreams/*.json` manifest may pin the audited
 revision and files worth watching. `scripts/review_upstream_skill.py` performs a
