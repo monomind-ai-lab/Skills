@@ -5,6 +5,10 @@ release. This repository is a new composition, not a fork or source mirror. It
 combines durable ideas from selected public skill collections and reconciles them
 with Monomind's authority, isolation, architecture, and evidence model.
 
+The catalog also carries EGM as an explicitly selected, intact third-party
+distribution. It is separate from the original Monomind skills and keeps its
+upstream identity, workflow, and licenses.
+
 ```text
 INSTALL → ONBOARD → INTAKE → SPEC → PLAN → BUILD → EVIDENCE → REVIEW → RELEASE
                                   ↕         ↘
@@ -15,6 +19,7 @@ WORKFLOW conducts a complete code task as ISOLATE → BUILD → PROVE → SHIP.
 FIRSTMATE coordinates delegated agent work without implementing it.
 MONOLAYER turns visually dense results into reviewable local HTML artifacts.
 UPDATE checks installed skills and curated upstream pins without silent mutation.
+EGM is an optional design/spec approach, selected through MONOMIND-EGM.
 ```
 
 ## Version 0.2: architecture and evaluation
@@ -96,6 +101,36 @@ adapted to “Monolayer”; package names, commands, environment variables, inte
 protocol keys, source citations, and legal notices retain their upstream names.
 The original full audit remains recorded separately in the
 [curation record](docs/curation.md).
+
+## Optional distribution: Elephant-Goldfish Model
+
+EGM pairs deep-context drafting with fresh-context reviewers that stress-test
+design specifications. Users can choose it for a task; agents can suggest it
+when consequential design uncertainty justifies the additional review cost.
+A suggestion does not launch a review or install a plugin.
+
+```text
+$monomind-egm Compare EGM with our normal approach for this migration design.
+$monomind-egm Use EGM for this feature's design and spec review.
+```
+
+The small router is installable alone. The complete pinned EGM source lives in
+[`distributions/egm/upstream/`](distributions/egm/upstream/README.md), outside the
+normal plugin's skill root. Install/export the complete distribution separately;
+individual upstream skills depend on shared personas, adapters, and standards.
+Read the [distribution guide](distributions/egm/README.md) for setup and host
+limitations. EGM keeps its own design process; an approved design can feed the
+project's Monomind implementation workflow.
+
+```bash
+python3 scripts/egm_distribution.py verify
+python3 scripts/egm_distribution.py export /path/outside/catalog/egm-bundle
+```
+
+The exporter is local-only and refuses existing destinations. It neither
+installs EGM nor runs bundled hooks. Future updates follow the
+[two-lane curation policy](docs/upstream-curation.md): Monomind wrappers adopt
+selected changes; EGM advances as a complete, reviewed snapshot.
 
 ## Start here: install, onboard, use
 
@@ -384,6 +419,7 @@ shows the explicit form when deterministic selection matters.
 | [`monomind-release`](skills/monomind-release/SKILL.md) | Work approaches a live rollout, migration, or launch gate | `$monomind-release Assess release readiness.` |
 | [`monomind-handoff`](skills/monomind-handoff/SKILL.md) | Another session, agent, or human must continue without rereading the transcript | `$monomind-handoff Prepare continuation state.` |
 | [`monomind-update`](skills/monomind-update/SKILL.md) | Installed Engineering Skills or curated upstream pins need a read-only freshness check or an explicitly authorized scoped refresh | `$monomind-update Check whether my Engineering Skills are current.` |
+| [`monomind-egm`](skills/monomind-egm/SKILL.md) | Choosing or running the optional EGM design/spec approach, including fresh-context Goldfish reviews | `$monomind-egm Assess whether EGM fits this design task.` |
 | [`firstmate`](skills/firstmate/SKILL.md) | The user explicitly wants an implementation-free orchestrator to delegate, review, and sequence multi-agent engineering work | `$firstmate Coordinate this multi-service change.` |
 | [`monolayer`](skills/monolayer/SKILL.md) | A plan, comparison, diagram, code view, or report will be clearer as an annotatable local HTML artifact | `$monolayer Turn this architecture comparison into an interactive artifact.` |
 
@@ -457,6 +493,12 @@ revision, run:
 python3 scripts/review_upstream_skill.py upstreams/monolayer.json
 ```
 
+For EGM, `upstreams/egm.json` also works with this selected-file report, but
+adoption requires a complete tree review and whole-snapshot replacement. The
+watch list cannot prove that newly added or deleted resources are compatible.
+See [upstream curation](docs/upstream-curation.md). Verify the local snapshot
+without network access using `python3 scripts/egm_distribution.py verify`.
+
 The command resolves the configured upstream ref, prints the mandatory curation
 rules, compares only the selected source files with the pinned revision, and
 produces a read-only diff. If a change is worth adopting, apply every rule first,
@@ -489,6 +531,7 @@ Contributors to this catalog should run:
 
 ```bash
 python3 scripts/validate_catalog.py
+python3 scripts/egm_distribution.py verify
 python3 -m unittest discover -s tests -v
 ```
 
@@ -548,7 +591,9 @@ do not describe the current catalog.
 ## License
 
 New Monomind material is MIT licensed. Upstream license and provenance details
-are preserved in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). No upstream
-Git history, source tree, recorder, Greptile integration, or PolyForm-licensed
-utility is vendored; `monomind-before-after` invokes the external package under
+are preserved in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). The optional
+EGM distribution is the explicit source-vendoring exception: its material stays
+Apache-2.0, and its site fonts remain OFL-1.1. No upstream Git history,
+Greptile integration, or PolyForm-licensed utility is vendored;
+`monomind-before-after` invokes the external package under
 its own license when authorized.

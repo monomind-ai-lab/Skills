@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monomind EGM"
+  short_description: "Select optional EGM design and spec reviews"
+  default_prompt: "Use $monomind-egm to assess whether EGM fits this task, or run the EGM approach I have selected."

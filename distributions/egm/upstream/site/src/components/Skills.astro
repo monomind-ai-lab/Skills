@@ -1,0 +1,143 @@
+---
+const repo = 'https://github.com/google/elephant-goldfish-model';
+
+// User-facing slash-command entry points from the repository Skills Catalog.
+const skills = [
+  {
+    name: 'Brainstorm',
+    command: '/egm-brainstorm',
+    dir: 'egm_brainstorm',
+    body: 'Ideate before any document exists. Clarify the problem and stress-test the raw concept into a structured brief.',
+  },
+  {
+    name: 'Draft',
+    command: '/egm-draft',
+    dir: 'egm_draft',
+    body: 'Compile a markdown design specification section by section, with the Elephant holding the full context.',
+  },
+  {
+    name: 'Review',
+    command: '/egm-review',
+    dir: 'egm_review',
+    body: 'Run the multi-stage Goldfish verification pipeline: zoom out, comprehension, critic, readiness.',
+  },
+  {
+    name: 'Bootstrap',
+    command: '/egm-bootstrap',
+    dir: 'egm_bootstrap',
+    body: 'Generate bottom-up documentation for an existing codebase and keep it current in sentinel blocks.',
+  },
+  {
+    name: 'Drift Report',
+    command: '/egm-drift-report',
+    dir: 'egm_drift_report',
+    body: 'Scan the syntax tree to flag where live code diverges from checked-in specs.',
+  },
+];
+---
+
+<section class="section skills" id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="headline">Included skills</h2>
+    </div>
+    <ul class="list" aria-label="Skills">
+      {
+        skills.map((skill) => (
+          <li>
+            <a
+              class="ripple focus-ring-outer list-item"
+              href={`${repo}/blob/main/skills/${skill.dir}/SKILL.md`}
+              target="_blank"
+              rel="noopener"
+            >
+              <span class="list-item-leading">
+                <code class="cmd">{skill.command}</code>
+              </span>
+              <span class="list-item-content">
+                {skill.name}
+                <span class="list-item-supporting-text">{skill.body}</span>
+              </span>
+              <span class="list-item-trailing">
+                <svg viewBox="0 -960 960 960" aria-hidden="true">
+                  <path d="m216-160-56-56 464-464H360v-80h400v400h-80v-264L216-160Z" />
+                </svg>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* An index, not a stack of cards: hairline rows, the command in its own column so the
+     five commands read as one aligned list, name and description beside it. List item
+     theming goes through the component's documented custom properties. */
+  .skills .list {
+    border-radius: 0;
+    border-block-start: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .skills .list > li {
+    border-block-end: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .skills .list-item {
+    text-decoration: none;
+    --container-shape: var(--md-sys-shape-corner-md);
+    --label-text: var(--md-sys-typescale-title-lg);
+    --top-space: 22px;
+    --bottom-space: 24px;
+    --leading-space: 8px;
+    --trailing-space: 8px;
+    --between-space: 24px;
+    --trailing-icon-size: 22px;
+    align-items: baseline;
+    /* The package rounds a list's first and last rows by inheriting the list's own corners.
+       With the straight hairline above (list radius 0) that left the end rows half-square on
+       hover; every row's state layer now follows its own shape token on all four corners. */
+    border-radius: var(--container-shape);
+  }
+
+  .skills .list-item-leading {
+    flex: none;
+    inline-size: 15rem;
+    min-height: 0;
+  }
+
+  .skills .list-item-trailing {
+    align-self: center;
+  }
+
+  .skills .list-item-supporting-text {
+    max-inline-size: 56ch;
+    margin-block-start: 2px;
+    text-wrap: balance;
+  }
+
+  .cmd {
+    font-size: 0.8125rem;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  @media (max-width: 760px) {
+    .skills .list-item {
+      flex-wrap: wrap;
+      --between-space: 16px;
+      --top-space: 18px;
+      --bottom-space: 20px;
+    }
+
+    .skills .list-item-leading {
+      inline-size: 100%;
+      line-height: 1.25rem;
+      margin-block-end: -6px;
+    }
+
+    .skills .list-item-content {
+      flex-basis: 0;
+    }
+  }
+</style>

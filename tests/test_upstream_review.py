@@ -100,6 +100,16 @@ class UpstreamReviewTests(unittest.TestCase):
         self.assertIn("Curation rules (mandatory before advancing the pin)", report)
         self.assertIn("Use Example as the user-facing name", report)
 
+    def test_unchanged_watch_list_does_not_approve_complete_distribution(self):
+        manifest = self.manifest()
+        manifest["distribution_model"] = "complete-unmodified-snapshot"
+        report = MODULE.render_report(manifest, "d" * 40, fetcher=lambda *_: "same\n")
+        self.assertIn("Changes detected: no", report)
+        self.assertIn("triage only", report)
+        self.assertIn("new/deleted paths", report)
+        self.assertIn("replace the complete unmodified snapshot", report)
+        self.assertNotIn("Do not merge upstream text wholesale", report)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,591 @@
+{
+  "schema_version": 2,
+  "integration": "egm",
+  "repository": "https://github.com/google/elephant-goldfish-model.git",
+  "tracking_ref": "refs/heads/main",
+  "audited_revision": "3d0b34821ce88ad328b0c9bf0e06d7eb5f1cd669",
+  "audited_at": "2026-10-26",
+  "audited_package_version": "0.1.0",
+  "audit_scope": "Complete source inventory and distribution boundary review; offline packaging checks do not establish live harness execution.",
+  "distribution_model": "complete-unmodified-snapshot",
+  "curation_rules": [
+    "Adopt one complete reviewed upstream revision; preserve every tracked path, byte, and executable mode. Never patch upstream files locally.",
+    "Preserve EGM identity, workflow, Apache-2.0 notices, and applicable third-party licenses. Keep Monomind guidance outside the snapshot.",
+    "Keep EGM optional: a recommendation is not activation, and installation does not start a workflow or authorize hooks or live agent usage.",
+    "Review the complete tree diff including additions, deletions, binary files, hooks, adapters, personas, resources, manifests, and licenses; the watch list is only triage.",
+    "Advance the snapshot, inventory, pin, relevant evals, provenance, and validation evidence together. Report native host and isolation checks separately."
+  ],
+  "tracked_files": [
+    {
+      "path": "README.md",
+      "reason": "Published workflow and installation surface"
+    },
+    {
+      "path": "LICENSE",
+      "reason": "Primary distribution license"
+    },
+    {
+      "path": "plugin.json",
+      "reason": "Portable plugin identity and version"
+    },
+    {
+      "path": ".codex-plugin/plugin.json",
+      "reason": "Codex discovery boundary"
+    },
+    {
+      "path": ".claude-plugin/plugin.json",
+      "reason": "Claude plugin and hook configuration"
+    },
+    {
+      "path": "docs/codex.md",
+      "reason": "Fresh-context and host requirements"
+    },
+    {
+      "path": "docs/claude.md",
+      "reason": "Claude host integration and hook scope"
+    },
+    {
+      "path": "skills/egm_review/SKILL.md",
+      "reason": "Review orchestration and authority"
+    },
+    {
+      "path": "TESTING.md",
+      "reason": "Offline and live test scope"
+    }
+  ],
+  "integration_files": [
+    "skills/monomind-egm/SKILL.md",
+    "skills/monomind-egm/agents/openai.yaml",
+    "evals/cases/monomind-egm.json",
+    "distributions/egm/README.md",
+    "scripts/egm_distribution.py",
+    "tests/test_egm_distribution.py",
+    "docs/upstream-curation.md",
+    "docs/curation.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "snapshot": {
+    "path": "distributions/egm/upstream",
+    "tree": "e54dbf0b406723da546d709ff780cf9bbc4cc6cd",
+    "files": {
+      ".agents/plugins/marketplace.json": {
+        "mode": "100644",
+        "blob": "f2d8d4e1649f219b8d5964c8df01acc927b5b731"
+      },
+      ".claude-plugin/agents/bootstrap_orchestrator.md": {
+        "mode": "100644",
+        "blob": "3d757b8b13406c5d4e1b27b7bf1eb96b27df7c57"
+      },
+      ".claude-plugin/agents/codebase_details.md": {
+        "mode": "100644",
+        "blob": "ae2f1f12c2507ed4cb6de620bb1ac417d3f34f16"
+      },
+      ".claude-plugin/agents/comprehension.md": {
+        "mode": "100644",
+        "blob": "65edd82046676fcc37679d649a6679a5a1606556"
+      },
+      ".claude-plugin/agents/design_critic.md": {
+        "mode": "100644",
+        "blob": "26a10734b9009907cad613730bc714ef8aeb3479"
+      },
+      ".claude-plugin/agents/implementation_readiness.md": {
+        "mode": "100644",
+        "blob": "08bdc18b7d1fc79d07cc2d33f11204bb9a4ddb15"
+      },
+      ".claude-plugin/agents/structural.md": {
+        "mode": "100644",
+        "blob": "bd978f651c87606fee023432e958af5fa82bc3c4"
+      },
+      ".claude-plugin/agents/style.md": {
+        "mode": "100644",
+        "blob": "9d55d5ea00e61a5d9e5d2cff282cee5c3869619e"
+      },
+      ".claude-plugin/agents/synthesizer.md": {
+        "mode": "100644",
+        "blob": "a9a29a32ef4663924631274c090ff74de9f2e57e"
+      },
+      ".claude-plugin/agents/zoom_out.md": {
+        "mode": "100644",
+        "blob": "b6866c1404f68f87dc064afd26195dd66db93237"
+      },
+      ".claude-plugin/hooks/allow_plugin_reads.sh": {
+        "mode": "100755",
+        "blob": "98841201fec6ce9eab0c992b102bd14ca9381d2f"
+      },
+      ".claude-plugin/marketplace.json": {
+        "mode": "100644",
+        "blob": "19bee7444a0556b0e4d54a48e8ddfcca4970fc5f"
+      },
+      ".claude-plugin/plugin.json": {
+        "mode": "100644",
+        "blob": "b23ca8ddafce4cb6accff8ca1694ce59b9328a8e"
+      },
+      ".codex-plugin/plugin.json": {
+        "mode": "100644",
+        "blob": "0ee3fb3038d65b94893c8190971caaff5e516f85"
+      },
+      ".github/CODEOWNERS": {
+        "mode": "100644",
+        "blob": "0bafe7528bc64c73b29a461260523a0dfc10ad27"
+      },
+      ".github/ISSUE_TEMPLATE/feature_proposal.md": {
+        "mode": "100644",
+        "blob": "849271b6c14580614247ac45c04930980e16fc4a"
+      },
+      ".github/PULL_REQUEST_TEMPLATE.md": {
+        "mode": "100644",
+        "blob": "288485d4f5ef0c8dea66fa7aa9d528aeeb3921b1"
+      },
+      ".github/dependabot.yml": {
+        "mode": "100644",
+        "blob": "a96155f9cbe8d9bc051a338e7d6f63bb0728f4f8"
+      },
+      ".github/workflows/deploy-site.yml": {
+        "mode": "100644",
+        "blob": "6c30c7ebb84e2fa022a831c1d093754956c08ca2"
+      },
+      ".github/workflows/pr-scope-advisory.yml": {
+        "mode": "100644",
+        "blob": "1778c9b66050895b711dfdfcdb6a2f4ad9a176f1"
+      },
+      ".github/workflows/tests.yml": {
+        "mode": "100644",
+        "blob": "a67c5f418cf79518835f940470c191803945780a"
+      },
+      ".gitignore": {
+        "mode": "100644",
+        "blob": "e1ada674260e6abe365af7ccbc6387a4f5bb3a35"
+      },
+      "AGENTS.md": {
+        "mode": "100644",
+        "blob": "dd8a66218c0ff9e852be6637f6bb4c85fdda84a6"
+      },
+      "AI_POLICY.md": {
+        "mode": "100644",
+        "blob": "878e4c0400478954d77d517d8799251f9f85eb4a"
+      },
+      "CONTRIBUTING.md": {
+        "mode": "100644",
+        "blob": "62326a520f9d7e3629badd43e428404cbecaec72"
+      },
+      "LICENSE": {
+        "mode": "100644",
+        "blob": "d645695673349e3947e8e5ae42332d0ac3164cd7"
+      },
+      "README.md": {
+        "mode": "100644",
+        "blob": "184ec64041e6d26244cc2605da43cba158cca4c6"
+      },
+      "TESTING.md": {
+        "mode": "100644",
+        "blob": "e784e0b011d44d4474338dff5ae0171d76a02658"
+      },
+      "agents/bootstrap_orchestrator.md": {
+        "mode": "100644",
+        "blob": "fed422c3cf6772cd7f12099636259afa347f3f5e"
+      },
+      "agents/codebase_details.md": {
+        "mode": "100644",
+        "blob": "58c387ce1a3e48bec74e2619035c37866d8821c9"
+      },
+      "agents/comprehension.md": {
+        "mode": "100644",
+        "blob": "f0a20fb5b1abe09da9388fcae81fb04668cb9f3a"
+      },
+      "agents/design_critic.md": {
+        "mode": "100644",
+        "blob": "7f57159d623f898a8e683a5b7f312e8f11f84321"
+      },
+      "agents/implementation_readiness.md": {
+        "mode": "100644",
+        "blob": "51de42969dd7c4816140f55329f15bf88b27d3c1"
+      },
+      "agents/structural.md": {
+        "mode": "100644",
+        "blob": "313083b5db2496f1be689ff5adc43b9b3c7cb997"
+      },
+      "agents/style.md": {
+        "mode": "100644",
+        "blob": "2040c77a89e2b7bdb707fa39f8e569876665766a"
+      },
+      "agents/synthesizer.md": {
+        "mode": "100644",
+        "blob": "d14e5a683ec33a28a7b1d69c93ae2cb5f663fde5"
+      },
+      "agents/zoom_out.md": {
+        "mode": "100644",
+        "blob": "fc2b24bfa8cc295072915e7197401dd70b111129"
+      },
+      "docs/claude.md": {
+        "mode": "100644",
+        "blob": "d6f6a705f6bd20ec089a2f8f8c2e84ed5e877926"
+      },
+      "docs/codex.md": {
+        "mode": "100644",
+        "blob": "fee781138166365829a797885a4f08bcdf357afe"
+      },
+      "docs/designs/README.md": {
+        "mode": "100644",
+        "blob": "d9b56d916e1531e642fae4369f3dbb9834fbd007"
+      },
+      "docs/designs/architecture.md": {
+        "mode": "100644",
+        "blob": "0207b1ba773238ee89f7e7b4dcb55e0e8de55ed9"
+      },
+      "docs/designs/bootstrap.md": {
+        "mode": "100644",
+        "blob": "38f891eef107784be472633a34d389c995344bba"
+      },
+      "docs/designs/brainstorm.md": {
+        "mode": "100644",
+        "blob": "aef37fb5a24f204498c710a25fcdac6e5ce8cff4"
+      },
+      "docs/designs/draft.md": {
+        "mode": "100644",
+        "blob": "b20bed03f4022432394e4908745a67b43365503c"
+      },
+      "docs/designs/drift_report.md": {
+        "mode": "100644",
+        "blob": "b9ab157809cc318e0e8e6be720e772f21da25766"
+      },
+      "docs/designs/review.md": {
+        "mode": "100644",
+        "blob": "8559c56b2782b8cfa737b10edd95815bfa21b8f4"
+      },
+      "docs/designs/synthesizer.md": {
+        "mode": "100644",
+        "blob": "69e4bb413529ca36b313853fbc7aebdc1e77b7a5"
+      },
+      "docs/faq.md": {
+        "mode": "100644",
+        "blob": "80a7593808a37663daf28e56f0ee56a68177fd71"
+      },
+      "docs/getting_started.md": {
+        "mode": "100644",
+        "blob": "688b4d098d84923662ba069c0515312b66779438"
+      },
+      "docs/harnesses.md": {
+        "mode": "100644",
+        "blob": "c81cf0e1d305c3c66b4c6096c4f0f032c9fcaae3"
+      },
+      "docs/index.md": {
+        "mode": "100644",
+        "blob": "db7e27eb8096142b3b6be9ad025ae94e8d29b6b9"
+      },
+      "plugin.json": {
+        "mode": "100644",
+        "blob": "f3e4836f45b709c506caea7e12f3b9b407b7b591"
+      },
+      "pyproject.toml": {
+        "mode": "100644",
+        "blob": "1d4b0b315bf8451628b0ced9c7033df63197cd99"
+      },
+      "requirements-dev.txt": {
+        "mode": "100644",
+        "blob": "7003a3ed7cc1b7113f508f388dca5f2a42d967f8"
+      },
+      "resources/README.md": {
+        "mode": "100644",
+        "blob": "753fbd4dc811557c89f8913c907dfecaafce0b80"
+      },
+      "resources/document_standards/feature-spec-standard.md": {
+        "mode": "100644",
+        "blob": "04aec5269375354c242e1c3b55a761384bf8f917"
+      },
+      "resources/document_standards/heilmeier-standard.md": {
+        "mode": "100644",
+        "blob": "d9e93541ad2c3b107e016a85c26e952d5a6ec327"
+      },
+      "resources/document_standards/implementation-readiness-standard.md": {
+        "mode": "100644",
+        "blob": "371dccf1926596203986ce6a6bb4b48c86106869"
+      },
+      "resources/document_standards/re-implementation-standard.md": {
+        "mode": "100644",
+        "blob": "ff97b3a1e97a0c1885c7c2aeab03f29a0695762d"
+      },
+      "resources/document_standards/zoom-out-standard.md": {
+        "mode": "100644",
+        "blob": "de01edd8c458730241dea17a2d7bcaad153c9f94"
+      },
+      "resources/execution_instructions.md": {
+        "mode": "100644",
+        "blob": "af98b001fc7b30cbc9a85fc382502a56c7a3291d"
+      },
+      "site/.gitignore": {
+        "mode": "100644",
+        "blob": "ddce69b680698c8af84d31e8950ba8ce2a8eae75"
+      },
+      "site/README.md": {
+        "mode": "100644",
+        "blob": "9479eb846d17e194408e9133480aa31c321216b2"
+      },
+      "site/astro.config.mjs": {
+        "mode": "100644",
+        "blob": "1f7f48b5365e64ad8f534f0f221581b943236209"
+      },
+      "site/package-lock.json": {
+        "mode": "100644",
+        "blob": "62178ff351e146199401935e0a0bc14f1c991e51"
+      },
+      "site/package.json": {
+        "mode": "100644",
+        "blob": "499ec33fbc860618d3d51b63845d86424754981b"
+      },
+      "site/public/CNAME": {
+        "mode": "100644",
+        "blob": "8be6188f2b68ec3dbb7c98982e455b336743769e"
+      },
+      "site/public/favicon.svg": {
+        "mode": "100644",
+        "blob": "203147ca8f3e2490b05a67dc2751101eff2c7340"
+      },
+      "site/public/og.png": {
+        "mode": "100644",
+        "blob": "ac627bd725ff7ee870ee84578471ea06c1efbd31"
+      },
+      "site/public/robots.txt": {
+        "mode": "100644",
+        "blob": "c2a49f4fb82f19ffa9089fcf8630e5a2870d3feb"
+      },
+      "site/screenshots/full-light.png": {
+        "mode": "100644",
+        "blob": "a61fd810f325b3045a8b8c26ec47a8b74f6e36ac"
+      },
+      "site/screenshots/hero-dark.png": {
+        "mode": "100644",
+        "blob": "0fb906f7932e61beb41dff01d8f6854a209c851a"
+      },
+      "site/screenshots/hero-light.png": {
+        "mode": "100644",
+        "blob": "fd458ab0297c78a718228a3d364ce49b6ec29646"
+      },
+      "site/screenshots/mobile.png": {
+        "mode": "100644",
+        "blob": "e3b4862655add7c3a8b3048e7e88347fe9d1dd36"
+      },
+      "site/scripts/capture.mjs": {
+        "mode": "100644",
+        "blob": "9648f268c525a7b0b145ea9508a3fd0499ec87ba"
+      },
+      "site/scripts/og.html": {
+        "mode": "100644",
+        "blob": "68b35c2eb179b4aa87c1079527a73434b14f691d"
+      },
+      "site/src/assets/fonts/google-sans-code.woff2": {
+        "mode": "100644",
+        "blob": "3686534f6a9f04ae71707a1d71ca38995b1d3a1e"
+      },
+      "site/src/assets/fonts/google-sans-flex.woff2": {
+        "mode": "100644",
+        "blob": "9cb21e35af5d13c59674d4002d594650dbc95602"
+      },
+      "site/src/components/Footer.astro": {
+        "mode": "100644",
+        "blob": "38ad054d9261c559e73d81e9567b78ea70b2d41b"
+      },
+      "site/src/components/Hero.astro": {
+        "mode": "100644",
+        "blob": "93cc3133d2a57661466dd51b7d6825a1510ad190"
+      },
+      "site/src/components/Install.astro": {
+        "mode": "100644",
+        "blob": "8bbfeaae2ec364e037c631e37bee5d8247c37417"
+      },
+      "site/src/components/Loop.astro": {
+        "mode": "100644",
+        "blob": "c722f1e31c53e397e6df7b7162f5b008bcea6dfe"
+      },
+      "site/src/components/Mark.astro": {
+        "mode": "100644",
+        "blob": "23e26f2be31ce082c304f26a5721116b7bac74da"
+      },
+      "site/src/components/Model.astro": {
+        "mode": "100644",
+        "blob": "a67a42fa19a5b4ca0d18ee46a032d1865e78e5fe"
+      },
+      "site/src/components/Nav.astro": {
+        "mode": "100644",
+        "blob": "d4c9f5d45756e217533c570cddd08681b28f2d60"
+      },
+      "site/src/components/Skills.astro": {
+        "mode": "100644",
+        "blob": "62c45724c15e4496af9bf77273cc77b80eb05436"
+      },
+      "site/src/components/gb/Button.astro": {
+        "mode": "100644",
+        "blob": "2c8afb644c7a01bd61b4853a8bffdc0c88483abf"
+      },
+      "site/src/components/gb/IconButton.astro": {
+        "mode": "100644",
+        "blob": "f6fb4f8fa49d258d0d5e0cbc6fe5923127b9d0c2"
+      },
+      "site/src/layouts/Base.astro": {
+        "mode": "100644",
+        "blob": "9d2563b3d8b84d91a81810000a17f8aa41e66447"
+      },
+      "site/src/pages/index.astro": {
+        "mode": "100644",
+        "blob": "f63a5ab90641eeb579334d3ecd7eddc2f74e389f"
+      },
+      "site/src/styles/global.css": {
+        "mode": "100644",
+        "blob": "25b0c2bfeec50e52b6ea6ebea24698101cb65c32"
+      },
+      "site/src/styles/tokens.css": {
+        "mode": "100644",
+        "blob": "9c2e23817ac7436a1afeaf568166c54fac727690"
+      },
+      "site/tsconfig.json": {
+        "mode": "100644",
+        "blob": "8bf91d3bb997dfb0ea4a592b849545656f0fcebe"
+      },
+      "skills/egm_bootstrap/SKILL.md": {
+        "mode": "100644",
+        "blob": "6d49a929ad510f441cdc21ec1e93835734b188fa"
+      },
+      "skills/egm_bootstrap/TEST.md": {
+        "mode": "100644",
+        "blob": "40af035c3365d3781be278a83f70f057bfadeea8"
+      },
+      "skills/egm_bootstrap/references/worker-return.schema.json": {
+        "mode": "100644",
+        "blob": "7e892955ce232bb9047ba55d3884c2295638b83f"
+      },
+      "skills/egm_bootstrap/test_scenarios.yaml": {
+        "mode": "100644",
+        "blob": "9ecbc9ce6a9d521d586b610ed659ad303f0651af"
+      },
+      "skills/egm_brainstorm/SKILL.md": {
+        "mode": "100644",
+        "blob": "55e6bd986fd94c4144f58e3ee41fb6584aaa78cd"
+      },
+      "skills/egm_brainstorm/TEST.md": {
+        "mode": "100644",
+        "blob": "2edd64a0db3ae61735225fe930a9f255d0b0c248"
+      },
+      "skills/egm_brainstorm/test_scenarios.yaml": {
+        "mode": "100644",
+        "blob": "8e757c44900a089dd037e876c98272322ee5b11c"
+      },
+      "skills/egm_draft/SKILL.md": {
+        "mode": "100644",
+        "blob": "19524c59c4a198bf0d8a7132732c26307eb168e5"
+      },
+      "skills/egm_draft/TEST.md": {
+        "mode": "100644",
+        "blob": "5c0723dd9321312f79ddf236e3380f1f86a69a09"
+      },
+      "skills/egm_draft/references/design_doc.md": {
+        "mode": "100644",
+        "blob": "b0c575406c7f730375e712a7badcc256844345a4"
+      },
+      "skills/egm_draft/test_scenarios.yaml": {
+        "mode": "100644",
+        "blob": "660ebbb5444a253072449dff8673ee5c31c9606b"
+      },
+      "skills/egm_drift_report/SKILL.md": {
+        "mode": "100644",
+        "blob": "1947221778bea357a98409c0d580c741a7b72be9"
+      },
+      "skills/egm_drift_report/TEST.md": {
+        "mode": "100644",
+        "blob": "a90dbbcc84e7e8cf44cf08caded11b116d7127f1"
+      },
+      "skills/egm_drift_report/test_scenarios.yaml": {
+        "mode": "100644",
+        "blob": "c9b1a3fd48abc96d78f023e00b46231857deb0d9"
+      },
+      "skills/egm_resolve/SKILL.md": {
+        "mode": "100644",
+        "blob": "59b759f5b295baac23ef75eae3b55fa4a74964b2"
+      },
+      "skills/egm_resolve/TEST.md": {
+        "mode": "100644",
+        "blob": "1cdcbe0583b585270b4284df0eddec8eeece8542"
+      },
+      "skills/egm_resolve/test_scenarios.yaml": {
+        "mode": "100644",
+        "blob": "88a33ee4b4a3d9aa67d60b58df6b54f624b3e8d4"
+      },
+      "skills/egm_review/SKILL.md": {
+        "mode": "100644",
+        "blob": "2a1b3ccd43af0c45c5322b762e4d5ae4027b2f12"
+      },
+      "skills/egm_review/TEST.md": {
+        "mode": "100644",
+        "blob": "85a053c538c58bbcf047259cd6a0e8753299d940"
+      },
+      "skills/egm_review/test_scenarios.yaml": {
+        "mode": "100644",
+        "blob": "9837629a6112c3ac7d613d0715bb0f79a526c8ae"
+      },
+      "skills/egm_review_loop/SKILL.md": {
+        "mode": "100644",
+        "blob": "f71ecf73b3e75c19edad5ed50c7cca52dd941fa0"
+      },
+      "skills/egm_review_loop/TEST.md": {
+        "mode": "100644",
+        "blob": "c07a3235a5381717f9940e22fda7be631df357b3"
+      },
+      "skills/egm_review_loop/test_scenarios.yaml": {
+        "mode": "100644",
+        "blob": "5a023b8c416dc290b653dbd3003265b0b5192b7a"
+      },
+      "tests/conftest.py": {
+        "mode": "100644",
+        "blob": "5ebc08b28921bcb21ad66ebeef7c9e5aefb35392"
+      },
+      "tests/integration/test_claude.py": {
+        "mode": "100644",
+        "blob": "9d7df4b33f302857816eb9e97a90e20057d3e1c1"
+      },
+      "tests/integration/test_codex.py": {
+        "mode": "100644",
+        "blob": "d46b5ba49a999cddc425131ccad3ddc5483e1ac5"
+      },
+      "tests/unit/test_claude_traces.py": {
+        "mode": "100644",
+        "blob": "364cbeeed33be9cff8d99ce2401c8dc23c7ba599"
+      },
+      "tests/unit/test_frontmatter.py": {
+        "mode": "100644",
+        "blob": "5688b1103d91d11ad9770cf6aa1257878ed00989"
+      },
+      "tests/unit/test_harnesses.py": {
+        "mode": "100644",
+        "blob": "1be52642eb3349bbcd5ded61f2a481f84b674e2d"
+      },
+      "tests/unit/test_link_integrity.py": {
+        "mode": "100644",
+        "blob": "578d66a00528121760178f81b4d9b5a037a916f9"
+      },
+      "tests/unit/test_scenario_coverage.py": {
+        "mode": "100644",
+        "blob": "1465d42817871f0879d69c942f58a20627cf35e8"
+      },
+      "tests/unit/test_skill_load_limits.py": {
+        "mode": "100644",
+        "blob": "790d18732b7e5a247d31e3807fbba8f8856d29f7"
+      }
+    }
+  },
+  "supplemental_licenses": [
+    {
+      "path": "distributions/egm/licenses/googlesansflex-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesansflex/OFL.txt",
+      "retrieved_at": "2026-10-26",
+      "sha256": "976af3092c8d49e5baa62bf982e52a26fb95fdbd45c66bc905398073150536c0",
+      "source_sha256": "fc13d69f63e36d284b6e383d4d1463d8ad404f0aa065e57cf961252d51063137",
+      "normalization": "License text retained; line endings normalized to LF with a final newline."
+    },
+    {
+      "path": "distributions/egm/licenses/googlesanscode-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesanscode/OFL.txt",
+      "retrieved_at": "2026-10-26",
+      "sha256": "781f3121e09c1f4e8234901b180ed865cb57b259ce7a1edc9a65c4f956a0cd5e",
+      "source_sha256": "ff8f4fbc4f1a71c7d4c6481c48dc2b21c43f8dc15872536667fee45c15d20928",
+      "normalization": "License text retained; line endings normalized to LF with a final newline."
+    }
+  ]
+}

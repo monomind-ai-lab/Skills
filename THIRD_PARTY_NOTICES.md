@@ -1,6 +1,36 @@
 # Third-party notices
 
-This project is an original curation informed by the repositories listed below. It does not include their Git histories or source trees. Licensed influences and the one unlicensed design reference are documented here; external software remains under its own license.
+This project includes original Monomind curation and an explicitly optional EGM distribution. Original skills do not include upstream source trees; the EGM exception below preserves its complete pinned snapshot without Git history. Licensed influences and the unlicensed design reference are documented here; third-party material retains its own license.
+
+## google/elephant-goldfish-model — optional distribution
+
+- Source: <https://github.com/google/elephant-goldfish-model>
+- Revision: `3d0b34821ce88ad328b0c9bf0e06d7eb5f1cd669`, plugin version `0.1.0`
+- Copyright 2026 Google LLC and the upstream authors as identified in source
+- License: Apache License, Version 2.0, except third-party components under their own terms
+- Location: `distributions/egm/upstream/`
+
+The complete tracked snapshot is redistributed unchanged, including existing
+copyright and attribution notices. Its full license is preserved at
+[`distributions/egm/upstream/LICENSE`](distributions/egm/upstream/LICENSE).
+The root MIT license does not relicense this distribution. Monomind integration
+guidance lives outside the snapshot. EGM is not an officially supported Google
+product, and redistribution does not imply endorsement.
+
+The upstream site identifies its Google Sans Flex and Google Sans Code fonts
+as SIL Open Font License 1.1 material. Supplementary license copies are supplied
+beside the unchanged snapshot:
+
+- Copyright 2015 The Google Sans Flex Authors:
+  [`googlesansflex-OFL.txt`](distributions/egm/licenses/googlesansflex-OFL.txt)
+- Copyright 2025 The Google Sans Code Project Authors:
+  [`googlesanscode-OFL.txt`](distributions/egm/licenses/googlesanscode-OFL.txt)
+
+These copies retain the copyright and license text with normalized line endings.
+Their official source URLs, retrieval date, source digests, and distributed-file
+digests are recorded in `upstreams/egm.json`. Font files are not relicensed under
+Apache-2.0 or MIT. Site package dependencies are listed upstream but no installed
+dependency tree or compiled site is included.
 
 ## addyosmani/agent-skills
 
