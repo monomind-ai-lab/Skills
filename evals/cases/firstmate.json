@@ -55,7 +55,8 @@
         "The merge follows the repository's required integration and verification gates.",
         "The worktree is not removed before or as an implied side effect of the merge.",
         "After a confirmed merge, the First Mate explicitly asks the user whether to delete (retire) the identified worktree folder.",
-        "The response does not assume authority to delete the associated local or remote branch."
+        "The response does not assume authority to delete the associated local or remote branch.",
+        "The cleanup question also identifies local and remote task branches and offers independent choices without deleting them."
       ]
     },
     {
@@ -68,6 +69,28 @@
         "An unmerged candidate is preserved and reported with its folder, branch, commits, and intended base for the user's decision.",
         "Unclear scope, active ownership, dirty state, or an unknown base pauses that candidate rather than treating it as eligible for deletion.",
         "The cleanup request does not imply deletion of local or remote branches."
+      ]
+    },
+    {
+      "id": 4,
+      "kind": "dialogue",
+      "prompt": "/firstmate The PR was merged by a maintainer outside this session. Its task worktree and local and remote task branches remain; cleanup has not been approved.",
+      "expected_output": "Confirm merge state and ask separately about the exact worktree and local and remote task branches.",
+      "expectations": [
+        "No cleanup occurs on merge authority alone.",
+        "Newer unmerged commits, dirty state, active ownership, and base/shared branches protect a target.",
+        "Squash or rebase ancestry uncertainty requires integration evidence, not forced deletion."
+      ]
+    },
+    {
+      "id": 5,
+      "kind": "dialogue",
+      "prompt": "/firstmate The PR is confirmed merged. The user already approved retiring its exact worktree folder but explicitly wants both local and remote branches retained.",
+      "expected_output": "Recheck eligibility and retire only the approved folder through the repository recovery convention.",
+      "expectations": [
+        "Existing target-specific approval is reused without asking again.",
+        "Neither local nor remote branch is deleted.",
+        "An ineligible or uncertain worktree is preserved and reported."
       ]
     }
   ]

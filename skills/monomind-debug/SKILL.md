@@ -17,6 +17,7 @@ Make the failure observable, reduce it, falsify hypotheses, and identify the cau
 
 1. Build the fastest trustworthy feedback loop that goes **red** on this failure: a focused test, deterministic script, recorded request, browser flow, benchmark, or production-like probe.
 2. Confirm that the loop detects the failure for the right reason. A failing command with an unrelated setup error is not a reproduction.
+   If an authorized experiment forces a failure by changing code or fixture data, compare it with the preserved original to prove the intended change actually landed before trusting the red result. Restore only the experiment's own changes afterward. Diagnosis-only authority does not permit such mutations by itself.
 3. Minimize the case while keeping it red. Remove inputs, dependencies, concurrency, and layers one at a time.
 4. For intermittent failures, run repeated trials and record frequency, timing, seed, and environment instead of treating one pass as disproof.
 

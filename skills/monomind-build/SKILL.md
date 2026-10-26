@@ -13,7 +13,7 @@ Deliver the smallest complete behavior, prove it, then expand. Preserve the user
 2. Confirm this task's owned linked worktree and recorded authoritative base; never implement on `main`, the base branch, or another task's workspace. Reuse a valid task worktree and orientation record from the workflow. If isolation is missing, establish it through the repository convention before editing.
 3. Discover repository-native build, test, type, lint, and formatting commands from checked-in configuration or CI. Do not substitute familiar defaults.
 4. Detect exact dependency versions. For version-sensitive external APIs, consult current primary documentation for the specific pattern being used.
-5. Name the slice's outcome, public test seam, scope boundary, and expected files before editing. If an unresolved choice would materially change the result, surface it first.
+5. Name the slice's outcome, public test seam, scope boundary, and expected files before editing. For each proposed seam, state which failures it can detect and which remain outside its coverage. If an unresolved choice would materially change the result, surface it first.
 
 Reuse previously verified commands, approvals, and passing gate results from this
 task until relevant policy, tooling, code, base, or environment changes. Do not

@@ -3,9 +3,9 @@
   "integration": "monolayer",
   "repository": "https://github.com/kunchenguid/lavish-axi.git",
   "tracking_ref": "refs/heads/main",
-  "audited_revision": "a2a199cd2275ab4d5cea1b94d42e2479bda36321",
-  "audited_at": "2026-09-30",
-  "audited_package_version": "0.1.80",
+  "audited_revision": "86d14ff50e6e9c0be0b7575226ae214b0fd84035",
+  "audited_at": "2026-10-26",
+  "audited_package_version": "0.1.93",
   "audit_scope": "Focused comparison of tracked skill, package, notices, README, and changelog; not a repository-wide audit",
   "last_full_audit_revision": "4413dcc8eff35cdc659e2035b94194d3c9be55fa",
   "curation_rules": [

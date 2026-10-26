@@ -106,6 +106,16 @@ Address blocking CI/review findings; escalate contradictions or feedback that
 repeats without new evidence. Preserve isolation until completion or deliberate
 handoff. Never modify, reset, stash, rebase, or delete another owner's work.
 
+After any confirmed merge, including one performed outside this session, identify
+the associated worktree and local/remote task branches. Ask whether the user wants
+each target deleted, unless prior explicit approval already covers those exact
+targets. Merge authority alone does not authorize automatic cleanup. If none
+remain, report that. Before approved deletion, verify clean state, inactive
+ownership, and no newer unmerged commits; protect base/shared branches. Use
+revision-bound integration evidence for squash/rebase merges when ancestry is
+inconclusive. Preserve uncertain or declined targets and follow the project's
+recoverable removal convention. Worktree approval does not imply branch approval.
+
 **Result:** the authorized delivery state reached, evidence attached or linked,
 and remaining work explicit. Do not repeat phase summaries in separate artifacts
 unless a real consumer requires them.

@@ -59,6 +59,41 @@ to Monolayer while preserving compatibility identifiers and legal attribution.
 | --- | --- | --- |
 | [`kunchenguid/lavish-axi`](https://github.com/kunchenguid/lavish-axi) | `a2a199cd2275ab4d5cea1b94d42e2479bda36321`, package `0.1.80` | Reviewed the diff from the `40cafa2` focused pin: a release-please version bump to `0.1.80` and a new `reply` CLI command with a server acceptance receipt, including a `reply --help` pointer and poll/reply contract wording in the upstream skill plus server, session-store, and test updates. Curated the reply-first hand-back contract into the Monolayer wrapper for `0.1.80` and advanced the focused pin. Added the runtime Monolayer branding layer as a manifest curation rule: every reviewed artifact embeds the presentation-time layer that rebrands rendered chrome brand text, the top-bar brand mark, and window titles to Monolayer while preserving compatibility identifiers, code samples, and third-party or legal notes. Updated its eval for the reply contract and the branding layer; upstream third-party notices did not change, and no package runtime behavior was executed here. |
 
+## Focused upstream review — 2026-10-26
+
+Fetched each existing source's current main branch and compared it with the last
+focused review below. All five prior revisions are ancestors of the reviewed
+heads. These are scoped curation decisions, not new repository-wide audits or
+runtime certifications. Earlier full audits remain the license/history baseline.
+
+| Source | Previous focused revision → reviewed head | Adopted changes and exclusions |
+| --- | --- | --- |
+| [Addy Osmani](https://github.com/addyosmani/agent-skills) | `2686b620fc1fed2e8f60c704839c766b8594c6b6` → `aeac41d4d005999432bb7312f7ff06383a91d59d` | Reviewed changed-path/commit inventories and documentation/ADR prose guidance. Added an original factual-preservation check to `monomind-spec`: retain quantities, identifiers, conditions, and caveats. Retained Monomind's proportional authority model rather than importing blanket spec approval pauses, plugin infrastructure, or automatic review mutations. |
+| [Matt Pocock](https://github.com/mattpocock/skills) | `c55ee46073ed923f86ce59a5eb3b6d895095d1b7` → `5beb35b040e3de97e54fa9e386d7e42d15c295c2` | Reviewed changed-path/commit inventories and engineering diagnosis/TDD diffs. Added seam coverage limits to `monomind-build` and proof that an authorized forced mutation actually landed to `monomind-debug`. Did not impose new glossary filenames, mandatory seam approval for every test, automatic integration/history changes, or chief-of-staff memory. |
+| [Michael Shimeles](https://github.com/michaelshimeles/skills) | `4b72f46b045e6fef52e6a98d4c162dd309826aed` → `11b15767d7587bab11f6c4957507b5f26d1785c7` | Reviewed commit/path inventories and rewritten README, including recorder/process fixes, removed before/after helpers, and head-specific Greptile freshness changes. Existing original Monomind evidence already binds proof to revision; no source was imported. The root still has no license. PolyForm software and vendor-score completion rules remain excluded. |
+| [Firstmate](https://github.com/kunchenguid/firstmate) | `3c2a91d70e07b48c982a8fe3460ba367795bb5d3` → `127f0f30a4b272b68ec9196bf47d4db90ad40617` | Reviewed commit/path inventories and root operating/README boundary diffs. Upstream now makes operator versus maintainer publication authority explicit; the existing catalog already requires explicit publication authority. New backends, watcher fixes, record export, state/memory tiers, and hooks remain outside this original explicit-only role. The post-merge worktree and branch consent rule is a user-requested Monomind policy, not an imported upstream behavior. |
+| [Lavish AXI](https://github.com/kunchenguid/lavish-axi) | `a2a199cd2275ab4d5cea1b94d42e2479bda36321` → `86d14ff50e6e9c0be0b7575226ae214b0fd84035` (`0.1.93`) | Compared all manifest-tracked files. Upstream skill and third-party notices are unchanged. Reviewed package/README/changelog changes covering note receipts, HTML asset-tree restrictions, interactive controls, IME fixes, reconnect grace, and documented telemetry. Advanced Monolayer's focused pin and curated receipt semantics, artifact scope, injected rendering caveats, and process-scoped telemetry opt-out. Preserved branding and Mermaid/Full screen overrides. No external package was installed or run; runtime and browser behavior remain unverified here. |
+
+MIT license files for Addy, Matt, Firstmate, and Lavish AXI were unchanged across
+these comparisons. Michael's root-license limitation remains in force.
+
+### Future curation
+
+Use a review PR per coherent upstream batch. Record the exact old/new revisions,
+changed paths inspected, license changes, adopted behavior, and reasons for
+deferral. A newer head is a review candidate, not automatic permission to install
+or overwrite catalog skills. Advance focused pins only after adapting Monomind's
+authority/branding rules and updating affected evals and validators; retain full
+audit baselines separately. Recheck revision-bound evidence after material edits.
+
+After a confirmed merge, First Mate and the workflow identify associated
+worktrees and local/remote task branches and ask which exact targets to remove,
+unless already explicitly approved. Revalidate eligibility before removal and
+preserve dirty, active, shared/base, newer-unmerged, or uncertain targets.
+Existing adopters receive the persistent rule by reviewing and reapplying the
+updated workflow policy; catalog installation alone does not update repository
+instructions or delete anything.
+
 ## Selection matrix
 
 | Factory need | Adopted synthesis | Sources that most influenced it |

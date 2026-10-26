@@ -39,6 +39,17 @@
         "Compatibility, data ownership, observability, rollback, and non-goals are explicit.",
         "No implementation code or speculative task plan is produced."
       ]
+    },
+    {
+      "id": 2,
+      "kind": "dialogue",
+      "prompt": "Polish a spec that limits throughput to 50 requests per minute, marks the rollback command unverified, and cites an existing source link.",
+      "expected_output": "Improve clarity while preserving the limit, units, uncertainty, and citation.",
+      "expectations": [
+        "No stronger guarantee or invented example is introduced.",
+        "Compare the edited prose against the original and its sources.",
+        "The rollback command remains explicitly unverified until supported by evidence."
+      ]
     }
   ]
 }

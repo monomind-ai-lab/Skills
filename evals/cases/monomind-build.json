@@ -64,6 +64,17 @@
         "Does not repeat unchanged policy gates or rediscover recorded commands.",
         "Runs code checks affected by the new edit and inspects the final diff."
       ]
+    },
+    {
+      "id": 4,
+      "kind": "dialogue",
+      "prompt": "Implement an approved parser change in this isolated workspace. Parser unit tests will not exercise the network adapter.",
+      "expected_output": "Name the seam and state what it proves and what remains uncovered.",
+      "expectations": [
+        "Parser behavior and adapter integration coverage are distinguished.",
+        "Passing parser tests are not claimed as adapter proof.",
+        "Existing repository checks and approved seams are reused without inventing a new approval ceremony."
+      ]
     }
   ]
 }

@@ -6,6 +6,7 @@ This project is an original curation informed by the repositories listed below. 
 
 - Source: <https://github.com/addyosmani/agent-skills>
 - Revision inspected: `d2c37ef6225dd8726cdd369a8030307f48592d26`
+- Focused review: `aeac41d4d005999432bb7312f7ff06383a91d59d` (2026-10-26; documentation prose guidance and change inventory)
 - Copyright (c) 2025 Addy Osmani
 - License: MIT
 
@@ -37,6 +38,7 @@ SOFTWARE.
 
 - Source: <https://github.com/mattpocock/skills>
 - Revision inspected: `6654f6b60cd9d5be8b54c6fafe44346dabeb3b76`
+- Focused review: `5beb35b040e3de97e54fa9e386d7e42d15c295c2` (2026-10-26; engineering diagnosis/TDD diffs and change inventory)
 - Copyright (c) 2026 Matt Pocock
 - License: MIT
 
@@ -68,6 +70,7 @@ SOFTWARE.
 
 - Source: <https://github.com/michaelshimeles/skills>
 - Revision inspected: `5d403ea66775c04df222a1e9b302ef64ae45c712`
+- Focused review: `11b15767d7587bab11f6c4957507b5f26d1785c7` (2026-10-26; change inventory and README; root remains unlicensed, no source imported)
 - Repository-wide license: none found at the inspected revision
 
 This repository was consulted only for design ideas: its `AGENTS.md` four-beat task workflow, multi-agent isolation, revision-bound evidence, action/service separation, and PR completion discipline. No source file, recorder, fixture, or upstream wording from its unlicensed root material is included here.
@@ -78,6 +81,7 @@ Its `before-and-after` subtree is not copied or redistributed. The original `mon
 
 - Source: <https://github.com/kunchenguid/firstmate>
 - Revision inspected: `795e5e4aacdf120908224617cfcc4dd1b76e0d37`
+- Focused review: `127f0f30a4b272b68ec9196bf47d4db90ad40617` (2026-10-26; root operating boundaries and change inventory)
 - Copyright (c) 2026 Kun Chen
 - License: MIT
 
@@ -90,7 +94,7 @@ or Git history is included.
 
 - Source: <https://github.com/kunchenguid/lavish-axi>
 - Last full audit: `4413dcc8eff35cdc659e2035b94194d3c9be55fa` / `lavish-axi@0.1.71`
-- Focused reviewed pin: `a2a199cd2275ab4d5cea1b94d42e2479bda36321` / `lavish-axi@0.1.80` (2026-09-30)
+- Focused reviewed pin: `86d14ff50e6e9c0be0b7575226ae214b0fd84035` / `lavish-axi@0.1.93` (2026-10-26)
 - Copyright (c) 2026 Kun Chen
 - License: MIT
 
